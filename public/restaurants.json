@@ -1,0 +1,65 @@
+{
+    "restaurant": [
+        {
+            "name": "Restaurant A",
+            "icon": "https://firebaseurl.com/someimage.png",
+            "menus": [
+                {
+                    "name": "Menu B",
+                    "icon": "https://firebaseurl.com/someimage.png",
+                    "uploadedat": 1234214,
+                    "updatedat": 123415,
+                    "dishes": [
+                        {
+                            "name": "Dish C",
+                            "icon": "https://firebaseurl.com/someimage.png",
+                            "uploadedat": 345234
+                        }
+                    ]
+                }
+            ],
+            "ingredients": [
+                {
+                    "name": "carrot",
+                    "price": 0.80,
+                    "icon": "https://firebaseurl.com/carrot.png"
+                },
+                {
+                    "name": "broccoli",
+                    "price": 1.00,
+                    "icon": "https://firebaseurl.com/broccoli.png"
+                },
+                {
+                    "name": "chicken",
+                    "price": 2.50,
+                    "icon": "https://firebaseurl.com/chicken.png"
+                },
+                {
+                    "name": "tomato",
+                    "price": 0.50,
+                    "icon": "https://firebaseurl.com/tomato.png"
+                },
+                {
+                    "name": "potato",
+                    "price": 0.30,
+                    "icon": "https://firebaseurl.com/potato.png"
+                },
+                {
+                    "name": "onion",
+                    "price": 0.40,
+                    "icon": "https://firebaseurl.com/onion.png"
+                },
+                {
+                    "name": "garlic",
+                    "price": 0.20,
+                    "icon": "https://firebaseurl.com/garlic.png"
+                },
+                {
+                    "name": "pepper",
+                    "price": 0.60,
+                    "icon": "https://firebaseurl.com/pepper.png"
+                }
+            ]
+        }
+    ]
+}

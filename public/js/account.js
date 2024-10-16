@@ -1,13 +1,15 @@
 // Import the functions you need from the Firebase SDKs
-import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js'
+
+import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js'
+
+import { getDatabase } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAkoYvz49Xs6vg9-SUHM236plfeN6Dck4s",
   authDomain: "mtu-group-project-agile.firebaseapp.com",
-  databaseURL: "https://console.firebase.google.com/u/1/project/mtu-group-project-agile/database/mtu-group-project-agile-default-rtdb/data/~2F",
+  databaseURL: "ttps://mtu-group-project-agile-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "mtu-group-project-agile",
   storageBucket: "mtu-group-project-agile.appspot.com",
   messagingSenderId: "120193305147",
@@ -22,7 +24,7 @@ const auth = getAuth(app);
 const database = getDatabase(app);
 
 // Register function
-function register() {
+export function register() {
   const name = document.getElementById('name').value;
   const password = document.getElementById('password').value;
   const email = document.getElementById('email').value;

@@ -31,6 +31,11 @@ def menus():
 	return render_template("menulist.html")
 
 
+@app.get("/restaurant/menu")
+def menus_admin():
+	return render_template("restaurant/menu.html")
+
+
 # Firebase stuff: #
 initialize_app()
 @https_fn.on_request(timeout_sec=5)

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en-IE">
+    <head>
+        <title>Restaurant Menu List Edit</title>
+        <base href="/">
+        <script type="module">
+            import { app, auth, database } from "./js/firebase.js";
+            import { ref, set, get, push, child, remove } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js';
+            import { getStorage, uploadBytes, getDownloadURL, ref as sref } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+
+            // TOOD: enable this!
+            // var user = auth.currentUser;
+
+            // if (!user) {
+            //     alert("please log in!");
+            //     window.location = "/login";
+            // }
+
+            var user = {uid: "TESTUID"};
+
+            function validateImage(file) {
+                const img = new Image();
+                
+                return new Promise((resolve, reject) => {
+                    const objectURL = URL.createObjectURL(file);
+                    img.src = objectURL;
+
+                    img.onload = () => {
+                        const width = img.naturalWidth;
+                        const height = img.naturalHeight;
+
+                        if (width >= 250 && height >= 250)
+                            resolve(true);
+                        else
+                            reject();
+
+                        URL.revokeObjectURL(objectURL);
+                    };
+                });
+            }
+
+            async function loadMenus() {
+                const menusRef = ref(database, `/restaurant/${user.uid}/menus/`);
+                const snapshot = await get(menusRef);
+                if (!snapshot.exists())
+                    return;
+
+                const menus = snapshot.val();
+                for (var menuId in menus) {
+                    const menu = menus[menuId];
+                    
+                    const c = document.importNode(document.querySelector("#menu-template").content, true);
+                    
+                    c.querySelector(".menu-icon").src = menu.icon;
+                    c.querySelector(".menu-title").textContent = menu.name;
+                    c.querySelector(".menu").setAttribute("data-menuid", menuId);
+
+                    document.querySelector("#menu-list").appendChild(c);
+                }
+            }
+            
+            loadMenus();
+
+            window.addMenu = () => {
+                var title = document.querySelector("#menu-title").value;
+
+                if (!title) {
+                    alert("Menu Title is empty!");
+                    return;
+                }
+
+                if (document.querySelector("#menu-icon").files == 0) {
+                    alert("You must upload an image!");
+                    return;
+                }
+                
+                var file = document.querySelector("#menu-icon").files[0];
+
+                validateImage(file).then(() => {
+                    uploadBytes(sref(getStorage(), "/restaurant/A/menu-icon.jpg"), file).then(async snapshot => {
+                        push(ref(database, `/restaurant/${user.uid}/menus/`), {  // TODO: change to user id
+                            icon: await getDownloadURL(snapshot.ref),
+                            name: title,
+                            uploadedat: Date.now(),
+                            updatedat: Date.now()
+                        });
+
+                        location.reload();
+                    }).catch(() => alert("Invalid image"));
+                }).catch(() => alert("Image must be at least 250*250px"));
+            }
+
+            window.deleteMenu = (elem) => {
+                const menuInfo = elem.closest(".menu");
+                const menuTitle = menuInfo.querySelector(".menu-title").textContent;
+                const menuId = menuInfo.getAttribute("data-menuid");
+                if (confirm(`Are you sure you want to delete this menu, ${menuTitle}?`)) {
+                    remove(ref(database, `/restaurant/${user.uid}/menus/${menuId}`));
+                    location.reload();
+                }
+            };
+        </script>
+    </head>
+    <body>
+        <h2>Add A Menu</h2>
+        <input id="menu-title" type="text" name="title" placeholder="Menu Title">
+        <label for="menu-icon">Menu Icon</label>
+        <input id="menu-icon" type="file" name="icon">
+        <button onclick="addMenu();">Add New Menu</button>
+
+        <h2>Menu List</h2>
+        <div id="menu-list">
+            <template id="menu-template">
+                <div class="menu">
+                    <h3 class="menu-title"></h3>
+                    <img class="menu-icon" width="250" height="250">
+                    <button onclick="deleteMenu(this);">Delete</button>
+                </div>
+            </template>
+        </div>
+    </body>
+</html>

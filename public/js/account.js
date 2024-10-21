@@ -1,54 +1,69 @@
-// Import the functions you need from the Firebase SDKs
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js'
-
-import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js'
-
-import { getDatabase } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js';
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAkoYvz49Xs6vg9-SUHM236plfeN6Dck4s",
-  authDomain: "mtu-group-project-agile.firebaseapp.com",
-  databaseURL: "ttps://mtu-group-project-agile-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "mtu-group-project-agile",
-  storageBucket: "mtu-group-project-agile.appspot.com",
-  messagingSenderId: "120193305147",
-  appId: "1:120193305147:web:2d3030b6e662d54a67aa1e"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-// Initialize Firebase Auth and Database services
-const auth = getAuth(app);
-const database = getDatabase(app);
+import { auth, database, ref, set, get, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "/js/firebase.js";
 
 // Register function
-export function register() {
-  const name = document.getElementById('name').value;
-  const password = document.getElementById('password').value;
-  const email = document.getElementById('email').value;
+export async function register() {
+	const name = document.getElementById('name').value;
+	const password = document.getElementById('password').value;
+	const email = document.getElementById('email').value;
 
-  // Create user with email and password
-  createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    const user = userCredential.user;
-    console.log(user);  // Log the user object to verify UID
-    
-    const database_ref = ref(database, 'users/' + user.uid);
-    const user_data = { name: name, password: password, email: email };
+	// Create user with email and password
+	try {
+		const credential = await createUserWithEmailAndPassword(auth, email, password);
+		const user = credential.user;
+		console.log(user);  // Log the user object to verify UID
+		
+		const database_ref = ref(database, `users/${user.uid}`);
+		const user_data = {name, email};
 
-    set(database_ref, user_data)
-      .then(() => {
-        alert('User Created');
-      })
-      .catch((error) => {
-        console.error("Error saving data:", error);
-      });
-  })
-  .catch((error) => {
-    console.error("Error creating user:", error);
-    alert(error.message);
-  });
+		try {
+			await set(database_ref, user_data)
+
+		} catch(error) {
+			console.error("Error saving data:", error);
+			alert(error.message);
+		}
+
+		alert("Account crated!")
+		// Redirect to login page
+		document.location.href = "/login"
+
+	} catch(error) {
+		console.error("Error creating user:", error);
+		alert(error.message);
+	}
+}
+
+
+// Login function
+export async function login() {
+	const password = document.getElementById('password').value;
+	const email = document.getElementById('email').value;
+
+	// Create user with email and password
+	try {
+		const credential = await signInWithEmailAndPassword(auth, email, password);
+		const user = credential.user;
+		console.log(user);  // Log the user object to verify UID
+		
+		const database_ref = ref(database, `users/${user.uid}`);
+
+		let user_data;
+		try {
+			user_data = await get(database_ref)
+			if(!user_data.exists()) throw "User data does not exist"
+			user_data = user_data.val()
+
+		} catch(error) {
+			console.error("Error getting data:", error);
+			alert(error.message);
+		}
+
+		console.log(user_data)
+		alert(`Welcome, ${user_data.name}`)
+
+	} catch(error) {
+		console.error("Error signing in:", error);
+		alert(error.message);
+	}
 
 }

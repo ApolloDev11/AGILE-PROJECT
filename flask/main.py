@@ -14,16 +14,17 @@ app = Flask(__name__)
 
 @app.get("/")
 def index():
+	# Attempt to verify user
 	try:
-		# Attempt to verify user
-		uid = user.verify(request)
+		user = {}
+		user["uid"] = user.verify(request)
+	# Log out the user if failed verification
 	except(exception.Unauthorized):
-		# Log out the user if failed verification
 		return redirect("/logout")
 
-	name = user.get_name(uid)
-	
-	return render_template("home.html", name=name)
+
+	user["name"] = user.get_name(user["uid"])
+	return render_template("home.html", user=user)
 
 
 @app.get("/login")
@@ -56,23 +57,47 @@ def logout():
 
 @app.get("/restaurants")
 def restaurants():
-	uid = user.verify(request)
+	user = {}
+	user["uid"] = user.verify(request)
+	user["name"] = user.get_name(user["uid"])
 
-	return render_template("restaurants.html")
+	restaurant_ref = db.reference("restaurants")
+	restaurants = restaurant_ref.get()
+
+	return render_template("restaurants.html", user=user, restaurants=restaurants)
+
+
+
+@app.get("/restaurant/<restaurant_id>")
+def restaurant(restaurant_id):
+	user = {}
+	user["uid"] = user.verify(request)
+	user["name"] = user.get_name(user["uid"])
+
+	restaurant_ref = db.reference("restaurants/{restaurant_id}")
+	restaurant = restaurant_ref.get()
+
+	return render_template("restaurant/page.html", user=user, restaurant=restaurant)
+
+
+
+@app.get("/restaurant/<restaurant_id>/admin/menu")
+def menus_admin(restaurant_id):
+	user = {}
+	user["uid"] = user.verify(request)
+	user["name"] = user.get_name(user["uid"])
+	
+	return render_template("restaurant/admin/menu.html", user=user)
+
 
 
 @app.get("/dishes")
 def menus():
 	uid = user.verify(request)
+	name = user.get_name(uid)
 
-	return render_template("dishes.html")
-
-
-@app.get("/restaurant/menu")
-def menus_admin():
-	uid = user.verify(request)
-	
-	return render_template("restaurant/menu.html")
+	user = {"name": name}
+	return render_template("dishes.html", user=user)
 
 
 # API for checking if the server can verify the user

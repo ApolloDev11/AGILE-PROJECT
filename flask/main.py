@@ -75,6 +75,19 @@ def menus_admin():
 	return render_template("restaurant/menu.html")
 
 
+# API for checking if the server can verify the user
+@app.get("/api/verify")
+def api_verify():
+	verified = False
+	try:
+		user.verify(request)
+		verified = True
+	except(exception.Unauthorized):
+		verified = False
+		
+	return {"verified": verified}
+
+
 # Firebase stuff: #
 initialize_app()
 @https_fn.on_request(timeout_sec=5)

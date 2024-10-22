@@ -1,4 +1,14 @@
-import { auth, database, ref, set, get, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "/js/firebase.js";
+import { sleep } from "/js/common.js"
+import {
+	auth,
+	database,
+	ref,
+	set,
+	get,
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword
+} from "/js/firebase.js";
+
 
 // Register function
 export async function register() {
@@ -52,8 +62,11 @@ export async function login() {
 		expiryDate.setMonth(expiryDate.getMonth() + 1);
 		document.cookie = `auth=${accessToken}; expires=${expiryDate.toUTCString()}`;
 
+		// Wait for a bit after setting cookie
+		await sleep(500)
+
 		// Redirect home
-		document.location.href = "/";
+		document.location.reload();
 
 
 	} catch(error) {

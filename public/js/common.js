@@ -2,8 +2,12 @@ export function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+// Function for calling JSON APIs on the Flask server
 export async function api(url, body) {
-	let options = {}
+	let options = {
+		credentials: "same-origin"
+	}
+
 	if(body) {
 		options.method = "POST";
 		options.body = JSON.encode(body);
@@ -11,7 +15,9 @@ export async function api(url, body) {
 	}
 
 	let response = await fetch(`/api/${url}`, options);
-	let responseBody = await response.body();
+	if(!response.ok) throw `${response.status} received from API`;
+	
+	let responseBody = await response.text();
 	let parsedBody;
 	
 	try {

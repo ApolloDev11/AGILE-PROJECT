@@ -1,4 +1,4 @@
-import { sleep } from "/js/common.js"
+import { sleep, api } from "/js/common.js"
 import {
 	auth,
 	database,
@@ -16,6 +16,8 @@ export async function register() {
 	const password = document.getElementById('password').value;
 	const email = document.getElementById('email').value;
 
+	document.getElementById("progress").hidden = true;
+
 	// Create user with email and password
 	try {
 		const credential = await createUserWithEmailAndPassword(auth, email, password);
@@ -29,8 +31,10 @@ export async function register() {
 			await set(database_ref, user_data)
 
 		} catch(error) {
+			document.getElementById("progress").hidden = false;
+
 			console.error("Error saving data:", error);
-			alert(error.message);
+			alert(error.message || error);
 		}
 
 		alert("Account crated!")
@@ -38,8 +42,10 @@ export async function register() {
 		document.location.href = "/login"
 
 	} catch(error) {
+		document.getElementById("progress").hidden = false;
+
 		console.error("Error creating user:", error);
-		alert(error.message);
+		alert(error.message || error);
 	}
 }
 
@@ -49,6 +55,8 @@ export async function login() {
 	const password = document.getElementById('password').value;
 	const email = document.getElementById('email').value;
 
+	document.getElementById("progress").hidden = false;
+
 	// Create user with email and password
 	try {
 		const credential = await signInWithEmailAndPassword(auth, email, password);
@@ -56,22 +64,28 @@ export async function login() {
 		console.log(user);  // Log the user object to verify UID
 
 		// Save access token to be accessed by server
-		const accessToken = await user.getIdToken();
+		const accessToken = await user.getIdToken(true);
 		// Expiry date one month from now
 		let expiryDate = new Date();
 		expiryDate.setMonth(expiryDate.getMonth() + 1);
 		document.cookie = `auth=${accessToken}; expires=${expiryDate.toUTCString()}`;
 
-		// Wait for a bit after setting cookie
-		await sleep(500)
+		// Wait until server can verify user
+		while(true) {
+			let verifyResponse = await api("verify");
+			if(verifyResponse.verified) break
+			await sleep(500)
+		}
 
 		// Redirect home
 		document.location.reload();
 
 
 	} catch(error) {
+		document.getElementById("progress").hidden = true;
+
 		console.error("Error signing in:", error);
-		alert(error.message);
+		alert(error.message || error);
 	}
 
 }

@@ -6,8 +6,11 @@ from firebase_functions import https_fn
 # Python library imports
 import exception, user, json
 
+# Initialise app
 app = Flask(__name__)
 
+
+# Routes #
 
 @app.get("/")
 def index():
@@ -15,11 +18,8 @@ def index():
 		# Attempt to verify user
 		uid = user.verify(request)
 	except(exception.Unauthorized):
-		# Redirect to login page
-		response = redirect("/login")
-		# Clear auth cookie
-		response.delete_cookie("auth")
-		return response
+		# Log out the user if failed verification
+		return redirect("/logout")
 
 	name = user.get_name(uid)
 	
@@ -42,6 +42,16 @@ def register():
 		return redirect("/")
 	
 	return render_template("register.html")
+
+
+@app.get("/logout")
+def logout():
+	response = redirect("/login")
+	if "auth" in request.cookies:
+		# Clear auth cookie
+		response.delete_cookie("auth")
+	return response
+	
 
 
 @app.get("/restaurants")

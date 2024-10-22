@@ -1,8 +1,10 @@
+# Firebase and internal server imports
 from flask import Flask, render_template, redirect
 from firebase_admin import initialize_app, db
 from firebase_functions import https_fn
-import exception
-from authenticate import verify_user
+
+# Python library imports
+import exception, user, json
 
 app = Flask(__name__)
 
@@ -11,15 +13,17 @@ app = Flask(__name__)
 def index():
 	try:
 		# Attempt to verify user
-		uid = verify_user(request)
+		uid = user.verify(request)
 	except(exception.Unauthorized):
 		# Redirect to login page
 		response = redirect("/login")
 		# Clear auth cookie
 		response.delete_cookie("auth")
 		return response
+
+	name = user.get_name(uid)
 	
-	return render_template("home.html")
+	return render_template("home.html", name=name)
 
 
 @app.get("/login")
@@ -42,21 +46,21 @@ def register():
 
 @app.get("/restaurants")
 def restaurants():
-	uid = verify_user(request)
+	uid = user.verify(request)
 
-	return render_template("restaurantlist.html")
+	return render_template("restaurants.html")
 
 
-@app.get("/menus")
+@app.get("/dishes")
 def menus():
-	uid = verify_user(request)
+	uid = user.verify(request)
 
-	return render_template("menulist.html")
+	return render_template("dishes.html")
 
 
 @app.get("/restaurant/menu")
 def menus_admin():
-	uid = verify_user(request)
+	uid = user.verify(request)
 	
 	return render_template("restaurant/menu.html")
 

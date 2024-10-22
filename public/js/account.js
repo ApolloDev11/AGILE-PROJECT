@@ -47,8 +47,9 @@ export async function login() {
 
 		// Save access token to be accessed by server
 		const accessToken = await user.getIdToken();
+		// Expiry date one month from now
 		let expiryDate = new Date();
-		expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+		expiryDate.setMonth(expiryDate.getMonth() + 1);
 		document.cookie = `auth=${accessToken}; expires=${expiryDate.toUTCString()}`;
 
 		// Redirect home

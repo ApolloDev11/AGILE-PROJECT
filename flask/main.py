@@ -16,15 +16,15 @@ app = Flask(__name__)
 def index():
 	# Attempt to verify user
 	try:
-		user = {}
-		user["uid"] = user.verify(request)
+		current_user = {}
+		current_user["uid"] = user.verify(request)
 	# Log out the user if failed verification
 	except(exception.Unauthorized):
 		return redirect("/logout")
 
 
-	user["name"] = user.get_name(user["uid"])
-	return render_template("home.html", user=user)
+	current_user["name"] = user.get_name(current_user["uid"])
+	return render_template("home.html", user=current_user)
 
 
 @app.get("/login")
@@ -47,6 +47,7 @@ def register():
 
 @app.get("/logout")
 def logout():
+	# Redirect back to login page
 	response = redirect("/login")
 	if "auth" in request.cookies:
 		# Clear auth cookie
@@ -57,47 +58,78 @@ def logout():
 
 @app.get("/restaurants")
 def restaurants():
-	user = {}
-	user["uid"] = user.verify(request)
-	user["name"] = user.get_name(user["uid"])
+	# Verify user and get details
+	current_user = {}
+	current_user["uid"] = user.verify(request)
+	current_user["name"] = user.get_name(current_user["uid"])
 
+	# Get restaurants from DB
 	restaurant_ref = db.reference("restaurants")
 	restaurants = restaurant_ref.get()
 
-	return render_template("restaurants.html", user=user, restaurants=restaurants)
+	return render_template("restaurants.html", user=current_user, restaurants=restaurants)
 
 
 
 @app.get("/restaurant/<restaurant_id>")
 def restaurant(restaurant_id):
-	user = {}
-	user["uid"] = user.verify(request)
-	user["name"] = user.get_name(user["uid"])
+	# Verify user and get details
+	current_user = {}
+	current_user["uid"] = user.verify(request)
+	current_user["name"] = user.get_name(current_user["uid"])
 
-	restaurant_ref = db.reference("restaurants/{restaurant_id}")
+	# Get restaurant from DB
+	restaurant_ref = db.reference(f"restaurants/{restaurant_id}")
 	restaurant = restaurant_ref.get()
 
-	return render_template("restaurant/page.html", user=user, restaurant=restaurant)
+	# 404 error if restaurant does not exist
+	if not restaurant:
+		raise exception.NotFound
 
+	return render_template("restaurant/page.html", user=current_user, restaurant=restaurant)
+
+
+
+@app.get("/restaurant/create")
+def restaurant_new():
+	# Verify user and get details
+	current_user = {}
+	current_user["uid"] = user.verify(request)
+	current_user["name"] = user.get_name(current_user["uid"])
+	
+	# TO DO: Check if user already is managing a restaurant
+	
+	return render_template("restaurant/admin/setup.html", user=current_user)
 
 
 @app.get("/restaurant/<restaurant_id>/admin/menu")
 def menus_admin(restaurant_id):
-	user = {}
-	user["uid"] = user.verify(request)
-	user["name"] = user.get_name(user["uid"])
+	# Verify user and get details
+	current_user = {}
+	current_user["uid"] = user.verify(request)
+	current_user["name"] = user.get_name(current_user["uid"])
+
+	# Get restaurant from DB
+	restaurant_ref = db.reference(f"restaurants/{restaurant_id}")
+	restaurant = restaurant_ref.get()
+
+	# 404 error if restaurant does not exist
+	if not restaurant:
+		raise exception.NotFound
 	
-	return render_template("restaurant/admin/menu.html", user=user)
+	# TO DO: Check if user is allowed to manage this restaurant
+	
+	return render_template("restaurant/admin/menu.html", user=current_user)
 
 
 
 @app.get("/dishes")
 def menus():
-	uid = user.verify(request)
-	name = user.get_name(uid)
+	current_user = {}
+	current_user["uid"] = user.verify(request)
+	current_user["name"] = user.get_name(current_user["uid"])
 
-	user = {"name": name}
-	return render_template("dishes.html", user=user)
+	return render_template("dishes.html", user=current_user)
 
 
 # API for checking if the server can verify the user

@@ -44,22 +44,16 @@ export async function login() {
 		const credential = await signInWithEmailAndPassword(auth, email, password);
 		const user = credential.user;
 		console.log(user);  // Log the user object to verify UID
-		
-		const database_ref = ref(database, `users/${user.uid}`);
 
-		let user_data;
-		try {
-			user_data = await get(database_ref)
-			if(!user_data.exists()) throw "User data does not exist"
-			user_data = user_data.val()
+		// Save access token to be accessed by server
+		const accessToken = await user.getIdToken();
+		let expiryDate = new Date();
+		expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+		document.cookie = `auth=${accessToken}; expires=${expiryDate.toUTCString()}`;
 
-		} catch(error) {
-			console.error("Error getting data:", error);
-			alert(error.message);
-		}
+		// Redirect home
+		document.location.href = "/";
 
-		console.log(user_data)
-		alert(`Welcome, ${user_data.name}`)
 
 	} catch(error) {
 		console.error("Error signing in:", error);

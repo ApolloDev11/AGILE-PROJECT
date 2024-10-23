@@ -5,7 +5,7 @@ def verify(request):
 	""" Verifies the user with Firebase and returns their uid """
 
 	if "auth" not in request.cookies:
-		raise exception.Unauthorized
+		raise exception.Unauthorized("No auth cookie set")
 
 	token = request.cookies["auth"]
 

@@ -68,16 +68,11 @@ export async function login() {
 		// Expiry date one month from now
 		let expiryDate = new Date();
 		expiryDate.setMonth(expiryDate.getMonth() + 1);
-		document.cookie = `auth=${accessToken}; expires=${expiryDate.toUTCString()}`;
+		document.cookie = `__session=${accessToken}; expires=${expiryDate.toUTCString()}`;
 
-		// Wait until server can verify user
-		let n = 0;
-		while(true) {
-			let verifyResponse = await api("verify");
-			if(verifyResponse.verified) break
-			if(n++ > 10) throw verifyResponse.error || "Server unable to verify user";
-			await sleep(500)
-		}
+		// Check if server can verify user
+		let verifyResponse = await api("verify");
+		if(!verifyResponse.verified) throw verifyResponse.error || "Server unable to verify user";
 
 		// Redirect home
 		document.location.reload();

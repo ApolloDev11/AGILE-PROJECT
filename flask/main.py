@@ -29,18 +29,18 @@ def index():
 
 @app.get("/login")
 def login():
-	if "auth" in request.cookies:
-		# User has auth cookie (i.e. is already signed in) redirect
-		return redirect("/")
+	if "__session" in request.cookies:
+		# User has session cookie (i.e. is already signed in) redirect
+		return render_template("message.html", message="You are already logged in", redirect="/")
 	
 	return render_template("login.html")
 
 
 @app.get("/register")
 def register():
-	if "auth" in request.cookies:
-		# User has auth cookie (i.e. is already signed in) redirect
-		return redirect("/")
+	if "__session" in request.cookies:
+		# User has session cookie (i.e. is already signed in) redirect
+		return render_template("message.html", message="You are already logged in", redirect="/")
 	
 	return render_template("register.html")
 
@@ -61,9 +61,9 @@ def account():
 def logout():
 	# Redirect back to login page
 	response = redirect("/login")
-	if "auth" in request.cookies:
-		# Clear auth cookie
-		response.delete_cookie("auth")
+	if "__session" in request.cookies:
+		# Clear session cookie
+		response.delete_cookie("__session")
 	return response
 	
 

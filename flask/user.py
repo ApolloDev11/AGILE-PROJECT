@@ -4,10 +4,10 @@ import exception
 def verify(request):
 	""" Verifies the user with Firebase and returns their uid """
 
-	if "auth" not in request.cookies:
-		raise exception.Unauthorized("No auth cookie set")
+	if "__session" not in request.cookies:
+		raise exception.Unauthorized("No session cookie set")
 
-	token = request.cookies["auth"]
+	token = request.cookies["__session"]
 
 	try:
 		decoded_token = auth.verify_id_token(token, clock_skew_seconds=60)

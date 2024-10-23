@@ -23,7 +23,7 @@ button:disabled {
 	opacity: 0.5;
 }
 
-input {
+input, textarea {
 	font-family: Poppins;
 	padding: 1em;
 	display: block;
@@ -36,6 +36,23 @@ input {
 textarea:focus, input:focus{
 	outline: none;
 	border-color: black;
+}
+
+input[type=file]::file-selector-button {
+	display: none;
+}
+
+input[type=file]::before {
+	content: "Drop file here, or click to choose";
+	display: block;
+	font-size: 0.8em;
+	color: #666;
+}
+
+label {
+	display: block;
+	margin-top: 1em;
+	width: fit-content;
 }
 
 a {

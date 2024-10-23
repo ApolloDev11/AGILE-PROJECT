@@ -4,30 +4,40 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Restaurant setup</title>
-		<link rel="stylesheet" href="/css/main.css">
+		<link rel="stylesheet" href="/css/restaurant/admin/setup.css">
+		<script src="/js/firebase.js" defer></script>
+		<script src="/js/restaurant/admin/setup.js" defer></script>
+		<script src="/js/common.js" defer></script>
 	</head>
 	<body>
 		{% include "header.html" %}
 		
-		<h2>Open a restaurant account</h2>
-		<hr>
-		<form>
-			<label for="restaurant-name">Restaurant name:</label>
-			<input type="text" id="restaurant-name">
+		<main>
+			<h2>Open a restaurant account</h2>
+			<hr>
+			<form onsubmit="return false">
+				<h3>Restaurant details</h3>
 
-			<label for="restaurant-address">Address:</label>
-			<input type="text" id="restaurant-address">
+				<label for="restaurant-name">Restaurant name:</label>
+				<input type="text" id="restaurant-name" placeholder="Food Place">
 
-			<p>Contact details</p>
+				<label for="restaurant-address">Address:</label>
+				<textarea id="restaurant-address" placeholder="1 Restaurant Road"></textarea>
 
-			<label for="restaurant-phone">Phone:</label>
-			<input type="tel" id="restaurant-phone">
+				<label for="restaurant-image">Image:</label>
+				<input type="file" id="restaurant-image" accept="image/png, image/jpeg">
 
-			<label for="restaurant-email">Email:</label>
-			<input type="tel" id="restaurant-email">
+				<h3>Contact details</h3>
 
-			<button onclick="createRestaurant()">Submit</button>
-		</form>
-		
+				<label for="restaurant-phone">Phone:</label>
+				<input type="tel" id="restaurant-phone" placeholder="+1 234 567">
+
+				<label for="restaurant-email">Email:</label>
+				<input type="tel" id="restaurant-email" placeholder="name@example.com">
+
+				<br>
+				<button onclick="saveRestaurantDetails()">Continue</button>
+			</form>
+		</main>
 	</body>
 </html>

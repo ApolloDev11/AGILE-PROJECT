@@ -4,13 +4,20 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>{{ restaurant.name }}</title>
-		<link rel="stylesheet" href="/css/main.css">
+		<link rel="stylesheet" href="/css/restaurant/page.css">
 	</head>
 	<body>
 		{% include "header.html" %}
-		
-		<h2>{{ restaurant.name }}</h2>
-		<hr>
-
+		<main>
+			<img src="{{ ('restaurants/'+restaurant_id+'/image') | firebase_storage_url }}" id="restaurant-image">
+			<h2>{{ restaurant.name }}</h2>
+			<p>{{ restaurant.address }}</p>
+			<hr>
+			<h3>Contact</h3>
+			<ul>
+				<li><a href="mailto:{{ restaurant.email }}">{{ restaurant.email }}</a></li>
+				<li><a href="tel:{{ restaurant.phone }}">{{ restaurant.phone }}</a></li>
+			</ul>
+		</main>
 	</body>
 </html>

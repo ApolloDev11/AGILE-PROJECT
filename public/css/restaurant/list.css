@@ -1,0 +1,34 @@
+@import url(/css/main.css);
+
+#restaurant-list {
+	margin-top: 2em;
+	overflow-y: auto;
+	height: 100%;
+}
+
+#restaurant-list a {
+	display: flex;
+	text-decoration: none;
+	border: 1px solid #999;
+	border-radius: 1em;
+	padding: 1em;
+	margin-bottom: 2em;
+	transition: border 250ms;
+}
+
+#restaurant-list a:hover {
+	border: 1px solid black;
+}
+
+#restaurant-list a img {
+	border-radius: 0.5em;
+	width: 8em;
+	height: 8em;
+	object-fit: cover;
+	margin-right: 2em;
+}
+
+#restaurant-list a h3 {
+	font-size: 1.5em;
+	margin-top: 0;
+}

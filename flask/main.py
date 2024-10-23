@@ -81,7 +81,7 @@ def restaurants():
 
 	# Get restaurants from DB
 	restaurant_ref = db.reference("restaurants")
-	restaurants = restaurant_ref.get()
+	restaurants = restaurant_ref.get() or {}
 
 	return render_template("restaurants.html", user=current_user, restaurants=restaurants)
 
@@ -102,41 +102,25 @@ def restaurant(restaurant_id):
 	if not restaurant:
 		raise exception.NotFound
 
-	return render_template("restaurant/page.html", user=current_user, restaurant=restaurant)
+	return render_template("restaurant/page.html", user=current_user, restaurant_id=restaurant_id, restaurant=restaurant)
 
 
 
-@app.get("/restaurant/create")
+@app.get("/restaurant/admin")
 def restaurant_new():
 	# Verify user and get details
 	current_user = {}
 	current_user["uid"] = user.verify(request)
 	current_user["name"] = user.get_name(current_user["uid"])
 	
-	# TO DO: Check if user already is managing a restaurant
+	# Get restaurant managed by user
+	managed_restaurant_id = db.reference(f"/users/{current_user['uid']}/managed_restaurant")
+	managed_restaurant_id = managed_restaurant_id.get()
+	if not managed_restaurant_id:
+		# User is not managing any restaurant, show setup page
+		return render_template("restaurant/admin/setup.html", user=current_user)
 	
-	return render_template("restaurant/admin/setup.html", user=current_user)
-
-
-@app.get("/restaurant/<restaurant_id>/admin/menu")
-def menus_admin(restaurant_id):
-	# Verify user and get details
-	current_user = {}
-	current_user["uid"] = user.verify(request)
-	current_user["name"] = user.get_name(current_user["uid"])
-
-	# Get restaurant from DB
-	restaurant_ref = db.reference(f"restaurants/{restaurant_id}")
-	restaurant = restaurant_ref.get()
-
-	# 404 error if restaurant does not exist
-	if not restaurant:
-		raise exception.NotFound
-	
-	# TO DO: Check if user is allowed to manage this restaurant
-	
-	return render_template("restaurant/admin/menu.html", user=current_user)
-
+	return render_template("restaurant/admin/main.html", user=current_user)
 
 
 @app.get("/dishes")
@@ -161,6 +145,17 @@ def api_verify():
 		api_response["error"] = str(e)
 		
 	return api_response
+
+
+
+# Custom functions #
+@app.template_filter("firebase_storage_url")
+def firebase_storage_url(file):
+	""" Generates a full URL to the specified file on Firebase storage """
+	file = file.replace("/", "%2F");
+	return f"https://firebasestorage.googleapis.com/v0/b/mtu-group-project-agile.appspot.com/o/{file}?alt=media"
+
+
 
 
 # Firebase stuff: #

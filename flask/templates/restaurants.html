@@ -4,7 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Home</title>
-		<link rel="stylesheet" href="/css/main.css">
+		<link rel="stylesheet" href="/css/restaurant/list.css">
 	</head>
 	<body>
 		{% include "header.html" %}
@@ -12,12 +12,20 @@
 		<main>
 			<h2>Restaurants</h2>
 			<hr>
-			{% for restaurant_id, restaurant in restaurants.items() %}
-				<a href="/restaurant/{{ restaurant_id }}" class="restaurant-entry">
-					<img src="{{ restaurant.icon }}">
-					<h3>{{ restaurant.name }}</h3>
-				</div>	
-			{% endfor %}
+			<div id="restaurant-list">
+				{% if not restaurants %}
+					<p>No restaurants exist</p>
+				{% endif %}
+				{% for restaurant_id, restaurant in restaurants.items() %}
+					<a href="/restaurant/{{ restaurant_id }}">
+						<img src="{{ ('restaurants/'+restaurant_id+'/image') | firebase_storage_url }}">
+						<div>
+							<h3>{{ restaurant.name }}</h3>
+							<p>{{ restaurant.address }}</p>
+						</div>
+					</a>
+				{% endfor %}
+			</div>
 		</main>
 	</body>
 </html>

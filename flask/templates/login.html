@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/css/register.css">
 		<script type="module">
 			import { login } from "/js/account.js";
 			window.login = login;
@@ -35,18 +35,6 @@
 				</div>
 			</div>
 		</main>
-		
-		<footer>
-			<div class="footer-container">
-				<div class="footer-nav">
-					<ul>
-						<li><a href="/index">Home</a></li>
-					</ul>
-				</div>
-				<div class="footerBottom">
-					<p>Copyright &copy; 2023; Designed by <span class="designer">Nichita</span></p>
-				</div>
-			</div>
-		</footer>
+		{% include "footer.html" %}
 	</body>
 </html>

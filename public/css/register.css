@@ -1,77 +1,7 @@
-/*Desktop View*/
-/*google font*/
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap');
-
-body {
-background-color: #131316;
-color: #088F8F;
-font-family: 'Poppins', sans-serif;
-padding: 0;
-margin: 0;
-height: 100%;
-}
-
-p {
-font-size: 1.5em;
-}
-
-/*Footer css*/
-footer{
-background-color: #262626;
-}
-
-.footer-container{
-width: 100%;
-padding: 70px 0px 20px;
-}
-
-.footer-nav{
-    margin: 30px 0;
-}
-
-.footer-nav ul{
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    text-align: center;
-}
-
-.footer-nav ul li a{
-    color: white;
-    margin: 2rem;
-    margin-left: auto;
-    text-decoration: none;
-    text-align: center;
-    font-size: 1.3em;
-    opacity: 0.7;
-    transition: 0.5s;
-}
-
-.footer-nav ul li a:hover{
-    opacity: 1;
-}
-
-.footerBottom{
-    background-color: #262626;
-    padding: 20px;
-    text-align: center;
-}
-
-.footerBottom p{
-    color: white;
-    font-size: medium;
-}
-
-.designer{
-    opacity: 0.7;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 400;
-    max-width: 0px 5px;
-}
+@import url("/css/main.css");
+@import url("https://fonts.googleapis.com/css2?family=Arima:wght@100..700&display=block");
 
 /*form css*/
-
 .row {
     display: -ms-flexbox;
     display: flex;
@@ -80,28 +10,7 @@ padding: 70px 0px 20px;
     margin: 0 -16px;
 }
 
-.col-25 {
-    -ms-flex: 25%; 
-    flex: 25%;
-}
-
-.col-50 {
-    -ms-flex: 50%; 
-    flex: 50%;
-}
-
-.col-75 {
-    -ms-flex: 75%; 
-    flex: 75%;
-}
-
-.col-25, .col-50, .col-75 {
-    padding: 0 16px;
-}
-
-
-
-input[type=email], [type=submit], [type=text]{
+input[type=email], [type=text], [type=password]{
     width: 100%;
     margin-bottom: 20px;
     padding: 12px;
@@ -169,8 +78,7 @@ input {
 textarea:focus, input:focus{
     outline: none;
     background: #088F8F;
-    border: 3px solid #1B1B1B;
-    border-radius: 16px;
+    outline: 3px solid #1B1B1B;
 }
 
 span {

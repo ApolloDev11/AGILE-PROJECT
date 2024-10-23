@@ -161,10 +161,43 @@ function filterMenus() {
         });
     });
 }
+// Function to search menus based on the menu name
+function searchMenus() {
+    const searchQuery = document.getElementById('search').value.toLowerCase();
+    const menuList = document.getElementById('menu-list');
+    
+    // Clear previous results
+    menuList.innerHTML = '';
+
+    // Get the restaurant data
+    const restaurants = restaurantData.restaurant;
+
+    restaurants.forEach(restaurant => {
+        restaurant.menus.forEach(menu => {
+            // Check if the menu name contains the search query
+            if (menu.name.toLowerCase().includes(searchQuery)) {
+                // Create a list item for the menu
+                const menuItem = document.createElement('li');
+                menuItem.innerHTML = `
+                    <img src="${menu.icon}" alt="${menu.name}" style="width: 50px;">
+                    <span>${menu.name}</span>
+                `;
+                menuList.appendChild(menuItem);
+            }
+        });
+    });
+}
+
+
 
 
 // Attach the filterMenus function to the form submit event
 document.querySelector('.filter-section form').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent form submission
     filterMenus(); // Call the filter function
+});
+// Attach the searchMenus function to the search button click event
+document.getElementById('search-button').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent form submission
+    searchMenus(); // Call the search function
 });

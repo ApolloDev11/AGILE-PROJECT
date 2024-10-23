@@ -1,10 +1,11 @@
 // Register function
 async function register() {
-	const name = document.getElementById('name').value;
-	const password = document.getElementById('password').value;
-	const email = document.getElementById('email').value;
+	const name = document.getElementById("name").value;
+	const password = document.getElementById("password").value;
+	const email = document.getElementById("email").value;
 
-	document.getElementById("progress").hidden = true;
+	const button = document.getElementById("login-button");
+	button.disabled = true;
 
 	// Create user with email and password
 	try {
@@ -19,7 +20,7 @@ async function register() {
 			await set(database_ref, user_data)
 
 		} catch(error) {
-			document.getElementById("progress").hidden = false;
+			button.disabled = false;
 
 			console.error("Error saving data:", error);
 			alert(error.message || error);
@@ -30,7 +31,7 @@ async function register() {
 		document.location.href = "/login"
 
 	} catch(error) {
-		document.getElementById("progress").hidden = false;
+		button.disabled = false;
 
 		console.error("Error creating user:", error);
 		alert(error.message || error);
@@ -40,10 +41,11 @@ async function register() {
 
 // Login function
 async function login() {
-	const password = document.getElementById('password').value;
-	const email = document.getElementById('email').value;
+	const password = document.getElementById("password").value;
+	const email = document.getElementById("email").value;
 
-	document.getElementById("progress").hidden = false;
+	const button = document.getElementById("login-button");
+	button.disabled = true;
 
 	// Create user with email and password
 	try {
@@ -67,7 +69,7 @@ async function login() {
 
 
 	} catch(error) {
-		document.getElementById("progress").hidden = true;
+		button.disabled = false;
 
 		console.error("Error signing in:", error);
 		alert(error.message || error);
@@ -77,38 +79,37 @@ async function login() {
 // Delete Account function
 async function deleteAccount() {
 
-    const user = auth.currentUser;
+	const user = auth.currentUser;
 
-    if (!user) {
-        alert("No user is logged in.");
-        return;
-    }
+	if (!user) {
+		alert("No user is logged in.");
+		return;
+	}
 
-    const confirmDelete = confirm("Are you sure you want to delete your account?");
-    
-    if (confirmDelete) {
-        try {
-            // Delete user data from RTDB
-            const database_ref = ref(database, `users/${user.uid}`);
-            await remove(database_ref);  
+	const confirmDelete = confirm("Are you sure you want to delete your account?");
+	if(!confirmDelete) return;
+	
+	try {
+		// Delete user data from RTDB
+		const database_ref = ref(database, `users/${user.uid}`);
+		await remove(database_ref);  
 
-            // Delete the user's authentication account
-            await user.delete();
+		// Delete the user's authentication account
+		await user.delete();
 
-            alert("Account successfully deleted.");
-            document.location.href = '/index';  // Bring back to homepage after acc is deleted
+		alert("Account successfully deleted.");
+		document.location.href = "/index";  // Bring back to homepage after acc is deleted
 
-        } catch (error) {
-            console.error("Error deleting account:", error);
-            alert(`Failed to delete account: ${error.message}`);
+	} catch (error) {
+		console.error("Error deleting account:", error);
+		alert(`Failed to delete account: ${error.message}`);
 
-            // Re-authentication may be required if the user's token has expired.
-            if (error.code === 'auth/requires-recent-login') {
-                alert("Please log in to delete your account.");
-                document.location.href = '/login';  // Bring back to login page
-            }
-        }
-    }
+		// Re-authentication may be required if the user's token has expired.
+		if(error.code == "auth/requires-recent-login") {
+			alert("Please log in to delete your account.");
+			document.location.href = "/login";  // Bring back to login page
+		}
+	}
 }
 
 function logout() {

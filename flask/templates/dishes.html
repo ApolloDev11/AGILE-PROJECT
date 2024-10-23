@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Home</title>
+		<title>Dishes</title>
 		<link rel="stylesheet" href="/css/style.css">
 	</head>
 	<body>
@@ -11,6 +11,33 @@
 		
 		<h2>Dishes</h2>
 		<hr>
-		
+
+		<div class="filter-ingredient-section">
+			<h2>Filter Dishes by Ingredient</h2>
+			<form id="ingredient-form">
+				<input type="text" id="dish-ingredient" placeholder="Enter an ingredient">
+				<button type="submit">Filter by Ingredient</button>
+			</form>
+		</div>
+
+	
+		<div class="filter-restaurant-section">
+			<h2>Filter Dishes by Restaurant</h2>
+			<form id="restaurant-form">
+				<select id="restaurant-select">
+					<option value="restaurant a">Restaurant A</option>
+					<option value="restaurant b">Restaurant B</option>
+				</select>
+				<button type="submit">Filter by Restaurant</button>
+			</form>
+		</div>
+
+
+		<div class="dishes-list-section">
+			<h2>Dishes List</h2>
+			<ul id="dish-list"></ul>
+		</div>
+
+
 	</body>
 </html>

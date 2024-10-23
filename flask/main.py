@@ -45,6 +45,18 @@ def register():
 	return render_template("register.html")
 
 
+@app.get("/account")
+def account():
+	# Verify user and get details
+	current_user = {}
+	current_user["uid"] = user.verify(request)
+	current_user["name"] = user.get_name(current_user["uid"])
+
+	current_user["email"] = user.get_email(current_user["uid"])
+
+	return render_template("account.html", user=current_user)
+
+
 @app.get("/logout")
 def logout():
 	# Redirect back to login page

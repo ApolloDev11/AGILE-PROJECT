@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <script type="module">
+		import { deleteAccount, logout } from "/js/account.js";
+        
+		window.deleteAccount = deleteAccount;
+		window.logout = logout;
+	</script>
+</head>
+<body>
+    {% include "header.html" %}
+    <main>
+        <button onclick="logout()">Logout</button>
+        <button type="button" id="delete-account-btn" onclick="deleteAccount()">Delete Account</button>
+    </main>
+</body>
+</html>

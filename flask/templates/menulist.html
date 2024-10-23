@@ -3,15 +3,20 @@
 <head>
     <title>Restaurant Menu List Edit</title>
     <link rel="stylesheet" type="text/css" href="menucss.css">
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"></script>
     <script src="menujs.js" defer></script>
 </head>
 <body>
     <div class="search-section">
         <h2>Search Menus</h2>
         <div class="textmenu">
-            <input type="text" name="search" placeholder="Search for menus...">
+            <input type="text" name="search" id="search" placeholder="Search for menus...">
+            <button id="search-button">Search</button>
         </div>
     </div>
+    
+    
 
     <div class="filter-section">
         <h2>Filter Menus</h2>

@@ -19,7 +19,7 @@ def index():
 		current_user = {}
 		current_user["uid"] = user.verify(request)
 	# Log out the user if failed verification
-	except(exception.Unauthorized):
+	except exception.Unauthorized as e:
 		return redirect("/logout")
 
 
@@ -135,14 +135,16 @@ def menus():
 # API for checking if the server can verify the user
 @app.get("/api/verify")
 def api_verify():
-	verified = False
+	api_response = {"verified": False}
+
 	try:
 		user.verify(request)
-		verified = True
-	except(exception.Unauthorized):
-		verified = False
+		api_response["verified"] = True
+	except exception.Unauthorized as e:
+		api_response["verified"] = False
+		api_response["error"] = str(e)
 		
-	return {"verified": verified}
+	return api_response
 
 
 # Firebase stuff: #

@@ -10,9 +10,9 @@ def verify(request):
 	token = request.cookies["auth"]
 
 	try:
-		decoded_token = auth.verify_id_token(token)
-	except:
-		raise exception.Unauthorized
+		decoded_token = auth.verify_id_token(token, clock_skew_seconds=60)
+	except Exception as e:
+		raise exception.Unauthorized(e)
 	
 	return decoded_token["uid"]
 

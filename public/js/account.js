@@ -71,9 +71,11 @@ export async function login() {
 		document.cookie = `auth=${accessToken}; expires=${expiryDate.toUTCString()}`;
 
 		// Wait until server can verify user
+		let n = 0;
 		while(true) {
 			let verifyResponse = await api("verify");
 			if(verifyResponse.verified) break
+			if(n++ > 10) throw verifyResponse.error || "Server unable to verify user";
 			await sleep(500)
 		}
 

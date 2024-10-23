@@ -18,6 +18,12 @@ def verify(request):
 
 
 def get_name(uid):
-	""" Gets the user's ID from the databse """
+	""" Gets the user name from the databse """
 	ref = db.reference(f"/users/{uid}/name")
+	return ref.get()
+
+
+def get_email(uid):
+	""" Gets the user email from the databse """
+	ref = db.reference(f"/users/{uid}/email")
 	return ref.get()

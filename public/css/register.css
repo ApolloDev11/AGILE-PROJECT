@@ -1,4 +1,6 @@
-@import url("/css/main.css")
+@import url("/css/main.css");
+@import url("https://fonts.googleapis.com/css2?family=Arima:wght@100..700&display=block");
+
 /*form css*/
 .row {
     display: -ms-flexbox;
@@ -8,28 +10,7 @@
     margin: 0 -16px;
 }
 
-.col-25 {
-    -ms-flex: 25%; 
-    flex: 25%;
-}
-
-.col-50 {
-    -ms-flex: 50%; 
-    flex: 50%;
-}
-
-.col-75 {
-    -ms-flex: 75%; 
-    flex: 75%;
-}
-
-.col-25, .col-50, .col-75 {
-    padding: 0 16px;
-}
-
-
-
-input[type=email], [type=submit], [type=text]{
+input[type=email], [type=text], [type=password]{
     width: 100%;
     margin-bottom: 20px;
     padding: 12px;
@@ -97,8 +78,7 @@ input {
 textarea:focus, input:focus{
     outline: none;
     background: #088F8F;
-    border: 3px solid #1B1B1B;
-    border-radius: 16px;
+    outline: 3px solid #1B1B1B;
 }
 
 span {

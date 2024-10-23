@@ -1,0 +1,11 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Arima:wght@100..700&display=block');
+
+body {
+	font-family: Arima;
+}
+
+footer {
+	background-color: black;
+	color: white;
+}

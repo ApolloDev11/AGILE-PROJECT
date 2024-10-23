@@ -112,6 +112,17 @@ async function deleteAccount() {
 	}
 }
 
+// Change/reset password
+function resetPassword(email) {
+	try {
+		sendPasswordResetEmail(auth, email || auth.currentUser.email)
+		alert("A password reset link has been sent to your email")
+
+	} catch(error) {
+		return alert(error.message || error)
+	}
+}
+
 function logout() {
 	document.location.href = "/logout"
 }

@@ -4,6 +4,7 @@
 body {
 	font-family: Poppins;
 	color: #232424;
+	margin: 0;
 }
 
 button {
@@ -39,4 +40,32 @@ textarea:focus, input:focus{
 
 a {
 	color: black
+}
+
+header {
+	display: flex;
+	background-color: lightgray;
+	align-items: center;
+	padding: 1em;
+}
+
+header h1 {
+	margin: 0;
+	font-size: 1.5em;
+}
+
+nav {
+	margin-left: 2em;
+	padding-left: 2em;
+	margin-right: auto;
+	border-left: 1px solid black;
+}
+
+nav a {
+	margin-right: 1em;
+}
+
+main {
+	max-width: 60em;
+	margin: 0 auto;
 }

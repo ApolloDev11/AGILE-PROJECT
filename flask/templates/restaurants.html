@@ -9,13 +9,15 @@
 	<body>
 		{% include "header.html" %}
 		
-		<h2>Restaurants</h2>
-		<hr>
-		{% for restaurant_id, restaurant in restaurants.items() %}
-			<a href="/restaurant/{{ restaurant_id }}" class="restaurant-entry">
-				<img src="{{ restaurant.icon }}">
-				<h3>{{ restaurant.name }}</h3>
-			</div>	
-		{% endfor %}
+		<main>
+			<h2>Restaurants</h2>
+			<hr>
+			{% for restaurant_id, restaurant in restaurants.items() %}
+				<a href="/restaurant/{{ restaurant_id }}" class="restaurant-entry">
+					<img src="{{ restaurant.icon }}">
+					<h3>{{ restaurant.name }}</h3>
+				</div>	
+			{% endfor %}
+		</main>
 	</body>
 </html>

@@ -11,8 +11,16 @@
 <body>
 	{% include "header.html" %}
 	<main>
-		<button onclick="logout()">Logout</button>
-		<button type="button" id="delete-account-btn" onclick="deleteAccount()">Delete Account</button>
+		<h2>Account</h2>
+		<hr>
+
+		<p><b>Name:</b> {{ user.name }}</p>
+		<p><b>Email:</b> {{ user.email }}</p>
+		<div id="account-options">
+			<button onclick="logout()">Logout</button>
+			<button onclick="resetPassword()">Change password</button>
+			<button type="button" id="delete-account-btn" onclick="deleteAccount()">Delete Account</button>
+		</div>
 	</main>
 </body>
 </html>

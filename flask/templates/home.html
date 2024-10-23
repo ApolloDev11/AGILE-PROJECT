@@ -8,11 +8,14 @@
 	</head>
 	<body>
 		{% include "header.html" %}
-		<hr>
-		<h2>Welcome to the Food Order System</h2>
-		<a href="/restaurants">Browse restaurants</a>
-		<a href="/dishes">See all dishes</a>
-		<p>Are you a restaurant owner?</p>
-		<a href="/restaurant/manage">Manage restaurant</a>
+		<main>
+			<h2>Welcome to the Food Order System</h2>
+			<hr>
+			<ul>
+				<li><a href="/restaurants">Browse restaurants</a></li>
+				<li><a href="/dishes">Find a dish</a></li>
+			</ul>
+			<p>Are you a restaurant owner? - <a href="/restaurant/manage">Manage restaurant</a></p>
+		</main>
 	</body>
 </html>

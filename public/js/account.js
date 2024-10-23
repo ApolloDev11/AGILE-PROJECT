@@ -127,3 +127,8 @@ export async function deleteAccount() {
         }
     }
 }
+
+
+export function logout() {
+	document.location.href = "/logout"
+}

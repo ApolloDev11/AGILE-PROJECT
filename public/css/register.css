@@ -1,166 +1,49 @@
 @import url("/css/main.css");
-@import url("https://fonts.googleapis.com/css2?family=Arima:wght@100..700&display=block");
-
-/*form css*/
 
 body {
-    background-image: url('photo.png');
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
-    background-attachment: fixed; 
-    color: #232424;
-    font-family: 'Poppins', sans-serif;
-    padding: 0;
-    margin: 0;
-    height: 100%; 
-    image-rendering: auto;
-    -webkit-optimize-contrast: high;
+	background-image: url("/images/background.png");
+	background-size: cover; 
+	background-position: center; 
+	background-repeat: no-repeat; 
+	background-attachment: fixed;
+	font-family: Poppins, sans-serif;
+	padding: 0;
+	margin: 0;
 }
 
-.row {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap; 
-    flex-wrap: wrap;
-    margin: 0 -16px;
+form {
+	background-color: white;
+	
+	border: 2px solid #1B1B1B;
+	box-shadow: 6px 6px 6px #1B1B1B;
+	border-radius: 16px;
 
-}
-
-input[type=email], [type=text], [type=password]{
-    width: 100%;
-    margin-bottom: 20px;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+	margin: auto;
+	margin-top: 10em;
+	max-width: 30em;
+	padding: 2em;
+	padding-top: 1em;
 }
 
 label {
-    margin-bottom: 10px;
-    display: block;
-}
-
-
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding-left: 75px;
-    padding-right: 25px;
-    padding-top: 25px;
-    padding-bottom: 25px;
-    
-    margin: 4rem auto;
-
-    position: relative;
-    width: 80%;
-    max-width: 30rem;
-    height: auto;
-
-    border-radius: 16px;
-    background-color: white;
-    
-    border: 2px solid #1B1B1B;
-    box-sizing: border-box;
-    box-shadow: 6px 6px 6px #1B1B1B;
-    border-radius: 16px;
-}
-
-button {
-    
-    display: inline-block;
-    outline: 0;
-    border: 0;
-    font-size: 15px;
-    font-weight: 500;
-    color: #fff;
-    cursor: pointer;
-    background-image: linear-gradient(to right,#e052a0,#f15c41)!important;
-    border-radius: 20px;
-    padding: 5px 10px 10px;
-    white-space: nowrap;
-    
-}    
-
-h1 {
-    margin-left: 0px;
-    font-size: 2rem;
-    font-weight: 800;
-}
-
-label {
-    font-weight: 600;
+	display: block;
 }
 
 input {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    margin-top: 10px;
-    padding: 16px 24px;
-    width: 90%;
-    height: 15%;
-    left: 1048px;
-    top: 16px;
-    background: #FFFFFF;
-    box-sizing: border-box;
-    border-radius: 16px;
-    transition: 0.2s;
+	padding-bottom: 1em;
 }
 
-textarea:focus, input:focus{
-    outline: none;
-    background: #088F8F;
-    outline: 3px solid #1B1B1B;
+#login-button {
+	width: 10em;
+	background-image: linear-gradient(to right, #e052a0, #f15c41);
 }
 
-span {
-    padding-left: 5px;
-    cursor: pointer;
+#help-text {
+	margin-top: 6em;
+	color: white;
+	text-align: center;
 }
 
-.btn{
-    background-color: #800404;
-    border: 2px solid #1B1B1B;
-    box-sizing: border-box;
-    border-radius: 16px;
-    padding: 16px 32px 16px 16px;
-    text-align: center;
-    font-weight: 800;
-    margin-top: 20px;
-    
-    width: 141px;
-    height: 56px;
-    left: 16px;
-    top: 88px;
-    
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    align-self: flex-end;
-    cursor: pointer;
-    transition: 0.16s ease-out;
-}
-
-
-#text {
-    text-align: center;
-    margin-top: 20px;
-}
-
-#text p {
-    font-size: 1.1rem;
-    color: #333;
-}
-
-#text a {
-    color: #e052a0;
-    font-weight: 600;
-    text-decoration: none;
-    transition: 0.3s ease;
-}
-
-#text a:hover {
-    color: #f15c41;
-    text-decoration: none;
+#help-text a {
+	color: white;
 }

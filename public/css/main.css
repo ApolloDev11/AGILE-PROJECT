@@ -1,12 +1,36 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Arima:wght@100..700&display=block');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=block');
 
 body {
-    font-family: Arima;
+	font-family: Poppins;
+	color: #232424;
 }
 
-
-footer {
+button {
+	font-family: Poppins;
+	border: 0;
+	border-radius: 10px;
+	padding: 1em;
 	background-color: black;
 	color: white;
+	cursor: pointer;
+}
+
+input {
+	font-family: Poppins;
+	padding: 1em;
+	display: block;
+	background-color: white;
+	border: 1px solid lightgray;
+	border-radius: 10px;
+	transition: border-color 500ms;
+}
+
+textarea:focus, input:focus{
+	outline: none;
+	border-color: black;
+}
+
+a {
+	color: black
 }

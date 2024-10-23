@@ -1,17 +1,5 @@
-import { sleep, api } from "/js/common.js"
-import {
-	auth,
-	database,
-	ref,
-	set,
-	get,
-	createUserWithEmailAndPassword,
-	signInWithEmailAndPassword
-} from "/js/firebase.js";
-
-
 // Register function
-export async function register() {
+async function register() {
 	const name = document.getElementById('name').value;
 	const password = document.getElementById('password').value;
 	const email = document.getElementById('email').value;
@@ -51,7 +39,7 @@ export async function register() {
 
 
 // Login function
-export async function login() {
+async function login() {
 	const password = document.getElementById('password').value;
 	const email = document.getElementById('email').value;
 
@@ -75,7 +63,7 @@ export async function login() {
 		if(!verifyResponse.verified) throw verifyResponse.error || "Server unable to verify user";
 
 		// Redirect home
-		document.location.reload();
+		document.location.href = "/"
 
 
 	} catch(error) {
@@ -87,7 +75,7 @@ export async function login() {
 }
 
 // Delete Account function
-export async function deleteAccount() {
+async function deleteAccount() {
 
     const user = auth.currentUser;
 
@@ -123,7 +111,6 @@ export async function deleteAccount() {
     }
 }
 
-
-export function logout() {
+function logout() {
 	document.location.href = "/logout"
 }

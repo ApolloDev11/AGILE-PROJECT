@@ -1,25 +1,44 @@
-// Import the functions you need from the Firebase SDKs
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js'
+let firebaseReadyCallback = () => null;
+const firebaseReady = new Promise(resolve => firebaseReadyCallback = resolve);
 
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js'
+let firebaseReadyState = 0;
+function updateFirebaseReadyState() {
+	firebaseReadyState++;
+	if(firebaseReadyState == 3) firebaseReadyCallback(true);
+}
 
-import { getDatabase, ref, set, get } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js';
+function importModuleScope(module) {
+	for(let key in module) window[key] = module[key];
+}
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAkoYvz49Xs6vg9-SUHM236plfeN6Dck4s",
-  authDomain: "mtu-group-project-agile.firebaseapp.com",
-  databaseURL: "ttps://mtu-group-project-agile-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "mtu-group-project-agile",
-  storageBucket: "mtu-group-project-agile.appspot.com",
-  messagingSenderId: "120193305147",
-  appId: "1:120193305147:web:2d3030b6e662d54a67aa1e"
-};
+import("https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js").then(module => {
+	importModuleScope(module);
+	updateFirebaseReadyState();
+});
 
-export const app = initializeApp(firebaseConfig);
+import("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js").then(module => {
+	importModuleScope(module);
+	updateFirebaseReadyState();
+});
 
-// Initialize Firebase Auth and Database services
-export const auth = getAuth(app);
-export const database = getDatabase(app);
+import("https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js").then(module => {
+	importModuleScope(module);
+	updateFirebaseReadyState();
+});
 
-export { ref, set, get, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged }
+const FIREBASE_CONFIG = {
+	apiKey: "AIzaSyAkoYvz49Xs6vg9-SUHM236plfeN6Dck4s",
+	authDomain: "mtu-group-project-agile.firebaseapp.com",
+	databaseURL: "ttps://mtu-group-project-agile-default-rtdb.europe-west1.firebasedatabase.app",
+	projectId: "mtu-group-project-agile",
+	storageBucket: "mtu-group-project-agile.appspot.com",
+	messagingSenderId: "120193305147",
+	appId: "1:120193305147:web:2d3030b6e662d54a67aa1e"
+}
+
+let app, auth, database;
+firebaseReady.then(() => {
+	app = initializeApp(FIREBASE_CONFIG);
+	auth = getAuth(app);
+	database = getDatabase(app);
+})

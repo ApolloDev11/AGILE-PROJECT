@@ -1,9 +1,9 @@
-export function sleep(ms) {
+function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 // Function for calling JSON APIs on the Flask server
-export async function api(url, body) {
+async function api(url, body) {
 	let options = {
 		credentials: "same-origin"
 	}

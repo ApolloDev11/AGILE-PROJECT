@@ -2,12 +2,29 @@
 @import url("https://fonts.googleapis.com/css2?family=Arima:wght@100..700&display=block");
 
 /*form css*/
+
+body {
+    background-image: url('photo.png');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+    color: #232424;
+    font-family: 'Poppins', sans-serif;
+    padding: 0;
+    margin: 0;
+    height: 100%; 
+    image-rendering: auto;
+    -webkit-optimize-contrast: high;
+}
+
 .row {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap; 
     flex-wrap: wrap;
     margin: 0 -16px;
+
 }
 
 input[type=email], [type=text], [type=password]{
@@ -28,10 +45,10 @@ label {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding-left: 75px;
+    padding-right: 25px;
+    padding-top: 25px;
+    padding-bottom: 25px;
     
     margin: 4rem auto;
 
@@ -45,9 +62,25 @@ label {
     
     border: 2px solid #1B1B1B;
     box-sizing: border-box;
-    box-shadow: 6px 6px 0px #1B1B1B;
-    border-radius: 8px;
+    box-shadow: 6px 6px 6px #1B1B1B;
+    border-radius: 16px;
 }
+
+button {
+    
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    cursor: pointer;
+    background-image: linear-gradient(to right,#e052a0,#f15c41)!important;
+    border-radius: 20px;
+    padding: 5px 10px 10px;
+    white-space: nowrap;
+    
+}    
 
 h1 {
     margin-left: 0px;
@@ -109,3 +142,25 @@ span {
     transition: 0.16s ease-out;
 }
 
+
+#text {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#text p {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+#text a {
+    color: #e052a0;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+#text a:hover {
+    color: #f15c41;
+    text-decoration: none;
+}

@@ -4,19 +4,21 @@
         <title>Restaurant Menu List Edit</title>
         <base href="/">
         <script type="module">
-            import { app, auth, database } from "./js/firebase.js";
+            import { app, auth, database, onAuthStateChanged } from "./js/firebase.js";
             import { ref, set, get, push, child, remove } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js';
             import { getStorage, uploadBytes, getDownloadURL, ref as sref } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
-            // TOOD: enable this!
-            // var user = auth.currentUser;
+            var user = null;
 
-            // if (!user) {
-            //     alert("please log in!");
-            //     window.location = "/login";
-            // }
-
-            var user = {uid: "TESTUID"};
+            onAuthStateChanged(auth, (u) => {
+                if (u) {
+                    user = u;
+                    loadMenus();
+                } else {
+                    alert("please log in!");
+                    window.location = "/login";
+                }
+            });
 
             function validateImage(file) {
                 const img = new Image();
@@ -59,8 +61,6 @@
                 }
             }
             
-            loadMenus();
-
             window.addMenu = () => {
                 var title = document.querySelector("#menu-title").value;
 
@@ -75,6 +75,11 @@
                 }
                 
                 var file = document.querySelector("#menu-icon").files[0];
+
+                if (Number(file.size.toString()) > 2 * 1024 * 1024) {
+                    alert("Image must be less than 2MB!");
+                    return;
+                }
 
                 validateImage(file).then(() => {
                     uploadBytes(sref(getStorage(), "/restaurant/A/menu-icon.jpg"), file).then(async snapshot => {

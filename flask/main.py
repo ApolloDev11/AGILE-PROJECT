@@ -67,6 +67,10 @@ def logout():
 	return response
 	
 
+@app.get("/restaurant/menu")
+def menu():
+	return render_template("restaurant/admin/menu.html")
+
 
 @app.get("/restaurants")
 def restaurants():

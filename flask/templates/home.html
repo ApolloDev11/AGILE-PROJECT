@@ -15,7 +15,13 @@
 				<li><a href="/restaurants">Browse restaurants</a></li>
 				<li><a href="/dishes">Find a dish</a></li>
 			</ul>
-			<p>Are you a restaurant owner? - <a href="/restaurant/admin">Manage restaurant</a></p>
+			<p>
+				{% if managed_restaurant %}
+					<a href="/restaurant/admin">"{{ managed_restaurant.name }}" admin page</a> 
+				{% else %}
+					Are you a restaurant owner? - <a href="/restaurant/admin">Open restaurant account</a>
+				{% endif %}
+			</p>
 		</main>
 	</body>
 </html>

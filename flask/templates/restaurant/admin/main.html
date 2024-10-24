@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>{{ restaurant.name }} - Admin</title>
+		<link rel="stylesheet" href="/css/restaurant/page.css">
+		<script src="/js/firebase.js" defer></script>
+		<script src="/js/restaurant/admin/main.js" defer></script>
+		<script src="/js/common.js" defer></script>
+	</head>
+	<body>
+		{% include "header.html" %}
+		<main>
+			<h2>{{ restaurant.name }} - Admin</h2>
+			<hr>
+			<button onclick="editRestaurantDetails()">Edit details</button>
+			<button onclick="closeRestaurant()">Close restaurant</button>
+		</main>
+	</body>
+</html>

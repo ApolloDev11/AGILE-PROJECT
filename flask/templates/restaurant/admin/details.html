@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Restaurant setup</title>
+		<link rel="stylesheet" href="/css/restaurant/admin/details.css">
+		<script src="/js/firebase.js" defer></script>
+		<script src="/js/restaurant/admin/details.js" defer></script>
+		<script src="/js/common.js" defer></script>
+	</head>
+	<body>
+		{% include "header.html" %}
+		
+		<main>
+			<h2>
+				{% if restaurant %}
+					{{ restaurant.name }} - editing details
+				{% else %}
+					Open a restaurant account
+				{% endif %}
+			</h2>
+			<hr>
+			<form onsubmit="return false">
+				<h3>Restaurant details</h3>
+
+				<label for="restaurant-name">Restaurant name:</label>
+				<input type="text" id="restaurant-name" placeholder="Food Place" value="{{ restaurant.name }}">
+
+				<label for="restaurant-address">Address:</label>
+				<textarea id="restaurant-address" placeholder="1 Restaurant Road">{{ restaurant.address }}</textarea>
+
+				<label for="restaurant-image">Image:</label>
+				<input type="file" id="restaurant-image" accept="image/png, image/jpeg">
+
+				<h3>Contact details</h3>
+
+				<label for="restaurant-phone">Phone:</label>
+				<input type="tel" id="restaurant-phone" placeholder="+1 234 567" value="{{ restaurant.phone }}">
+
+				<label for="restaurant-email">Email:</label>
+				<input type="tel" id="restaurant-email" placeholder="name@example.com" value="{{ restaurant.email }}">
+
+				<br>
+				<button onclick="saveRestaurantDetails()">
+					{% if restaurant %}
+						Update details
+					{% else %}
+						Create restaurant
+					{% endif %}
+				</button>
+			</form>
+		</main>
+	</body>
+</html>

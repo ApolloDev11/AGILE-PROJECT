@@ -26,7 +26,7 @@ async function saveRestaurantDetails() {
 		await uploadBytes(imageRef, file, {contentType: file.type});
 
 		// Redirect user to restaurant list
-		document.location.href = "/restaurants"
+		document.location.href = `/restaurant/${restaurantID}`;
 
 	} catch(error) {
 		document.querySelector("form button").disabled = false;

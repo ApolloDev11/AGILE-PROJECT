@@ -22,9 +22,12 @@ def index():
 	except exception.Unauthorized as e:
 		return redirect("/logout")
 
+	# Check if user is owner of a restaurant
+	restaurant_ref = db.reference(f"restaurants/{current_user['uid']}")
+	restaurant = restaurant_ref.get()
 
 	current_user["name"] = user.get_name(current_user["uid"])
-	return render_template("home.html", user=current_user)
+	return render_template("home.html", user=current_user, managed_restaurant=restaurant)
 
 
 @app.get("/login")
@@ -107,20 +110,42 @@ def restaurant(restaurant_id):
 
 
 @app.get("/restaurant/admin")
-def restaurant_new():
+def restaurant_admin():
 	# Verify user and get details
 	current_user = {}
 	current_user["uid"] = user.verify(request)
 	current_user["name"] = user.get_name(current_user["uid"])
+
+	# Get user's restaurant from DB
+	restaurant_ref = db.reference(f"restaurants/{current_user['uid']}")
+	restaurant = restaurant_ref.get()
+
+	if not restaurant:
+		# User's restaurant does not exist, show setup page
+		return render_template("restaurant/admin/details.html", user=current_user, restaurant=None)
 	
-	# Get restaurant managed by user
-	managed_restaurant_id = db.reference(f"/users/{current_user['uid']}/managed_restaurant")
-	managed_restaurant_id = managed_restaurant_id.get()
-	if not managed_restaurant_id:
-		# User is not managing any restaurant, show setup page
-		return render_template("restaurant/admin/setup.html", user=current_user)
+	# Show main restaurant admin page
+	return render_template("restaurant/admin/main.html", user=current_user, restaurant=restaurant)
+
+
+
+@app.get("/restaurant/admin/details")
+def restaurant_admin_details():
+	# Verify user and get details
+	current_user = {}
+	current_user["uid"] = user.verify(request)
+	current_user["name"] = user.get_name(current_user["uid"])
+
+	# Get user's restaurant from DB
+	restaurant_ref = db.reference(f"restaurants/{current_user['uid']}")
+	restaurant = restaurant_ref.get()
+
+	if not restaurant:
+		# User's restaurant does not exist, redirect to setup page
+		return redirect("/restaurant/admin")
 	
-	return render_template("restaurant/admin/main.html", user=current_user)
+	# Show detail editing page
+	return render_template("restaurant/admin/details.html", user=current_user, restaurant=restaurant)
 
 
 @app.get("/dishes")

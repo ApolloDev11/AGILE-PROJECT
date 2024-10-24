@@ -3,9 +3,17 @@ async function register() {
 	const name = document.getElementById("name").value;
 	const password = document.getElementById("password").value;
 	const email = document.getElementById("email").value;
+	const isOwner = document.getElementById("is-owner").checked;
 
 	const button = document.getElementById("login-button");
 	button.disabled = true;
+
+	let address = " ";
+	let phone = 0;
+	if(isOwner){
+		address = document.getElementById("address").value;
+		phone = document.getElementById("phone").value;
+	}
 
 	// Create user with email and password
 	try {
@@ -14,7 +22,12 @@ async function register() {
 		console.log(user);  // Log the user object to verify UID
 		
 		const database_ref = ref(database, `users/${user.uid}`);
-		const user_data = {name, email};
+		const user_data = {name, email, isOwner};
+
+		if(isOwner){
+			user_data.address = address;
+			user_data.phone = phone;
+		}
 
 		try {
 			await set(database_ref, user_data)

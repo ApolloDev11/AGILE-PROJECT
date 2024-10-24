@@ -29,6 +29,11 @@
 			<input type="email" id="email" name="email" placeholder="example@gmail.com" required />
 			<br>
 
+			<div class="restaurant-owner-option">
+				<label for="is-owner">Register as Restaurant Owner</label>
+				<input type="checkbox" id="is-owner" name="is-owner" onclick="toggleOwnerFields()" />
+			</div>
+
 			<div id="owner-fields" style="display: none;">
 				<label for="address">Restaurant Address</label>
 				<input type="text" id="address" name="address" placeholder="123 Main St" />

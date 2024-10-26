@@ -7,3 +7,9 @@
 	object-fit: cover;
 	margin-bottom: 1em;
 }
+
+#restaurant-admin-button {
+	float: right;
+	position: relative;
+	top: -6em;
+}

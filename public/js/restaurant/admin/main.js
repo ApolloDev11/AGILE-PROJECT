@@ -20,3 +20,10 @@ async function closeRestaurant() {
 function editRestaurantDetails() {
 	document.location.href = "/restaurant/admin/details";
 }
+
+function openRestaurantPage() {
+	// Use uid as restaurant ID
+	const restaurantID = auth.currentUser.uid;
+
+	document.location.href = `/restaurant/${restaurantID}`;
+}

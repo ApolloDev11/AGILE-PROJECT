@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>{{ restaurant.name }}</title>
 		<link rel="stylesheet" href="/css/restaurant/page.css">
+		<script src="/js/restaurant/page.js" defer></script>
 	</head>
 	<body>
 		{% include "header.html" %}
@@ -12,6 +13,9 @@
 			<img src="{{ ('restaurants/'+restaurant_id+'/image') | firebase_storage_url }}" id="restaurant-image">
 			<h2>{{ restaurant.name }}</h2>
 			<p>{{ restaurant.address }}</p>
+			{% if user.uid == restaurant_id %}
+				<button onclick="openRestaurantAdmin()" id="restaurant-admin-button">Open admin page</button>
+			{% endif %}
 			<hr>
 			<h3>Contact</h3>
 			<ul>

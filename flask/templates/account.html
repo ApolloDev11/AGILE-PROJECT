@@ -16,7 +16,7 @@
 
 		<p><b>Name:</b> {{ user.name }}</p>
 		<p><b>Email:</b> {{ user.email }}</p>
-		<p><b>Type:</b> {{ "Customer" }}</p>
+		<p><b>Type:</b> {{ "Restaurant manager" if user.manages_restaurant else "Customer"}}</p>
 		<div id="account-options">
 			<button onclick="logout()">Logout</button>
 			<button onclick="resetPassword()">Change password</button>

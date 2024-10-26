@@ -4,7 +4,7 @@ from firebase_admin import initialize_app, db
 from firebase_functions import https_fn
 
 # Python library imports
-import exception, user, json
+import exception, user, restaurant
 
 # Initialise app
 app = Flask(__name__)
@@ -23,11 +23,10 @@ def index():
 		return redirect("/logout")
 
 	# Check if user is owner of a restaurant
-	restaurant_ref = db.reference(f"restaurants/{current_user['uid']}")
-	restaurant = restaurant_ref.get()
+	managed_restaurant = restaurant.get(current_user["uid"])
 
 	current_user["name"] = user.get_name(current_user["uid"])
-	return render_template("home.html", user=current_user, managed_restaurant=restaurant)
+	return render_template("home.html", user=current_user, managed_restaurant=managed_restaurant)
 
 
 @app.get("/login")
@@ -55,7 +54,9 @@ def account():
 	current_user["uid"] = user.verify(request)
 	current_user["name"] = user.get_name(current_user["uid"])
 
+	# Get extra details needed for account page
 	current_user["email"] = user.get_email(current_user["uid"])
+	current_user["manages_restaurant"] = restaurant.get(current_user["uid"]) != {}
 
 	return render_template("account.html", user=current_user)
 
@@ -76,36 +77,34 @@ def menu():
 
 
 @app.get("/restaurants")
-def restaurants():
+def restaurant_list():
 	# Verify user and get details
 	current_user = {}
 	current_user["uid"] = user.verify(request)
 	current_user["name"] = user.get_name(current_user["uid"])
 
 	# Get restaurants from DB
-	restaurant_ref = db.reference("restaurants")
-	restaurants = restaurant_ref.get() or {}
+	restaurant_list = restaurant.list()
 
-	return render_template("restaurants.html", user=current_user, restaurants=restaurants)
+	return render_template("restaurants.html", user=current_user, restaurants=restaurant_list)
 
 
 
 @app.get("/restaurant/<restaurant_id>")
-def restaurant(restaurant_id):
+def restauran_page(restaurant_id):
 	# Verify user and get details
 	current_user = {}
 	current_user["uid"] = user.verify(request)
 	current_user["name"] = user.get_name(current_user["uid"])
 
 	# Get restaurant from DB
-	restaurant_ref = db.reference(f"restaurants/{restaurant_id}")
-	restaurant = restaurant_ref.get()
+	current_restaurant = restaurant.get(restaurant_id)
 
 	# 404 error if restaurant does not exist
-	if not restaurant:
+	if not current_restaurant:
 		raise exception.NotFound
 
-	return render_template("restaurant/page.html", user=current_user, restaurant_id=restaurant_id, restaurant=restaurant)
+	return render_template("restaurant/page.html", user=current_user, restaurant_id=restaurant_id, restaurant=current_restaurant)
 
 
 
@@ -117,15 +116,14 @@ def restaurant_admin():
 	current_user["name"] = user.get_name(current_user["uid"])
 
 	# Get user's restaurant from DB
-	restaurant_ref = db.reference(f"restaurants/{current_user['uid']}")
-	restaurant = restaurant_ref.get()
+	managed_restaurant = restaurant.get(current_user["uid"])
 
-	if not restaurant:
+	if not managed_restaurant:
 		# User's restaurant does not exist, show setup page
 		return render_template("restaurant/admin/details.html", user=current_user, restaurant=None)
 	
 	# Show main restaurant admin page
-	return render_template("restaurant/admin/main.html", user=current_user, restaurant=restaurant)
+	return render_template("restaurant/admin/main.html", user=current_user, restaurant=managed_restaurant)
 
 
 
@@ -137,15 +135,14 @@ def restaurant_admin_details():
 	current_user["name"] = user.get_name(current_user["uid"])
 
 	# Get user's restaurant from DB
-	restaurant_ref = db.reference(f"restaurants/{current_user['uid']}")
-	restaurant = restaurant_ref.get()
+	managed_restaurant = restaurant.get(current_user["uid"])
 
-	if not restaurant:
+	if not managed_restaurant:
 		# User's restaurant does not exist, redirect to setup page
 		return redirect("/restaurant/admin")
 	
 	# Show detail editing page
-	return render_template("restaurant/admin/details.html", user=current_user, restaurant=restaurant)
+	return render_template("restaurant/admin/details.html", user=current_user, restaurant=managed_restaurant)
 
 
 @app.get("/dishes")

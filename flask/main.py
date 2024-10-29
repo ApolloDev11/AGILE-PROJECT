@@ -198,6 +198,9 @@ def firebase_storage_url(file):
 @app.template_filter("plural")
 def firebase_storage_url(noun, value):
 	""" Parses provided noun as plural """
+	if(type(value) == list or type(value) == dict):
+		value = len(value)
+
 	if value == 1:
 		return noun
 	elif noun.endswith("s") or noun.endswith("sh"):

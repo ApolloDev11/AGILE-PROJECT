@@ -27,7 +27,7 @@
 						<img class="menu-image" src="{{ ('restaurants/'~restaurant_id~'/menus/'~loop.index0~'/image') | firebase_storage_url }}">
 						<div>
 							<h3 class="menu-title">{{ menu.name }}</h3>
-							<p>{{ menu.dishes | length }} {{ "dish" | plural(restaurant.menus) }} available</p>
+							<p>{{ menu.dishes | length }} {{ "dish" | plural(menu.dishes) }} available</p>
 						</div>
 					</a>
 				{% endfor %}

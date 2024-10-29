@@ -7,6 +7,7 @@ from firebase_functions import https_fn
 import status as Status
 import user as User
 import restaurant as Restaurant
+import json
 
 # Initialise app
 app = Flask(__name__)
@@ -71,11 +72,6 @@ def logout():
 		# Clear session cookie
 		response.delete_cookie("__session")
 	return response
-	
-
-@app.get("/restaurant/menu")
-def menu():
-	return render_template("restaurant/admin/menu.html")
 
 
 @app.get("/restaurants")
@@ -93,7 +89,7 @@ def restaurant_list():
 
 
 @app.get("/restaurant/<restaurant_id>")
-def restauran_page(restaurant_id):
+def restaurant_page(restaurant_id):
 	# Verify user and get details
 	current_user = {}
 	current_user["uid"] = User.verify(request)
@@ -147,8 +143,28 @@ def restaurant_admin_details():
 	return render_template("restaurant/admin/details.html", user=current_user, restaurant=managed_restaurant)
 
 
+@app.get("/restaurant/admin/menu/<menu_index>")
+def restaurant_admin_menu(menu_index):
+	# Verify user and get details
+	current_user = {}
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
+
+	# Get user's restaurant from DB
+	managed_restaurant = Restaurant.get(current_user["uid"])
+	
+	# Get menu of index
+	try:
+		menu_index = int(menu_index)
+		menu = managed_restaurant["menus"][menu_index]
+	except:
+		raise Status.NotFound("Menu does not exist")
+	
+	return render_template("restaurant/admin/menu.html", user=current_user, restaurant=managed_restaurant, menu_index=menu_index, menu=menu)
+
+
 @app.get("/dishes")
-def menus():
+def dishes():
 	current_user = {}
 	current_user["uid"] = User.verify(request)
 	current_user["name"] = User.get_name(current_user["uid"])

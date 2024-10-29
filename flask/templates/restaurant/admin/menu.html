@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>{{ restaurant.name }} - {{ menu.name }} Admin</title>
+		<link rel="stylesheet" href="/css/restaurant/admin/menu.css">
+		<script src="/js/firebase.js" defer></script>
+		<script src="/js/restaurant/admin/menu.js" defer></script>
+		<script src="/js/common.js" defer></script>
+	</head>
+	<body>
+		{% include "header.html" %}
+		<main>
+			<h2>{{ restaurant.name }} - {{ menu.name }} Admin</h2>
+			<hr>
+			<section id="dish-add-section">
+				<h3>Add dish</h3>
+				<input id="menu-index" type="hidden" value="{{ menu_index }}">
+				<label for="dish-title-input">Item name</label>
+				<input id="dish-title-input" type="text" placeholder="Name">
+				<label for="dish-price-input">Item price</label>
+				<input id="dish-price-input" type="number" placeholder="€0.00" min="0" step="0.10">
+				<label for="dish-image-input">Item image</label>
+				<input id="dish-image-input" type="file">
+				<button onclick="addDish()" id="add-dish-button">Add dish</button>
+			</section>
+			<h2>Dishes in {{ menu.name }}</h2>
+			<div id="dish-list">
+				{% if not menu.dishes %}
+					<p>This menu has no dishes</p>
+				{% endif %}
+				{% for dish in menu.dishes: %}
+					<div class="dish" data-dish-index="{{ loop.index0 }}">
+						<img class="dish-image" src="{{ ('restaurants/'~user['uid']~'/menus/'~menu_index~'/'~loop.index0~'/image') | firebase_storage_url }}">
+						<div>
+							<h3 class="dish-title">{{ dish.name }}</h3>
+							<p>{{ "€%.2f" % dish.price }}</p>
+							<button onclick="deleteDish('{{ menu_index }}', '{{ loop.index0 }}')">Delete dish</button>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</main>
+	</body>
+</html>

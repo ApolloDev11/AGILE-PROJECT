@@ -12,6 +12,6 @@ def get(restaurant_id):
 
 	restaurant_ref = db.reference(f"restaurants/{restaurant_id}")
 	restaurant = restaurant_ref.get() or {}
-	if "menus" in restaurant:
-		restaurant["menus"] = enumerate(restaurant["menus"])
+	if "menus" not in restaurant:
+		restaurant["menus"] = []
 	return restaurant or {}

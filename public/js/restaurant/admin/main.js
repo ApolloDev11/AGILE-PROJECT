@@ -59,8 +59,8 @@ async function addMenu() {
 		let menuDataRef = ref(database, `/restaurants/${restaurantID}/menus/${menuIndex}`)
 		set(menuDataRef, {name: title});
 
-		// Refresh page to see new menu
-		location.reload();
+		// Open new menu
+		document.location.href = `/restaurant/admin/menu/${menuIndex}`
 	} catch(error) {
 		document.getElementById("add-menu-button").disabled = false;
 		alert(error.message || error)
@@ -68,21 +68,20 @@ async function addMenu() {
 	}
 }
 
-async function deleteMenu(button) {
+async function deleteMenu(menuIndex) {
 	// Use uid as restaurant ID
 	const restaurantID = auth.currentUser.uid;
 	
-	// Get menu based on clicked button
-	const menu = button.closest(".menu");
-	const menuTitle = menu.querySelector(".menu-title").textContent;
-	const menuIndex = menu.dataset.menuIndex;
+	// Get menu at index
+	let menuRef = ref(database, `/restaurants/${restaurantID}/menus/${menuIndex}`);
+	let menu = await get(menuRef);
+	menu = menu.val();
 
 	// Show confirmation message
-	if(!confirm(`Are you sure you want to delete menu "${menuTitle}" and all of its dishes?`)) return;
+	if(!confirm(`Are you sure you want to delete menu "${menu.name}" and all of its dishes?`)) return;
 
 	// Remove menu
 	try {
-		let menuRef = ref(database, `/restaurants/${restaurantID}/menus/${menuIndex}`);
 		await remove(menuRef);
 	} catch(error) {
 		alert(error.message || error)
@@ -92,3 +91,8 @@ async function deleteMenu(button) {
 	// Refresh page
 	location.reload();
 };
+
+function editMenu(menuIndex) {
+	// Open menu page
+	document.location.href = `/restaurant/admin/menu/${menuIndex}`
+}

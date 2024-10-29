@@ -18,12 +18,12 @@
 			<button onclick="editRestaurantDetails()">Edit details</button>
 			<button onclick="closeRestaurant()">Close restaurant</button>
 			<section id="menu-add-section">
-				<h3>Add A Menu</h3>
-				<label for="menu-title-input">Menu Title</label>
-				<input id="menu-title-input" type="text" name="title" placeholder="Menu Title">
-				<label for="menu-image-input">Menu Icon</label>
+				<h3>Add menu</h3>
+				<label for="menu-title-input">Menu title</label>
+				<input id="menu-title-input" type="text" placeholder="Menu title">
+				<label for="menu-image-input">Menu image</label>
 				<input id="menu-image-input" type="file">
-				<button onclick="addMenu()" id="add-menu-button">Add New Menu</button>
+				<button onclick="addMenu()" id="add-menu-button">Add menu</button>
 			</section>
 	
 			<h2>Menus</h2>
@@ -31,14 +31,14 @@
 				{% if not restaurant.menus %}
 					<p>This restaurant has no menus</p>
 				{% endif %}
-				{% for menu_index, menu in restaurant.menus: %}
-					<div class="menu" data-menu-index="{{ menu_index }}">
-						<img class="menu-image" src="{{ ('restaurants/'~user['uid']~'/menus/'~menu_index~'/image') | firebase_storage_url }}">
+				{% for menu in restaurant.menus: %}
+					<div class="menu" data-menu-index="{{ loop.index0 }}">
+						<img class="menu-image" src="{{ ('restaurants/'~user['uid']~'/menus/'~loop.index0~'/image') | firebase_storage_url }}">
 						<div>
 							<h3 class="menu-title">{{ menu.name }}</h3>
 							<p>{{ menu.dishes | length }} dishes</p>
-							<button onclick="editMenu(this)">Edit menu</button>
-							<button onclick="deleteMenu(this)">Delete menu</button>
+							<button onclick="editMenu('{{loop.index0 }}')">Edit menu</button>
+							<button onclick="deleteMenu('{{loop.index0 }}')">Delete menu</button>
 						</div>
 					</div>
 				{% endfor %}

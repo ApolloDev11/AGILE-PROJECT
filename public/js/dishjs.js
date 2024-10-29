@@ -1,40 +1,54 @@
-// Sample data with multiple menus and dishes
-const restaurantData = {
-    "restaurant": [
-        {
-            "name": "Restaurant A",
-            "menus": [
-                {
-                    "name": "Menu A",
-                    "dishes": [
-                        { "name": "Dish A", "icon": "https://firebaseurl.com/dishA.png" },
-                        { "name": "Dish B", "icon": "https://firebaseurl.com/dishB.png" }
-                    ],
-                    "ingredients": [
-                        { "name": "chicken" },
-                        { "name": "carrot" }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Restaurant B",
-            "menus": [
-                {
-                    "name": "Menu B",
-                    "dishes": [
-                        { "name": "Dish C", "icon": "https://firebaseurl.com/dishC.png" },
-                        { "name": "Dish D", "icon": "https://firebaseurl.com/dishD.png" }
-                    ],
-                    "ingredients": [
-                        { "name": "tomato" },
-                        { "name": "potato" }
-                    ]
-                }
-            ]
-        }
-    ]
-};
+restaurantData = {};
+
+firebaseReady.then(async () => {
+	app = initializeApp(FIREBASE_CONFIG);
+	auth = getAuth(app);
+	database = getDatabase(app);
+	storage = getStorage(app);
+
+    restaurantData = (await get(ref(database, "restaurants/"))).val();
+
+    for (const [id, restaurant] of Object.entries(restaurantData)) {
+        document.querySelector("#restaurant-select").innerHTML +=
+        `<option value="${restaurant.name}">${restaurant.name}</option>`;
+    }    
+
+    showAllDishes();
+});
+
+function displayDish(menu, dish) {
+    const dishList = document.getElementById('dish-list');
+    const template = document.querySelector("#dish-template");
+
+    const c = document.importNode(template.content, true);
+                            
+    c.querySelector(".dish-name").textContent = dish.name;
+    c.querySelector(".dish-image").src = dish.icon;
+    c.querySelector(".menu-name").textContent = menu.name;
+    c.querySelector(".menu-image").src = menu.icon;
+
+    dishList.appendChild(c);
+}
+
+function loopThroughDishes(restaurant, callback) {
+    for (const [id, data] of Object.entries(restaurant)) {
+        data.menus.forEach(menu => {
+            menu.dishes.forEach(dish => {
+                callback(menu, dish);
+            });
+        });
+    }
+}
+
+function showAllDishes() {
+    loopThroughDishes(restaurantData, (menu, dish) => {
+        displayDish(menu, dish);
+    });
+}
+
+function resetFilters() {
+    showAllDishes();
+}
 
 // Function to filter dishes based on the ingredient
 function filterDishesByIngredient() {
@@ -45,25 +59,19 @@ function filterDishesByIngredient() {
     dishList.innerHTML = '';
 
     // Loop through restaurant data and filter by ingredient
-    restaurantData.restaurant.forEach(restaurant => {
-        restaurant.menus.forEach(menu => {
-            const hasIngredient = menu.ingredients.some(ingredient => 
-                ingredient.name.toLowerCase() === ingredientInput
-            );
 
-            if (hasIngredient) {
-                // Display all dishes in the matching menu
-                menu.dishes.forEach(dish => {
-                    const dishItem = document.createElement('li');
-                    dishItem.innerHTML = `
-                        <img src="${dish.icon}" alt="${dish.name}" style="width: 50px;">
-                        <span>${dish.name}</span>
-                    `;
-                    dishList.appendChild(dishItem);
-                });
-            }
-        });
+    loopThroughDishes(restaurantData, (menu, dish) => {
+        const hasIngredient = dish.ingredients.some(ingredient => 
+            ingredient.toLowerCase() === ingredientInput
+        );
+
+        if (hasIngredient)
+            displayDish(menu, dish);
     });
+
+    if (dishList.innerHTML == '') {
+        alert("No dishes found...");
+    }
 }
 
 // Function to filter dishes based on the selected restaurant
@@ -75,21 +83,28 @@ function filterDishesByRestaurant() {
     dishList.innerHTML = '';
 
     // Loop through restaurant data and filter by restaurant
-    restaurantData.restaurant.forEach(restaurant => {
+    for (const [id, restaurant] of Object.entries(restaurantData)) {
         if (restaurant.name.toLowerCase() === selectedRestaurant) {
             // Display all dishes in the selected restaurant's menus
             restaurant.menus.forEach(menu => {
                 menu.dishes.forEach(dish => {
-                    const dishItem = document.createElement('li');
-                    dishItem.innerHTML = `
-                        <img src="${dish.icon}" alt="${dish.name}" style="width: 50px;">
-                        <span>${dish.name}</span>
-                    `;
-                    dishList.appendChild(dishItem);
+                    displayDish(menu, dish);
                 });
             });
         }
-    });
+    };
+
+    if (dishList.innerHTML == '') {
+        alert("No dishes found...");
+    }
+}
+
+async function addToCart(dish) {
+    var cart = await get(ref(database, `users/${auth.currentUser.uid}/cart`));
+
+    console.log(cart);
+
+    set(ref(database, `users/${auth.currentUser.uid}/cart`));
 }
 
 // Attach the filterDishesByIngredient function to the ingredient form submit event

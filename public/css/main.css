@@ -15,12 +15,16 @@ button {
 	background-color: black;
 	color: white;
 	cursor: pointer;
-	transition: opacity 500ms;
+	transition: opacity 250ms;
 }
 
 button:disabled {
 	cursor: default;
-	opacity: 0.5;
+	opacity: 0.25;
+}
+
+button:hover:not(:disabled) {
+	opacity: 0.75;
 }
 
 input, textarea {
@@ -85,4 +89,15 @@ nav a {
 main {
 	max-width: 60em;
 	margin: 0 auto;
+}
+
+section {
+	padding: 1em;
+	background-color: #eee;
+	border-radius: 0.5em;
+	width: fit-content;
+}
+
+section :first-child {
+	margin-top: 0;
 }

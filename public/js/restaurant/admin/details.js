@@ -15,7 +15,7 @@ async function saveRestaurantDetails() {
 
 		// Save restaurant data to database
 		const restaurantRef = ref(database, `restaurants/${restaurantID}`);
-		await set(restaurantRef, restaurantData)
+		await update(restaurantRef, restaurantData)
 
 		// Get the file, throw error if no file selected
 		const file = document.getElementById("restaurant-image").files[0];

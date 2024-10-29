@@ -38,3 +38,25 @@ async function api(url, body) {
 
 	return parsedBody
 }
+
+// Ensures an image file is a valid image file, 250×250 or larger
+function validateImage(file) {
+	const img = new Image();
+	
+	return new Promise((resolve, reject) => {
+		const objectURL = URL.createObjectURL(file);
+		img.src = objectURL;
+
+		img.onload = () => {
+			const width = img.naturalWidth;
+			const height = img.naturalHeight;
+
+			if (width >= 250 && height >= 250)
+				resolve(true);
+			else
+				reject("Image must be at least 250px×250px");
+
+			URL.revokeObjectURL(objectURL);
+		};
+	});
+}

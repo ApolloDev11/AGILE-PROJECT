@@ -11,4 +11,7 @@ def get(restaurant_id):
 	""" Retrieves a restaurant from the database """
 
 	restaurant_ref = db.reference(f"restaurants/{restaurant_id}")
-	return restaurant_ref.get() or {}
+	restaurant = restaurant_ref.get() or {}
+	if "menus" in restaurant:
+		restaurant["menus"] = enumerate(restaurant["menus"])
+	return restaurant or {}

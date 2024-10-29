@@ -4,7 +4,7 @@ from firebase_admin import initialize_app, db
 from firebase_functions import https_fn
 
 # Python library imports
-import exception as Exception
+import status as Status
 import user as User
 import restaurant as Restaurant
 
@@ -21,7 +21,7 @@ def index():
 		current_user = {}
 		current_user["uid"] = User.verify(request)
 	# Log out the user if failed verification
-	except Exception.Unauthorized as e:
+	except Status.Unauthorized as e:
 		return redirect("/logout")
 
 	# Check if user is owner of a restaurant
@@ -104,7 +104,7 @@ def restauran_page(restaurant_id):
 
 	# 404 error if restaurant does not exist
 	if not current_restaurant:
-		raise Exception.NotFound
+		raise Status.NotFound
 
 	return render_template("restaurant/page.html", user=current_user, restaurant_id=restaurant_id, restaurant=current_restaurant)
 
@@ -164,7 +164,7 @@ def api_verify():
 	try:
 		User.verify(request)
 		api_response["verified"] = True
-	except Exception.Unauthorized as e:
+	except Status.Unauthorized as e:
 		api_response["verified"] = False
 		api_response["error"] = str(e)
 		

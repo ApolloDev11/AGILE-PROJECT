@@ -1,4 +1,4 @@
-async function saveRestaurantDetails() {
+async function saveRestaurantDetails(imageRequired=false) {
 	try {
 		document.querySelector("form button").disabled = true;
 		
@@ -17,13 +17,15 @@ async function saveRestaurantDetails() {
 		const restaurantRef = ref(database, `restaurants/${restaurantID}`);
 		await update(restaurantRef, restaurantData)
 
-		// Get the file, throw error if no file selected
+		// Get the file, throw error if image required and no file selected
 		const file = document.getElementById("restaurant-image").files[0];
-		if(!file) throw "No image selected";
+		if(imageRequired && !file) throw "No image selected";
 
-		// Upload the image to Firebase storage
-		const imageRef = storageRef(storage, `restaurants/${restaurantID}/image`);
-		await uploadBytes(imageRef, file, {contentType: file.type});
+		if(file) {
+			// Upload the image to Firebase storage
+			const imageRef = storageRef(storage, `restaurants/${restaurantID}/image`);
+			await uploadBytes(imageRef, file, {contentType: file.type});
+		}
 
 		// Redirect user to restaurant list
 		document.location.href = `/restaurant/${restaurantID}`;

@@ -42,13 +42,11 @@
 				<input type="tel" id="restaurant-email" placeholder="name@example.com" value="{{ restaurant.email }}">
 
 				<br>
-				<button onclick="saveRestaurantDetails()">
-					{% if restaurant %}
-						Update details
-					{% else %}
-						Create restaurant
-					{% endif %}
-				</button>
+				{% if restaurant %}
+					<button onclick="saveRestaurantDetails()">Update details</button>
+				{% else %}
+					<button onclick="saveRestaurantDetails(true)">Save details</button>
+				{% endif %}
 			</form>
 		</main>
 	</body>

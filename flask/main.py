@@ -4,7 +4,9 @@ from firebase_admin import initialize_app, db
 from firebase_functions import https_fn
 
 # Python library imports
-import exception, user, restaurant
+import exception as Exception
+import user as User
+import restaurant as Restaurant
 
 # Initialise app
 app = Flask(__name__)
@@ -17,15 +19,15 @@ def index():
 	# Attempt to verify user
 	try:
 		current_user = {}
-		current_user["uid"] = user.verify(request)
+		current_user["uid"] = User.verify(request)
 	# Log out the user if failed verification
-	except exception.Unauthorized as e:
+	except Exception.Unauthorized as e:
 		return redirect("/logout")
 
 	# Check if user is owner of a restaurant
-	managed_restaurant = restaurant.get(current_user["uid"])
+	managed_restaurant = Restaurant.get(current_user["uid"])
 
-	current_user["name"] = user.get_name(current_user["uid"])
+	current_user["name"] = User.get_name(current_user["uid"])
 	return render_template("home.html", user=current_user, managed_restaurant=managed_restaurant)
 
 
@@ -51,12 +53,12 @@ def register():
 def account():
 	# Verify user and get details
 	current_user = {}
-	current_user["uid"] = user.verify(request)
-	current_user["name"] = user.get_name(current_user["uid"])
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
 
 	# Get extra details needed for account page
-	current_user["email"] = user.get_email(current_user["uid"])
-	current_user["manages_restaurant"] = restaurant.get(current_user["uid"]) != {}
+	current_user["email"] = User.get_email(current_user["uid"])
+	current_user["manages_restaurant"] = Restaurant.get(current_user["uid"]) != {}
 
 	return render_template("account.html", user=current_user)
 
@@ -80,11 +82,11 @@ def menu():
 def restaurant_list():
 	# Verify user and get details
 	current_user = {}
-	current_user["uid"] = user.verify(request)
-	current_user["name"] = user.get_name(current_user["uid"])
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
 
 	# Get restaurants from DB
-	restaurant_list = restaurant.list()
+	restaurant_list = Restaurant.list()
 
 	return render_template("restaurants.html", user=current_user, restaurants=restaurant_list)
 
@@ -94,15 +96,15 @@ def restaurant_list():
 def restauran_page(restaurant_id):
 	# Verify user and get details
 	current_user = {}
-	current_user["uid"] = user.verify(request)
-	current_user["name"] = user.get_name(current_user["uid"])
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
 
 	# Get restaurant from DB
-	current_restaurant = restaurant.get(restaurant_id)
+	current_restaurant = Restaurant.get(restaurant_id)
 
 	# 404 error if restaurant does not exist
 	if not current_restaurant:
-		raise exception.NotFound
+		raise Exception.NotFound
 
 	return render_template("restaurant/page.html", user=current_user, restaurant_id=restaurant_id, restaurant=current_restaurant)
 
@@ -112,11 +114,11 @@ def restauran_page(restaurant_id):
 def restaurant_admin():
 	# Verify user and get details
 	current_user = {}
-	current_user["uid"] = user.verify(request)
-	current_user["name"] = user.get_name(current_user["uid"])
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
 
 	# Get user's restaurant from DB
-	managed_restaurant = restaurant.get(current_user["uid"])
+	managed_restaurant = Restaurant.get(current_user["uid"])
 
 	if not managed_restaurant:
 		# User's restaurant does not exist, show setup page
@@ -131,11 +133,11 @@ def restaurant_admin():
 def restaurant_admin_details():
 	# Verify user and get details
 	current_user = {}
-	current_user["uid"] = user.verify(request)
-	current_user["name"] = user.get_name(current_user["uid"])
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
 
 	# Get user's restaurant from DB
-	managed_restaurant = restaurant.get(current_user["uid"])
+	managed_restaurant = Restaurant.get(current_user["uid"])
 
 	if not managed_restaurant:
 		# User's restaurant does not exist, redirect to setup page
@@ -148,8 +150,8 @@ def restaurant_admin_details():
 @app.get("/dishes")
 def menus():
 	current_user = {}
-	current_user["uid"] = user.verify(request)
-	current_user["name"] = user.get_name(current_user["uid"])
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
 
 	return render_template("dishes.html", user=current_user)
 
@@ -160,9 +162,9 @@ def api_verify():
 	api_response = {"verified": False}
 
 	try:
-		user.verify(request)
+		User.verify(request)
 		api_response["verified"] = True
-	except exception.Unauthorized as e:
+	except Exception.Unauthorized as e:
 		api_response["verified"] = False
 		api_response["error"] = str(e)
 		

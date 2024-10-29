@@ -13,3 +13,34 @@
 	position: relative;
 	top: -6em;
 }
+
+#menu-list .menu {
+	display: flex;
+	text-decoration: none;
+	border: 1px solid #999;
+	border-radius: 1em;
+	padding: 1em;
+	margin-bottom: 2em;
+	transition: border 250ms;
+}
+
+#menu-list .menu:hover {
+	border: 1px solid black;
+}
+
+#menu-list .menu img {
+	border-radius: 0.5em;
+	width: 4em;
+	height: 4em;
+	object-fit: cover;
+	margin-right: 2em;
+}
+
+#menu-list .menu h3 {
+	font-size: 1.5em;
+	margin: 0;
+}
+
+#menu-list .menu p {
+	margin: 0;
+}

@@ -195,6 +195,15 @@ def firebase_storage_url(file):
 	file = file.replace("/", "%2F");
 	return f"https://firebasestorage.googleapis.com/v0/b/mtu-group-project-agile.appspot.com/o/{file}?alt=media"
 
+@app.template_filter("plural")
+def firebase_storage_url(noun, value):
+	""" Parses provided noun as plural """
+	if value == 1:
+		return noun
+	elif noun.endswith("s") or noun.endswith("sh"):
+		return noun + "es"
+	else:
+		return noun + "s"
 
 
 

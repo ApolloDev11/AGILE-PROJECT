@@ -17,7 +17,23 @@
 				<button onclick="openRestaurantAdmin()" id="restaurant-admin-button">Open admin page</button>
 			{% endif %}
 			<hr>
-			<h3>Contact</h3>
+			<h2>Menus</h2>
+			<div id="menu-list">
+				{% if not restaurant.menus %}
+					<p>This restaurant has no menus</p>
+				{% endif %}
+				{% for menu in restaurant.menus: %}
+					<a class="menu" href="/restaurant/{{ restaurant_id }}/menus/{{ loop.index0 }}">
+						<img class="menu-image" src="{{ ('restaurants/'~restaurant_id~'/menus/'~loop.index0~'/image') | firebase_storage_url }}">
+						<div>
+							<h3 class="menu-title">{{ menu.name }}</h3>
+							<p>{{ menu.dishes | length }} {{ "dish" | plural(restaurant.menus) }} available</p>
+						</div>
+					</a>
+				{% endfor %}
+			</div>
+			<hr>
+			<h2>Contact</h2>
 			<ul>
 				<li><a href="mailto:{{ restaurant.email }}">{{ restaurant.email }}</a></li>
 				<li><a href="tel:{{ restaurant.phone }}">{{ restaurant.phone }}</a></li>

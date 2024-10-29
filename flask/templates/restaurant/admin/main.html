@@ -36,7 +36,7 @@
 						<img class="menu-image" src="{{ ('restaurants/'~user['uid']~'/menus/'~loop.index0~'/image') | firebase_storage_url }}">
 						<div>
 							<h3 class="menu-title">{{ menu.name }}</h3>
-							<p>{{ menu.dishes | length }} dishes</p>
+							<p>{{ menu.dishes | length }} {{ "dish" | plural(restaurant.menus) }}</p>
 							<button onclick="editMenu('{{loop.index0 }}')">Edit menu</button>
 							<button onclick="deleteMenu('{{loop.index0 }}')">Delete menu</button>
 						</div>

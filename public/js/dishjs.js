@@ -100,11 +100,31 @@ function filterDishesByRestaurant() {
 }
 
 async function addToCart(dish) {
-    var cart = await get(ref(database, `users/${auth.currentUser.uid}/cart`));
+    var cart = (await get(ref(database, `users/${auth.currentUser.uid}/cart`))).val();
 
-    console.log(cart);
+    if (cart == null) {
+        cart = [];
+    }
 
-    set(ref(database, `users/${auth.currentUser.uid}/cart`));
+    if (cart.length == 0) {
+        alert("You cannot add more than 10 items to your cart!");
+        return;
+    }
+
+    var name = dish.parentElement.querySelector(".dish-name").textContent;
+
+    if (cart.some(e => e.name == name)) {
+        alert("Warning: You have already added this item to your cart!");
+    }
+
+    cart.push({
+        type: "dish",
+        name
+    });
+
+    set(ref(database, `users/${auth.currentUser.uid}/cart`), cart);
+
+    alert(`Added ${name} to your cart!`);
 }
 
 // Attach the filterDishesByIngredient function to the ingredient form submit event

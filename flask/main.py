@@ -41,6 +41,15 @@ def login():
 	return render_template("login.html")
 
 
+@app.get("/cart")
+def cart():
+	current_user = {}
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
+
+	return render_template("cart.html", user=current_user)
+
+
 @app.get("/register")
 def register():
 	if "__session" in request.cookies:

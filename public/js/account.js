@@ -1,9 +1,13 @@
+
+
 // Register function
 async function register() {
 	const name = document.getElementById("name").value;
 	const password = document.getElementById("password").value;
 	const email = document.getElementById("email").value;
 	const isOwner = document.getElementById("is-owner").checked;
+
+	
 
 	const button = document.getElementById("login-button");
 	button.disabled = true;
@@ -139,3 +143,60 @@ function resetPassword(email) {
 function logout() {
 	document.location.href = "/logout"
 }
+
+
+// Edit Acount Details
+function toggleEditForm() {
+    const editForm = document.getElementById("edit-account-form");
+    editForm.style.display = editForm.style.display === "none" ? "block" : "none";
+}
+
+async function saveChanges() {
+    const user = auth.currentUser;
+
+    if (!user) {
+        alert("No user is logged in.");
+        return;
+    }
+
+    const updatedName = document.getElementById("edit-name").value;
+    const updatedEmail = document.getElementById("edit-email").value;
+    let updatedAddress = null;
+    let updatedPhone = null;
+
+
+    if (user.manages_restaurant) {
+        updatedAddress = document.getElementById("edit-address").value;
+        updatedPhone = document.getElementById("edit-phone").value;
+    }
+
+    try {
+    
+        const database_ref = ref(database, `users/${user.uid}`);
+        const user_data = { name: updatedName, email: updatedEmail };
+
+        if (user.manages_restaurant) {
+            user_data.address = updatedAddress;
+            user_data.phone = updatedPhone;
+        }
+
+        await set(database_ref, user_data);
+        alert("Account details updated successfully!");
+
+    
+        const nameParagraph = document.querySelector("p:nth-of-type(1)");
+        const emailParagraph = document.querySelector("p:nth-of-type(2)"); 
+        nameParagraph.innerHTML = `<b>Name:</b> ${updatedName}`; 
+        emailParagraph.innerHTML = `<b>Email:</b> ${updatedEmail}`; 
+
+        toggleEditForm();
+
+    } catch (error) {
+        console.error("Error updating user data:", error);
+        alert(`Failed to update account: ${error.message}`);
+    }
+}
+
+
+document.getElementById("save-changes-btn").addEventListener("click", saveChanges);
+document.getElementById("cancel-edit-btn").addEventListener("click", toggleEditForm);

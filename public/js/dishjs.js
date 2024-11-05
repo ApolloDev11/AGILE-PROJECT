@@ -24,8 +24,15 @@ function displayDish(menu, dish) {
                             
     c.querySelector(".dish-name").textContent = dish.name;
     c.querySelector(".dish-image").src = dish.icon;
-    c.querySelector(".menu-name").textContent = menu.name;
-    c.querySelector(".menu-image").src = menu.icon;
+
+    if (menu != null) {
+        c.querySelector(".menu-name").textContent = menu.name;
+        c.querySelector(".menu-image").src = menu.icon;
+    }
+
+    if (dish.amount != null) {
+        c.querySelector(".dish-amount").textContent = dish.amount;
+    }
 
     dishList.appendChild(c);
 }
@@ -119,7 +126,9 @@ async function addToCart(dish) {
 
     cart.push({
         type: "dish",
-        name
+        name,
+        icon: dish.parentElement.querySelector(".dish-image").src,
+        amount: 1
     });
 
     set(ref(database, `users/${auth.currentUser.uid}/cart`), cart);

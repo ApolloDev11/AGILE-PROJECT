@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="/css/restaurant/admin/main.css">
 		<script src="/js/firebase.js" defer></script>
 		<script src="/js/restaurant/admin/main.js" defer></script>
+		<script src="/js/restaurant/admin/ingredients.js" defer></script>
 		<script src="/js/common.js" defer></script>
 	</head>
 	<body>
@@ -17,6 +18,8 @@
 			<button onclick="openRestaurantPage()">View page</button>
 			<button onclick="editRestaurantDetails()">Edit details</button>
 			<button onclick="closeRestaurant()">Close restaurant</button>
+			
+			<h2>Menus</h2>
 			<section id="menu-add-section">
 				<h3>Add menu</h3>
 				<label for="menu-title-input">Menu title</label>
@@ -25,11 +28,9 @@
 				<input id="menu-image-input" type="file">
 				<button onclick="addMenu()" id="add-menu-button">Add menu</button>
 			</section>
-	
-			<h2>Menus</h2>
 			<div id="menu-list">
 				{% if not restaurant.menus %}
-					<p>This restaurant has no menus</p>
+				<p>This restaurant has no menus</p>
 				{% endif %}
 				{% for menu in restaurant.menus: %}
 					<div class="menu" data-menu-index="{{ loop.index0 }}">
@@ -39,6 +40,30 @@
 							<p>{{ menu.dishes | length }} {{ "dish" | plural(menu.dishes) }}</p>
 							<button onclick="editMenu('{{loop.index0 }}')">Edit menu</button>
 							<button onclick="deleteMenu('{{loop.index0 }}')">Delete menu</button>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+
+			<h2>Ingredients</h2>
+			<section id="ingredient-add-section">
+				<h3>Add ingredient</h3>
+				<label for="ingredient-title-input">Ingredient title</label>
+				<input id="ingredient-title-input" type="text" placeholder="Ingredient title">
+				<label for="ingredient-image-input">Ingredient image</label>
+				<input id="ingredient-image-input" type="file">
+				<button onclick="addIngredient()" id="add-ingredient-button">Add ingredient</button>
+			</section>
+			<div id="ingredient-list">
+				{% if not restaurant.ingredients %}
+				<p>This restaurant has no ingredients</p>
+				{% endif %}
+				{% for ingredient in restaurant.ingredients: %}
+					<div class="ingredient" data-ingredient-index="{{ loop.index0 }}">
+						<img class="ingredient-image" src="{{ ('restaurants/'~user['uid']~'/ingredients/'~loop.index0~'/image') | firebase_storage_url }}">
+						<div>
+							<h3 class="ingredient-title">{{ ingredient.name }}</h3>
+							<button onclick="deleteIngredient('{{loop.index0}}')">Delete ingredient</button>
 						</div>
 					</div>
 				{% endfor %}

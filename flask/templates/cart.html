@@ -1,50 +1,55 @@
 <!DOCTYPE html>
 <html>
-    <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Your Cart</title>
-            <link rel="stylesheet" href="/css/main.css">
-            <script src="js/firebase.js"></script>
-            <script src="js/dishjs.js"></script>
-        </head>
-        <body>
-            {% include "header.html" %}
-            <h1>Your Order</h1>
-            <div class="dishes-list-section">
-				<ul id="dish-list"></ul>
-				<template id="dish-template">
-					<div class="dish">
-						<img class="dish-image" src="#" style="width: 50px;">
-						<p>Dish Name: <span class="dish-name"></span></p>
-                        <p>Amount: </p><span class="dish-amount"></span>
-						<hr>
-					</div>
-				</template>
-			</div>
-        </body>
-        <script>
-            firebaseReady.then(async () => {
-                // Temporary way to make sure logged in state
-                await new Promise(r => setTimeout(r, 2000));
-                console.log(getAuth(app));
-                if (auth.currentUser == null) {
-                    alert("You are not logged in.");
-                }
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Your Cart</title>
+			<link rel="stylesheet" href="/css/main.css">
+			<script src="js/firebase.js"></script>
+			<script src="js/dishjs.js"></script>
+		</head>
+		<body>
+			{% include "header.html" %}
+			<main>
+				<h1>Your Order</h1>
+				<div class="dishes-list-section">
+					<ul id="dish-list">
+						Loading dishes...
+					</ul>
+					<template id="dish-template">
+						<div class="dish">
+							<img class="dish-image" src="#" style="width: 50px;">
+							<p>Dish Name: <span class="dish-name"></span></p>
+							<p>Amount: </p><span class="dish-amount"></span>
+							<hr>
+						</div>
+					</template>
+				</div>
+			</main>
+		</body>
+		<script>
+			const dishList = document.getElementById("dish-list");
+			
+			firebaseReady.then(async () => {
+				onAuthStateChanged(auth, async user => {
+					if(auth.currentUser == null) {
+						alert("You are not logged in.");
+					}
 
-                var cart = (await get(ref(database, `users/${auth.currentUser.uid}/cart`))).val();
+					const cartRef = await get(ref(database, `users/${auth.currentUser.uid}/cart`));
+					const cart = cartRef.val() || [];
 
-                if (cart == null) {
-                    cart = [];
-                }
+					dishList.innerText = "";
 
-                cart.forEach((e) => {
-                    if (e.type == "dish") {
-                        displayDish(null, e);
-                    }
-                });
-            });
-            
-        </script>
+					if(!cart.length) {
+						dishList.innerText = "No dishes added";
+					}
+					
+					for(let item of cart) {
+						if(e.type == "dish") displayDish(null, e);
+					}
+				});
+			});
+		</script>
 </html>

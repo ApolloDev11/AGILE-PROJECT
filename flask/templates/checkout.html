@@ -11,7 +11,7 @@
 <body>
     {% include "header.html" %}
     <main>
-        <h1>Your Cart</h1>
+        <h1>Your Order</h1>
         <div class="dishes-list-section">
             <ul id="dish-list">
                 Loading dishes...
@@ -21,14 +21,12 @@
                     <img class="dish-image" src="#" style="width: 50px;">
                     <p>Dish Name: <span class="dish-name"></span></p>
                     <p>Amount: <span class="dish-amount"></span></p>
-                    <button onclick="incrementDish(this);">+</button>
-                    <button onclick="decrementDish(this);">-</button>
                     <button class="remove-button" onclick="removeFromCart(this)">Remove</button>
                     <hr>
                 </div>
             </template>
+            <a href="pay">Pay</a>
         </div>
-        <a href="order">Finalise order</a>
     </main>
     <script>
         const dishList = document.getElementById("dish-list");
@@ -99,14 +97,6 @@
             cart.forEach(item => {
                 displayDish(item); // Display each item in the cart
             });
-        }
-
-        function incrementDish(elem) {
-            
-        }
-
-        function decrementDish(elem) {
-
         }
     </script>
 </body>

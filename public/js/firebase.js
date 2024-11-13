@@ -23,7 +23,7 @@ for(let moduleName of firebaseModules) {
 const FIREBASE_CONFIG = {
 	apiKey: "AIzaSyAkoYvz49Xs6vg9-SUHM236plfeN6Dck4s",
 	authDomain: "mtu-group-project-agile.firebaseapp.com",
-	databaseURL: "ttps://mtu-group-project-agile-default-rtdb.europe-west1.firebasedatabase.app",
+	databaseURL: "https://mtu-group-project-agile-default-rtdb.europe-west1.firebasedatabase.app",
 	projectId: "mtu-group-project-agile",
 	storageBucket: "mtu-group-project-agile.appspot.com",
 	messagingSenderId: "120193305147",

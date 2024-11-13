@@ -183,6 +183,7 @@ async function saveChanges() {
         await set(database_ref, user_data);
         alert("Account details updated successfully!");
 
+		updateEmail(auth.currentUser, updatedEmail)
     
         const nameParagraph = document.querySelector("p:nth-of-type(1)");
         const emailParagraph = document.querySelector("p:nth-of-type(2)"); 

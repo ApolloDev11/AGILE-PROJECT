@@ -41,6 +41,15 @@ def login():
 	return render_template("login.html")
 
 
+@app.get("/cart")
+def cart():
+	current_user = {}
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
+
+	return render_template("cart.html", user=current_user)
+
+
 @app.get("/register")
 def register():
 	if "__session" in request.cookies:
@@ -103,6 +112,31 @@ def restaurant_page(restaurant_id):
 		raise Status.NotFound
 
 	return render_template("restaurant/page.html", user=current_user, restaurant_id=restaurant_id, restaurant=current_restaurant)
+
+
+@app.get("/restaurant/<restaurant_id>/menus/<menu_index>")
+def restaurant_menu_page(restaurant_id, menu_index):
+	# Verify user and get details
+	current_user = {}
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
+
+	# Convert menu index to integer
+	try:
+		menu_index = int(menu_index)
+	except:
+		raise Status.NotFound("Menu does not exist")
+
+	# Get restaurant from DB
+	current_restaurant = Restaurant.get(restaurant_id)
+
+	# 404 error if restaurant does not exist
+	if not current_restaurant:
+		raise Status.NotFound
+
+	menu = current_restaurant["menus"][menu_index]
+
+	return render_template("restaurant/menu.html", user=current_user, restaurant_id=restaurant_id, restaurant=current_restaurant, menu_index=menu_index, menu=menu)
 
 
 

@@ -51,7 +51,7 @@ def cart():
 
 
 @app.get("/order")
-def cart():
+def order():
 	current_user = {}
 	current_user["uid"] = User.verify(request)
 	current_user["name"] = User.get_name(current_user["uid"])

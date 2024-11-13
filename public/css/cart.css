@@ -1,12 +1,4 @@
-@import url(/css/main.css);
-
-#dish-image-input {
-	margin-bottom: 1em;
-}
-
-#dish-add-section {
-	margin-top: 1em;
-}
+@import url("/css/main.css");
 
 #dish-list .dish {
 	display: flex;
@@ -31,5 +23,9 @@
 }
 
 #dish-list .dish p {
-	margin-top: 0;
+	margin: 0;
+}
+
+#dish-list .dish button {
+	margin-top: 1em
 }

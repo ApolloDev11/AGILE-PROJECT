@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Cart</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/cart.css">
     <script src="js/firebase.js"></script>
     <script src="js/dish.js"></script> <!-- Updated to dish.js -->
 </head>
@@ -13,16 +13,17 @@
     <main>
         <h1>Your Order</h1>
         <div class="dishes-list-section">
-            <ul id="dish-list">
+            <div id="dish-list">
                 Loading dishes...
-            </ul>
+            </div>
             <template id="dish-template">
                 <div class="dish">
-                    <img class="dish-image" src="#" style="width: 50px;">
-                    <p>Dish Name: <span class="dish-name"></span></p>
-                    <p>Amount: <span class="dish-amount"></span></p>
-                    <button class="remove-button" onclick="removeFromCart(this)">Remove</button>
-                    <hr>
+                    <img class="dish-image" src="#">
+                    <div>
+                        <p>Dish Name: <span class="dish-name"></span></p>
+                        <p>Amount: <span class="dish-amount"></span></p>
+                        <button class="remove-button" onclick="removeFromCart(this)">Remove</button>
+                    </div>
                 </div>
             </template>
         </div>

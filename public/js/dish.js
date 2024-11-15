@@ -120,20 +120,23 @@ async function addToCart(dish) {
 
     var name = dish.parentElement.querySelector(".dish-name").textContent;
 
-    if (cart.some(e => e.name == name)) {
-        alert("Warning: You have already added this item to your cart!");
-    }
 
-    cart.push({
-        type: "dish",
-        name,
-        icon: dish.parentElement.querySelector(".dish-image").src,
-        amount: 1
-    });
-
+	let existingItem = cart.find(e => e.name == name);
+	if(existingItem) existingItem.amount++;
+	else {
+		cart.push({
+			type: "dish",
+			name,
+			cost,
+			icon,
+			amount: 1
+		});
+	}
     set(ref(database, `users/${auth.currentUser.uid}/cart`), cart);
 
-    alert(`Added ${name} to your cart!`);
+	if(existingItem) alert(`You now have ${amount} ${name}s in your cart!`);
+	else alert(`Added ${name} to your cart!`);
+    
     const addToCartButton = dish.parentElement.querySelector("button");
     addToCartButton.textContent = "Added";
     renderCart(cart);

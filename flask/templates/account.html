@@ -8,6 +8,21 @@
 	<script src="/js/account.js" defer></script>
 	<link rel="stylesheet" href="/css/main.css">
 </head>
+<style>
+    .container {
+      display: flex;
+      align-items: center;
+    }
+    .options {
+      margin-left: 10px;
+      display: flex;
+      gap: 5px; 
+      align-items: center;
+    }
+	.options label, .options input {
+		margin-top: -1px; 
+	  }
+  </style>
 <body>
 	{% include "header.html" %}
 	<main>
@@ -17,6 +32,17 @@
 		<p><b>Name:</b> {{ user.name }}</p>
 		<p><b>Email:</b> {{ user.email }}</p>
 		<p><b>Type:</b> {{ "Restaurant manager" if user.manages_restaurant else "Customer"}}</p>
+		<div class="container">
+			<p><b>Notifications</b></p>
+			<div class="options">
+			  <input type="radio" id="sms-notif" name="notification-type">
+			  <label for="sms-notif">SMS</label><br>
+			  <input type="radio" id="email-notif" name="notification-type">
+			  <label for="email-notif">Email</label><br>
+			</div>
+		  </div>
+
+
 		<div id="account-options">
 			<button onclick="logout()">Logout</button>
 			<button onclick="resetPassword()">Change password</button>

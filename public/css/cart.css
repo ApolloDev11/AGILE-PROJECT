@@ -1,0 +1,35 @@
+@import url("/css/main.css");
+
+#dish-list .dish {
+	display: flex;
+	text-decoration: none;
+	border: 1px solid #999;
+	border-radius: 1em;
+	padding: 1em;
+	margin-bottom: 2em;
+}
+
+#dish-list .dish img {
+	border-radius: 0.5em;
+	width: 8em;
+	height: 8em;
+	object-fit: cover;
+	margin-right: 2em;
+}
+
+#dish-list .dish h3 {
+	font-size: 1.5em;
+	margin: 0;
+}
+
+#dish-list .dish p {
+	margin: 0;
+}
+
+#dish-list .dish button {
+	margin-top: 1em
+}
+
+#dish-list .dish p.dish-cost {
+	margin-left: auto;
+}

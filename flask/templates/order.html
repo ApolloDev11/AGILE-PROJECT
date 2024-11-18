@@ -4,34 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Cart</title>
-    <link rel="stylesheet" href="/css/cart.css">
+    <link rel="stylesheet" href="/css/main.css">
     <script src="js/firebase.js"></script>
-    <script src="js/dish.js"></script> 
+    <script src="js/dish.js"></script> <!-- Updated to dish.js -->
 </head>
 <body>
     {% include "header.html" %}
     <main>
-        <h1>Your Cart</h1>
+        <h1>Your Order</h1>
         <div class="dishes-list-section">
-            <div id="dish-list">
+            <ul id="dish-list">
                 Loading dishes...
-            </div>
+            </ul>
             <template id="dish-template">
                 <div class="dish">
-                    <img class="dish-image" src="#">
-                    <div>
-                        <p>Dish Name: <span class="dish-name"></span></p>
-                        <p>Amount: <span class="dish-amount"></span></p>
-                        <button class="remove-button" onclick="removeFromCart(this)">Remove</button>
-                        <button onclick="incrementDish(this);">+</button>
-                        <button onclick="decrementDish(this);">-</button>
-                    </div>
-                    <p class="dish-cost">€0.00</p>
+                    <img class="dish-image" src="#" style="width: 50px;">
+                    <p>Dish Name: <span class="dish-name"></span></p>
+                    <p>Amount: <span class="dish-amount"></span></p>
+                    <button class="remove-button" onclick="removeFromCart(this)">Remove</button>
+                    <hr>
                 </div>
             </template>
+            <a href="checkout">Checkout</a>
         </div>
-        <button onclick="finaliseOrder()" hidden>Finalise order</button>
-        <button onclick="redirectToPastOrders()">Past Orders</button>
     </main>
     <script>
         const dishList = document.getElementById("dish-list");
@@ -66,7 +61,6 @@
             clone.querySelector(".dish-image").src = item.icon; // Assuming item has icon property
             clone.querySelector(".dish-name").textContent = item.name; // Assuming item has name property
             clone.querySelector(".dish-amount").textContent = item.amount || 1; // Default amount to 1 if not provided
-            clone.querySelector(".dish-cost").textContent = `€${(item.cost * item.amount).toFixed(2)}`;
 
             // Append the cloned template to the dish list
             dishList.appendChild(clone);
@@ -93,9 +87,6 @@
                     // Re-render the cart
                     renderCart(cart);
                     alert(`${dishName} removed from cart!`);
-
-                    // Refresh page if cart is now empty
-                    if(cart.length == 0) document.location.reload();
                 }
             }
         }
@@ -104,23 +95,8 @@
             dishList.innerHTML = "";
 
             cart.forEach(item => {
-                displayDish(item); 
+                displayDish(item); // Display each item in the cart
             });
-        }
-
-        function incrementDish(elem) {
-            
-        }
-
-        function decrementDish(elem) {
-
-        }
-
-        function finaliseOrder() {
-            document.location.href = "/order"
-        }
-        function redirectToPastOrders() {
-            document.location.href = "/pastOrders";
         }
     </script>
 </body>

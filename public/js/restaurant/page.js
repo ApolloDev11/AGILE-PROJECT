@@ -18,17 +18,21 @@ async function addToCart(item) {
 	let cost = item.querySelector("p").innerText;
 	cost = Number(cost.replace("€", ""));
 
-	if(cart.some(e => e.name == name)) alert("Warning: You have already added this item to your cart!");
-
-	cart.push({
-		type: "dish",
-		name,
-		cost,
-		icon,
-		amount: 1
-	});
+	// If this item already exists, increase its value
+	let existingItem = cart.find(e => e.name == name);
+	if(existingItem) existingItem.amount++;
+	else {
+		cart.push({
+			type: "dish",
+			name,
+			cost,
+			icon,
+			amount: 1
+		});
+	}
 
 	set(cartRef, cart);
 
-	alert(`Added ${name} to your cart!`);
+	if(existingItem) alert(`You now have ${amount} ${name}s in your cart!`);
+	else alert(`Added ${name} to your cart!`);
 }

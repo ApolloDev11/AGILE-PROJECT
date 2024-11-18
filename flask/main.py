@@ -214,6 +214,13 @@ def dishes():
 
 	return render_template("dishes.html", user=current_user)
 
+@app.get("/pastOrders")
+def past_orders():
+	current_user = {}
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
+
+	return render_template("pastOrders.html", user=current_user)
 
 # API for checking if the server can verify the user
 @app.get("/api/verify")

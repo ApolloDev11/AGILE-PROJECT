@@ -6,7 +6,7 @@
     <title>Your Cart</title>
     <link rel="stylesheet" href="/css/cart.css">
     <script src="js/firebase.js"></script>
-    <script src="js/dish.js"></script> <!-- Updated to dish.js -->
+    <script src="js/dish.js"></script> 
 </head>
 <body>
     {% include "header.html" %}
@@ -31,6 +31,7 @@
             </template>
         </div>
         <button onclick="finaliseOrder()" hidden>Finalise order</button>
+        <button onclick="redirectToPastOrders()">Past Orders</button>
     </main>
     <script>
         const dishList = document.getElementById("dish-list");
@@ -103,7 +104,7 @@
             dishList.innerHTML = "";
 
             cart.forEach(item => {
-                displayDish(item); // Display each item in the cart
+                displayDish(item); 
             });
         }
 
@@ -117,6 +118,9 @@
 
         function finaliseOrder() {
             document.location.href = "/order"
+        }
+        function redirectToPastOrders() {
+            document.location.href = "/pastOrders";
         }
     </script>
 </body>

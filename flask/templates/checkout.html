@@ -23,54 +23,9 @@
                     <p>Amount: <span class="dish-amount"></span></p>
                     <button class="remove-button" onclick="removeFromCart(this)">Remove</button>
                     <hr>
+                    <button class="pay">Purchase</button>
                 </div>
             </template>
-            <div class="container">
-                <h2>Enter Payment Details</h2>
-                
-                <!-- Payment Type Selection -->
-                <select id="paymentType">
-                  <option value="Visa">Visa</option>
-                  <option value="Mastercard">Mastercard</option>
-                  <option value="Apple Pay">Apple Pay</option>
-                </select>
-              
-                <!-- Card Number Input -->
-                <input 
-                  type="text" 
-                  id="cardNumber" 
-                  placeholder="Card Number (16 digits)" 
-                  maxlength="16" 
-                  required 
-                  pattern="\d{16}" 
-                  title="Card number should be exactly 16 digits">
-                
-                <!-- Expiry Date Input -->
-                <input 
-                  type="month" 
-                  id="expiryDate" 
-                  placeholder="Expiry Date (MM/YY)" 
-                  required>
-                
-                <!-- CVV Input -->
-                <input 
-                  type="text" 
-                  id="cvv" 
-                  placeholder="CVV (3 digits)" 
-                  maxlength="3" 
-                  required 
-                  pattern="\d{3}" 
-                  title="CVV should be exactly 3 digits">
-                
-                <!-- Confirm Payment Button -->
-                <button onclick="validateAndShowPaymentDetails()">Confirm Payment</button>
-                
-                <!-- Result Display -->
-                <div id="result"></div>
-              </div>
-              
-            <a href="pay">Pay</a>
-        </div>
     </main>
     <script>
         const dishList = document.getElementById("dish-list");
@@ -92,7 +47,7 @@
                 } else {
                     for (let item of cart) {
                         if (item.type === "dish") {
-                            displayDish(item); // Call the display function for each dish
+                            displayDish(item); 
                         }
                     }
                 }

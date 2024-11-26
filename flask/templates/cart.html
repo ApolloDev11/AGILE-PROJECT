@@ -13,128 +13,21 @@
     <main>
         <h1>Your Cart</h1>
         <div class="dishes-list-section">
-            <div id="dish-list">
-                Loading dishes...
-            </div>
-            <template id="dish-template">
-                <div class="dish">
-                    <img class="dish-image" src="#">
-                    <div>
-                        <p>Dish Name: <span class="dish-name"></span></p>
-                        <p>Amount: <span class="dish-amount"></span></p>
-                        <button class="remove-button" onclick="removeFromCart(this)">Remove</button>
-                        <button onclick="incrementDish(this);">+</button>
-                        <button onclick="decrementDish(this);">-</button>
-                    </div>
-                    <p class="dish-cost">€0.00</p>
-                </div>
-            </template>
-        </div>
-        <button onclick="finaliseOrder()" hidden>Finalise order</button>
-        <button onclick="redirectToPastOrders()">Past Orders</button>
-    <link rel="stylesheet" href="/css/main.css">
-    <script src="js/firebase.js"></script>
-    <script src="js/dish.js"></script> <!-- Updated to dish.js -->
-</head>
-<style>
-    .center {
-        margin: auto;
-        width: 50%;
-        padding: 10px;
-      }
-</style>
-<body>
-    {% include "header.html" %}
-    <main>
-        <h1>Your Order</h1>
-        <div class="dishes-list-section">
-            <ul id="dish-list">
-                Loading dishes...
-            </ul>
-            <template id="dish-template">
-                <div class="dish">
-                    <img class="dish-image" src="#" style="width: 50px;">
-                    <p>Dish Name: <span class="dish-name"></span></p>
-                    <p>Amount: <span class="dish-amount"></span></p>
+            {% for dish in cart %}
+            <div class="dish">
+                <img class="dish-image" src="#">
+                <div>
+                    <p>Dish Name: <span class="dish-name">{{ dish.name }}</span></p>
+                    <p>Amount: <span class="dish-amount">{{ dish.amount }}</span></p>
                     <button class="remove-button" onclick="removeFromCart(this)">Remove</button>
-                    <hr>
+                    <button onclick="incrementDish(this);">+</button>
+                    <button onclick="decrementDish(this);">-</button>
                 </div>
-                <div class="center">
-                    <button class="purchase-order" style="width: 100px;" onclick="window.location.href='payment';">Purchase</button>
-                </div>
-            </template>
+                <p class="dish-price">{{ dish.price }}</p>
+            </div>
+            {% endfor %}
         </div>
-    </main>
-    <script>
-        const dishList = document.getElementById("dish-list");
-
-        firebaseReady.then(async () => {
-            onAuthStateChanged(auth, async user => {
-                if (auth.currentUser == null) {
-                    alert("You are not logged in.");
-                    return; // Exit if not logged in
-                }
-
-                const cartRef = await get(ref(database, `users/${auth.currentUser.uid}/cart`));
-                const cart = cartRef.val() || [];
-
-                dishList.innerHTML = ""; // Clear previous content
-
-                if (!cart.length) {
-                    dishList.innerHTML = "No dishes added";
-                } else {
-                    for (let item of cart) {
-                        if (item.type === "dish") {
-                            displayDish(item); // Call the display function for each dish
-                        }
-                    }
-                }
-            });
-        });
-
-        function displayDish(item) {
-            const template = document.getElementById("dish-template");
-            const clone = document.importNode(template.content, true);
-            clone.querySelector(".dish-image").src = item.icon; // Assuming item has icon property
-            clone.querySelector(".dish-name").textContent = item.name; // Assuming item has name property
-            clone.querySelector(".dish-amount").textContent = item.amount || 1; // Default amount to 1 if not provided
-
-            // Append the cloned template to the dish list
-            dishList.appendChild(clone);
-        }
-
-        async function removeFromCart(button) {
-            const dishElement = button.parentElement; // Get the parent dish element
-            const dishName = dishElement.querySelector(".dish-name").textContent;
-
-            // Logic to remove the dish from the cart in the database
-            let cart = (await get(ref(database, `users/${auth.currentUser.uid}/cart`))).val();
-
-            if (cart) {
-                // Find the index of the item to remove
-                const itemIndex = cart.findIndex(item => item.name === dishName);
-                
-                if (itemIndex > -1) {
-                    // Remove the item from the cart
-                    cart.splice(itemIndex, 1);
-                    
-                    // Update the cart in the database
-                    await set(ref(database, `users/${auth.currentUser.uid}/cart`), cart);
-                    
-                    // Re-render the cart
-                    renderCart(cart);
-                    alert(`${dishName} removed from cart!`);
-                }
-            }
-        }
-
-        function renderCart(cart) {
-            dishList.innerHTML = "";
-
-            cart.forEach(item => {
-                displayDish(item); // Display each item in the cart
-            });
-        }
-    </script>
+        <button onclick="location.href = '/order';">Finalise order</button>
+        <button onclick="redirectToPastOrders()">Past Orders</button>
 </body>
 </html>

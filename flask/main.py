@@ -47,7 +47,9 @@ def cart():
 	current_user["uid"] = User.verify(request)
 	current_user["name"] = User.get_name(current_user["uid"])
 
-	return render_template("cart.html", user=current_user)
+	cart = User.get_cart(current_user["uid"])
+
+	return render_template("cart.html", user=current_user, cart=cart)
 
 
 @app.get("/order")
@@ -223,13 +225,24 @@ def payment():
 	return render_template("payment.html", user=current_user)
 
 
-@app.get("/checkout.html")
+@app.get("/checkout")
 def checkout():
 	current_user = {}
 	current_user["uid"] = User.verify(request)
 	current_user["name"] = User.get_name(current_user["uid"])
 
 	return render_template("checkout.html", user=current_user)
+
+
+
+@app.get("/purchase")
+def purchase():
+	current_user = {}
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
+
+	return render_template("purchase.html", user=current_user)
+
 
 # API for checking if the server can verify the user
 @app.get("/api/verify")

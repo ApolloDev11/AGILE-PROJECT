@@ -34,6 +34,10 @@ function displayDish(menu, dish) {
         c.querySelector(".dish-amount").textContent = dish.amount;
     }
 
+    if (dish.price != null) {
+        c.querySelector(".dish-price").textContent = dish.price;
+    }
+
     dishList.appendChild(c);
 }
 
@@ -119,6 +123,8 @@ async function addToCart(dish) {
     }
 
     var name = dish.parentElement.querySelector(".dish-name").textContent;
+    var price = dish.parentElement.querySelector(".dish-price").textContent;
+    var image = dish.parentElement.querySelector(".dish-image").src;
 
 
 	let existingItem = cart.find(e => e.name == name);
@@ -127,40 +133,42 @@ async function addToCart(dish) {
 		cart.push({
 			type: "dish",
 			name,
-			cost,
-			icon,
+			price,
+			image,
 			amount: 1
 		});
 	}
     set(ref(database, `users/${auth.currentUser.uid}/cart`), cart);
 
-	if(existingItem) alert(`You now have ${amount} ${name}s in your cart!`);
+	if(existingItem) alert(`You now have ${existingItem.amount} ${name}s in your cart!`);
 	else alert(`Added ${name} to your cart!`);
     
     const addToCartButton = dish.parentElement.querySelector("button");
     addToCartButton.textContent = "Added";
-    renderCart(cart);
+    location.reload();
 }
-function renderCart(cart) {
-    const cartList = document.getElementById('cart-list'); // Ensure this element exists in your HTML
-    cartList.innerHTML = ""; // Clear existing items
 
-    if (cart.length === 0) {
-        cartList.innerHTML = "<p>No dishes in your cart.</p>";
-        return;
-    }
+// function renderCart(cart) {
+//     const cartList = document.getElementById('cart-list'); // Ensure this element exists in your HTML
+//     cartList.innerHTML = ""; // Clear existing items
 
-    cart.forEach(item => {
-        const cartItem = document.createElement('div');
-        cartItem.classList.add('cart-item');
-        cartItem.innerHTML = `
-            <img src="${item.icon}" alt="${item.name}" class="cart-item-image">
-            <p>${item.name}</p>
-            <button onclick="removeFromCart('${item.name}')">Remove</button>
-        `;
-        cartList.appendChild(cartItem); // Append to cart list
-    });
-}
+//     if (cart.length === 0) {
+//         cartList.innerHTML = "<p>No dishes in your cart.</p>";
+//         return;
+//     }
+
+//     cart.forEach(item => {
+//         const cartItem = document.createElement('div');
+//         cartItem.classList.add('cart-item');
+//         cartItem.innerHTML = `
+//             <img src="${item.icon}" alt="${item.name}" class="cart-item-image">
+//             <p>${item.name}</p>
+//             <button onclick="removeFromCart('${item.name}')">Remove</button>
+//         `;
+//         cartList.appendChild(cartItem); // Append to cart list
+//     });
+// }
+
 async function removeFromCart(name) {
     let cart = (await get(ref(database, `users/${auth.currentUser.uid}/cart`))).val();
 
@@ -173,6 +181,7 @@ async function removeFromCart(name) {
             
             renderCart(cart); // Re-render the cart
             alert(`${name} removed from your cart.`);
+            location.reload();
         }
     }
 }

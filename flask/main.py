@@ -246,6 +246,14 @@ def api_verify():
 	return api_response
 
 
+@app.get("/api/complete_order")
+def api_complete_order():
+	current_user = {}
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
+
+	User.make_order_from_cart(current_user["uid"])	
+
 
 # Custom functions #
 @app.template_filter("firebase_storage_url")

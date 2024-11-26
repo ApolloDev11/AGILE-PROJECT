@@ -27,3 +27,10 @@ def get_email(uid):
 	""" Gets the user email from the databse """
 	ref = db.reference(f"/users/{uid}/email")
 	return ref.get()
+
+
+def make_order_from_cart(uid):
+	""" Copy cart contents to make an order """
+	ref = db.reference(f"/users/{uid}/cart")
+
+	db.reference(f"/user/{uid}/orders").push(ref.get())

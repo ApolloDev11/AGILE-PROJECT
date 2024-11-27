@@ -35,3 +35,9 @@ def get_cart(uid):
 	ref = db.reference(f"/users/{uid}/cart")
 	print(uid)
 	return ref.get()
+
+def get_all_orders(uid):
+	""" Get all order information for a given user """
+
+	ref = db.reference(f"/users/{uid}/orders")
+	return ref.get()

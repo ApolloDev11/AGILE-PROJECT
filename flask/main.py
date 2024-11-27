@@ -252,7 +252,10 @@ def api_complete_order():
 	current_user["uid"] = User.verify(request)
 	current_user["name"] = User.get_name(current_user["uid"])
 
-	User.make_order_from_cart(current_user["uid"])	
+	User.make_order_from_cart(current_user["uid"])
+	User.reset_cart(current_user["uid"])
+
+	return redirect("/pastOrders")
 
 
 # Custom functions #

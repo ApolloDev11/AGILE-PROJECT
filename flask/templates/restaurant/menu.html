@@ -18,9 +18,9 @@
 				{% if not menu.dishes %}
 					<p>This menu has no dishes</p>
 				{% endif %}
-				{% for dish in menu.dishes: %}
-					<div class="dish" data-dish-index="{{ loop.index0 }}">
-						<img class="dish-image" src="{{ ('restaurants/'~user['uid']~'/menus/'~menu_index~'/'~loop.index0~'/image') | firebase_storage_url }}">
+				{% for dish_id, dish in menu.dishes.items(): %}
+					<div class="dish" data-restaurant="{{ restaurant_id }}" data-menu="{{ menu_id }}" data-dish="{{ dish_id }}">
+						<img class="dish-image" src="{{ ('restaurants/'~restaurant_id~'/menus/'~menu_id~'/'~dish_id~'/image') | firebase_storage_url }}">
 						<div>
 							<h3 class="dish-title">{{ dish.name }}</h3>
 							<p>{{ "€%.2f" % dish.price }}</p>

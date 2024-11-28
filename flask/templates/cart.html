@@ -1,33 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Cart</title>
-    <link rel="stylesheet" href="/css/cart.css">
-    <script src="js/firebase.js"></script>
-    <script src="js/dish.js"></script> 
-</head>
-<body>
-    {% include "header.html" %}
-    <main>
-        <h1>Your Cart</h1>
-        <div class="dishes-list-section">
-            {% for dish in cart %}
-            <div class="dish">
-                <img class="dish-image" src="#">
-                <div>
-                    <p>Dish Name: <span class="dish-name">{{ dish.name }}</span></p>
-                    <p>Amount: <span class="dish-amount">{{ dish.amount }}</span></p>
-                    <button class="remove-button" onclick="removeFromCart(this)">Remove</button>
-                    <button onclick="incrementDish(this);">+</button>
-                    <button onclick="decrementDish(this);">-</button>
-                </div>
-                <p class="dish-price">{{ dish.price }}</p>
-            </div>
-            {% endfor %}
-        </div>
-        <button onclick="location.href = '/order';">Finalise order</button>
-        <button onclick="redirectToPastOrders()">Past Orders</button>
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Your Cart</title>
+		<link rel="stylesheet" href="/css/cart.css">
+		<script src="/js/firebase.js"></script>
+		<script src="/js/cart.js"></script> 
+	</head>
+	<body>
+		{% include "header.html" %}
+		<main>
+			<h1>Your Cart</h1>
+			<div id="dish-list">
+				{% if not cart %}
+					<p>Your cart is empty</p>
+				{% endif %}
+				{% for item_id, item in cart.items() %}
+				<div class="dish" id="{{ item_id }}">
+					<img class="dish-image" src="{{ ('restaurants/'~item['restaurant']~'/menus/'~item['menu']~'/'~item['dish']~'/image') | firebase_storage_url }}">
+					<div>
+						<h3 class="dish-name">{{ item.name }}</h3>
+						<p class="dish-amount">{{ item.amount }}</p>
+						<button class="remove-button" onclick="removeFromCart('{{ item_id }}')">Remove</button>
+						<button onclick="decrementDish('{{ item_id }}')"{% if item.amount == 1 %} disabled {% endif %}> - </button>
+						<button onclick="incrementDish('{{ item_id }}')"> + </button>
+					</div>
+					<p class="dish-price">{{ item.price }}</p>
+				</div>
+				{% endfor %}
+			</div>
+			<button onclick="redirectToPastOrders()">Past Orders</button>
+			<button onclick="finaliseOrder()" hidden>Finalise order</button>
+		</main>
+	</body>
 </html>

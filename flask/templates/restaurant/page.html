@@ -22,12 +22,12 @@
 				{% if not restaurant.menus %}
 					<p>This restaurant has no menus</p>
 				{% endif %}
-				{% for menu in restaurant.menus: %}
-					<a class="menu" href="/restaurant/{{ restaurant_id }}/menus/{{ loop.index0 }}">
-						<img class="menu-image" src="{{ ('restaurants/'~restaurant_id~'/menus/'~loop.index0~'/image') | firebase_storage_url }}">
+				{% for menu_id in restaurant.menus: %}
+					<a class="menu" href="/restaurant/{{ restaurant_id }}/menus/{{ menu_id }}">
+						<img class="menu-image" src="{{ ('restaurants/'~restaurant_id~'/menus/'~menu_id~'/image') | firebase_storage_url }}">
 						<div>
-							<h3 class="menu-title">{{ menu.name }}</h3>
-							<p>{{ menu.dishes | length }} {{ "dish" | plural(menu.dishes) }} available</p>
+							<h3 class="menu-title">{{ restaurant.menus[menu_id].name }}</h3>
+							<p>{{ restaurant.menus[menu_id].dishes | length }} {{ "dish" | plural(restaurant.menus[menu_id].dishes) }} available</p>
 						</div>
 					</a>
 				{% endfor %}

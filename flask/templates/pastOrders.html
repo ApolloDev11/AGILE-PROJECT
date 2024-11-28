@@ -5,12 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Past Orders</title>
     <link rel="stylesheet" href="/css/cart.css">
-    <script src="/js/pastOrders.js" defer></script>
 </head>
 <body>
-    <h2>Past Orders</h2>
+    {% include "header.html" %}
+    <h2>Your Orders</h2>
     <div id="orders-container">
-        <p>Loading past orders...</p>
+        {% for key, order in orders.items() %}
+        <div class="order">
+            <p>Order Date: {{ order.date }}</p>
+            <p>Order Status: {{ order.status }}</p>
+            <p>Delivery driver: {{ order["delivery-driver"] }}</p>
+            {% for dish in order.contents %}
+            <div class="dish">
+                <img class="dish-image" src="#" style="width: 50px;">
+                <p>Restaurant ID: {{ dish.restaurant }}</p>
+                <p>Menu ID: {{ dish.menu }}</p>
+                <p>Dish ID: {{ dish.dish }}</p>
+                <hr>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% endfor %}
     </div>
 </body>
 </html>

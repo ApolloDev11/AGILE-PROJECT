@@ -33,5 +33,13 @@ def get_cart(uid):
 	""" Get the cart of the user """
 	
 	ref = db.reference(f"/users/{uid}/cart")
-	print(uid)
-	return ref.get()
+	cart = ref.get() or {}
+
+	for item_id, item in cart.items():
+		item_ref = db.reference(f"/restaurants/{item['restaurant']}/menus/{item['menu']}/dishes/{item['dish']}")
+		item_data = item_ref.get()
+
+		# Add the item data to the cart
+		cart[item_id]["name"] = item_data["name"]
+
+	return cart

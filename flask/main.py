@@ -212,7 +212,7 @@ def dishes():
 	current_user["uid"] = User.verify(request)
 	current_user["name"] = User.get_name(current_user["uid"])
 
-	return render_template("dishes.html", user=current_user)
+	return render_template("dishes.html", user=current_user, )
 
 @app.get("/payment")
 def payment():
@@ -244,6 +244,17 @@ def api_verify():
 		api_response["error"] = str(e)
 		
 	return api_response
+
+@app.get("/delivery")
+def delivery():
+	current_user = {}
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
+	ref = db.reference(f"/drivers")
+	
+	drivers = ref.get()
+
+	return render_template("delivery.html", user=current_user, driver=drivers)
 
 
 

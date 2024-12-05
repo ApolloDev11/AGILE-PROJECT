@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/restaurant/admin/main.css">
+    <script src="/js/common.js" defer></script>
+    <script src="/js/firebase.js" defer></script>
+	<script src="/js/restaurant/admin/main.js" defer></script>
+    <title>Delivery</title>
+</head>
+<body>
+    {% include "header.html" %}
+
+    {% for driver in drivers.items() %}
+    {{ driver.name }}
+    <div>
+        <h2>Assign Delivery Person</h2>
+        <button onclick="assignDriver()">Assign</button>
+    </div>
+
+    {% endfor %}
+</body>
+</html>

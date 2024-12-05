@@ -27,3 +27,6 @@ def get_email(uid):
 	""" Gets the user email from the databse """
 	ref = db.reference(f"/users/{uid}/email")
 	return ref.get()
+
+
+	

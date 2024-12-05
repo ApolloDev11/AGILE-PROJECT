@@ -1,5 +1,6 @@
 from firebase_admin import auth, db
 import status as Status
+import datetime
 
 def verify(request):
 	""" Verifies the user with Firebase and returns their uid """
@@ -27,3 +28,21 @@ def get_email(uid):
 	""" Gets the user email from the databse """
 	ref = db.reference(f"/users/{uid}/email")
 	return ref.get()
+
+
+def make_order_from_cart(uid):
+	""" Copy cart contents to make an order """
+	ref = db.reference(f"/users/{uid}/cart")
+
+	order = db.reference(f"/users/{uid}/orders").push()
+
+	order.child("contents").set(ref.get())
+	order.child("date").set(datetime.datetime.now().__str__())
+	order.child("delivery-driver").set("Unassigned")
+	order.child("status").set("In Progress")
+
+
+def make_order_from_cart(uid):
+	""" Delete users cart """
+	ref = db.reference(f"/users/{uid}/cart")
+	ref.delete()

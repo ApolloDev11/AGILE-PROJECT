@@ -6,19 +6,26 @@
     <link rel="stylesheet" href="/css/restaurant/admin/main.css">
     <script src="/js/common.js" defer></script>
     <script src="/js/firebase.js" defer></script>
-	<script src="/js/restaurant/admin/main.js" defer></script>
     <title>Delivery</title>
 </head>
 <body>
     {% include "header.html" %}
 
-    {% for driver in drivers.items() %}
-    {{ driver.name }}
-    <div>
-        <h2>Assign Delivery Person</h2>
-        <button onclick="assignDriver()">Assign</button>
+    <h1>Assign Delivery Driver</h1>
+
+    <div id="driver-list">
+        {% for driver_index, driver in drivers.items() %}
+        <div class="driver">
+            <p><strong>Name:</strong> {{ driver.name }}</p>
+            <p><strong>Phone:</strong> {{ driver.phone }}</p>
+            <form action="/assign_driver" method="POST">
+                <input type="hidden" name="driver_index" value="{{ driver_index }}">
+                <button type="submit">Assign</button>
+            </form>
+        </div>
+        <hr>
+        {% endfor %}
     </div>
 
-    {% endfor %}
 </body>
 </html>

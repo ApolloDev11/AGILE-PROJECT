@@ -22,6 +22,10 @@ function editRestaurantDetails() {
 	document.location.href = "/restaurant/admin/details";
 }
 
+function delivery() {
+	document.location.href = "/delivery";
+}
+
 function openRestaurantPage() {
 	// Use uid as restaurant ID
 	const restaurantID = auth.currentUser.uid;

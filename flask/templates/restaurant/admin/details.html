@@ -33,6 +33,7 @@
 				<label for="restaurant-image">Image:</label>
 				<input type="file" id="restaurant-image" accept="image/png, image/jpeg">
 
+
 				<h3>Contact details</h3>
 
 				<label for="restaurant-phone">Phone:</label>
@@ -40,12 +41,30 @@
 
 				<label for="restaurant-email">Email:</label>
 				<input type="tel" id="restaurant-email" placeholder="name@example.com" value="{{ restaurant.email }}">
+				
+				
+				<h3>Opening hours</h3>
+
+				{% set days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] %}
+				{% for day in days %}
+					{% set times = opening_hours.get(day.lower(), ["09:00", "17:00"]) %}
+					<div class="opening-hours-day" data-day="{{ day|lower }}">
+						<h4>{{ day }}</h4>
+						<label for="restaurant-{{ day|lower }}-open">Open: </label>
+						<input type="checkbox" id="restaurant-{{ day|lower }}-open" class="day-checkbox" {% if day|lower in opening_hours %}checked{% endif %}>
+						<div class="day-hours">
+							<input type="time" value="{{ times[0] }}">
+							<label> to </label>
+							<input type="time" value="{{ times[1] }}">
+						</div>
+					</div>
+				{% endfor %}
 
 				<br>
 				{% if restaurant %}
 					<button onclick="saveRestaurantDetails()">Update details</button>
 				{% else %}
-					<button onclick="saveRestaurantDetails(true)">Save details</button>
+					<button onclick="saveRestaurantDetails(true)">Open restaurant</button>
 				{% endif %}
 			</form>
 		</main>

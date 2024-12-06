@@ -161,7 +161,7 @@ def restaurant_admin():
 
 	if not managed_restaurant:
 		# User's restaurant does not exist, show setup page
-		return render_template("restaurant/admin/details.html", user=current_user, restaurant=None)
+		return render_template("restaurant/admin/details.html", user=current_user, restaurant=None, opening_hours={})
 	
 	# Show main restaurant admin page
 	return render_template("restaurant/admin/main.html", user=current_user, restaurant=managed_restaurant)
@@ -183,7 +183,7 @@ def restaurant_admin_details():
 		return redirect("/restaurant/admin")
 	
 	# Show detail editing page
-	return render_template("restaurant/admin/details.html", user=current_user, restaurant=managed_restaurant)
+	return render_template("restaurant/admin/details.html", user=current_user, restaurant=managed_restaurant, opening_hours=managed_restaurant["hours"])
 
 
 @app.get("/restaurant/admin/menu/<menu_id>")

@@ -47,7 +47,9 @@ def cart():
 	current_user["uid"] = User.verify(request)
 	current_user["name"] = User.get_name(current_user["uid"])
 
-	return render_template("cart.html", user=current_user)
+	cart = User.get_cart(current_user["uid"])
+
+	return render_template("cart.html", user=current_user, cart=cart)
 
 
 @app.get("/order")
@@ -123,18 +125,12 @@ def restaurant_page(restaurant_id):
 	return render_template("restaurant/page.html", user=current_user, restaurant_id=restaurant_id, restaurant=current_restaurant)
 
 
-@app.get("/restaurant/<restaurant_id>/menus/<menu_index>")
-def restaurant_menu_page(restaurant_id, menu_index):
+@app.get("/restaurant/<restaurant_id>/menus/<menu_id>")
+def restaurant_menu_page(restaurant_id, menu_id):
 	# Verify user and get details
 	current_user = {}
 	current_user["uid"] = User.verify(request)
 	current_user["name"] = User.get_name(current_user["uid"])
-
-	# Convert menu index to integer
-	try:
-		menu_index = int(menu_index)
-	except:
-		raise Status.NotFound("Menu does not exist")
 
 	# Get restaurant from DB
 	current_restaurant = Restaurant.get(restaurant_id)
@@ -142,10 +138,14 @@ def restaurant_menu_page(restaurant_id, menu_index):
 	# 404 error if restaurant does not exist
 	if not current_restaurant:
 		raise Status.NotFound
+	
+	# 404 error if restaurant does not exist
+	if menu_id not in current_restaurant["menus"]:
+		raise Status.NotFound
 
-	menu = current_restaurant["menus"][menu_index]
+	menu = current_restaurant["menus"][menu_id]
 
-	return render_template("restaurant/menu.html", user=current_user, restaurant_id=restaurant_id, restaurant=current_restaurant, menu_index=menu_index, menu=menu)
+	return render_template("restaurant/menu.html", user=current_user, restaurant_id=restaurant_id, restaurant=current_restaurant, menu_id=menu_id, menu=menu)
 
 
 
@@ -186,8 +186,8 @@ def restaurant_admin_details():
 	return render_template("restaurant/admin/details.html", user=current_user, restaurant=managed_restaurant)
 
 
-@app.get("/restaurant/admin/menu/<menu_index>")
-def restaurant_admin_menu(menu_index):
+@app.get("/restaurant/admin/menu/<menu_id>")
+def restaurant_admin_menu(menu_id):
 	# Verify user and get details
 	current_user = {}
 	current_user["uid"] = User.verify(request)
@@ -195,15 +195,14 @@ def restaurant_admin_menu(menu_index):
 
 	# Get user's restaurant from DB
 	managed_restaurant = Restaurant.get(current_user["uid"])
+
+	# 404 error if restaurant does not exist
+	if menu_id not in managed_restaurant["menus"]:
+		raise Status.NotFound
+		
+	menu = managed_restaurant["menus"][menu_id]
 	
-	# Get menu of index
-	try:
-		menu_index = int(menu_index)
-		menu = managed_restaurant["menus"][menu_index]
-	except:
-		raise Status.NotFound("Menu does not exist")
-	
-	return render_template("restaurant/admin/menu.html", user=current_user, restaurant=managed_restaurant, menu_index=menu_index, menu=menu)
+	return render_template("restaurant/admin/menu.html", user=current_user, restaurant=managed_restaurant, menu_id=menu_id, menu=menu)
 
 
 @app.get("/dishes")
@@ -223,13 +222,32 @@ def payment():
 	return render_template("payment.html", user=current_user)
 
 
-@app.get("/checkout.html")
+@app.get("/checkout")
 def checkout():
 	current_user = {}
 	current_user["uid"] = User.verify(request)
 	current_user["name"] = User.get_name(current_user["uid"])
 
 	return render_template("checkout.html", user=current_user)
+
+
+@app.get("/pastOrders")
+def past_orders():
+	current_user = {}
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
+
+	return render_template("pastOrders.html", user=current_user, orders=User.get_all_orders(current_user["uid"]))
+
+
+@app.get("/purchase")
+def purchase():
+	current_user = {}
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
+
+	return render_template("purchase.html", user=current_user)
+
 
 # API for checking if the server can verify the user
 @app.get("/api/verify")

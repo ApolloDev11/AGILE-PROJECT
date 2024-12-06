@@ -41,8 +41,27 @@ def make_order_from_cart(uid):
 	order.child("delivery-driver").set("Unassigned")
 	order.child("status").set("In Progress")
 
-
-def make_order_from_cart(uid):
-	""" Delete users cart """
-	ref = db.reference(f"/users/{uid}/cart")
+	# Delete cart
 	ref.delete()
+
+
+def get_cart(uid):
+	""" Get the cart of the user """
+	
+	ref = db.reference(f"/users/{uid}/cart")
+	cart = ref.get() or {}
+
+	for item_id, item in cart.items():
+		item_ref = db.reference(f"/restaurants/{item['restaurant']}/menus/{item['menu']}/dishes/{item['dish']}")
+		item_data = item_ref.get()
+
+		# Add the item data to the cart
+		cart[item_id]["name"] = item_data["name"]
+
+	return cart
+
+def get_all_orders(uid):
+	""" Get all order information for a given user """
+
+	ref = db.reference(f"/users/{uid}/orders")
+	return ref.get()

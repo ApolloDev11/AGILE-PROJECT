@@ -5,10 +5,8 @@ async function addDish() {
 	
 	// Use uid as restaurant ID
 	const restaurantID = auth.currentUser.uid;
-	// Get menu index
-	const menuIndex = document.getElementById("menu-index").value
-	// Get next dish index
-	const dishIndex = document.querySelectorAll(".dish")?.length || 0
+	// Get menu ID
+	const menuID = document.getElementById("menu-id").value
 
 	try {
 		// Get title of new dish
@@ -28,13 +26,16 @@ async function addDish() {
 		// Ensure image is 250×250 or larger
 		await validateImage(file);
 
-		// Upload image to Firebase
-		let imageRef = storageRef(storage, `/restaurants/${restaurantID}/menus/${menuIndex}/${dishIndex}/image`);
-		await uploadBytes(imageRef, file);
-
 		// Save dish data to Firebase
-		let dishDataRef = ref(database, `/restaurants/${restaurantID}/menus/${menuIndex}/dishes/${dishIndex}`)
-		set(dishDataRef, {name: title, price});
+		let dishesRef = ref(database, `/restaurants/${restaurantID}/menus/${menuID}/dishes`)
+		let newDishRef = push(dishesRef);
+		set(newDishRef, {name: title, price});
+
+		let dishID = newDishRef.key;
+
+		// Upload image to Firebase
+		let imageRef = storageRef(storage, `/restaurants/${restaurantID}/menus/${menuID}/${dishID}/image`);
+		await uploadBytes(imageRef, file);
 
 		// Reload page
 		document.location.reload()

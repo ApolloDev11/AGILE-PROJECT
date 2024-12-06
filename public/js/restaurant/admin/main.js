@@ -11,7 +11,6 @@ async function closeRestaurant() {
 
 	} catch(error) {
 		return alert(error || error.message)
-		console.error(error)
 	}
 
 	// Redirect to home page
@@ -34,8 +33,6 @@ async function addMenu() {
 	
 	// Use uid as restaurant ID
 	const restaurantID = auth.currentUser.uid;
-	// Get next menu index
-	const menuIndex = document.querySelectorAll(".menu")?.length || 0
 
 	try {
 		// Get title of new menu
@@ -50,17 +47,17 @@ async function addMenu() {
 
 		// Ensure image is 250×250 or larger
 		await validateImage(file);
+		// Save menu data to Firebase
+		let menusRef = ref(database, `/restaurants/${restaurantID}/menus`);
+		let newMenuRef = push(menusRef);
+		await set(newMenuRef, {name: title});
 
 		// Upload image to Firebase
-		let imageRef = storageRef(storage, `/restaurants/${restaurantID}/menus/${menuIndex}/image`);
+		let imageRef = storageRef(storage, `/restaurants/${restaurantID}/menus/${newMenuRef.key}/image`);
 		await uploadBytes(imageRef, file);
 
-		// Save menu data to Firebase
-		let menuDataRef = ref(database, `/restaurants/${restaurantID}/menus/${menuIndex}`)
-		set(menuDataRef, {name: title});
-
 		// Open new menu
-		document.location.href = `/restaurant/admin/menu/${menuIndex}`
+		document.location.href = `/restaurant/admin/menu/${newMenuRef.key}`
 	} catch(error) {
 		document.getElementById("add-menu-button").disabled = false;
 		alert(error.message || error)
@@ -68,12 +65,12 @@ async function addMenu() {
 	}
 }
 
-async function deleteMenu(menuIndex) {
+async function deleteMenu(menuID) {
 	// Use uid as restaurant ID
 	const restaurantID = auth.currentUser.uid;
 	
 	// Get menu at index
-	let menuRef = ref(database, `/restaurants/${restaurantID}/menus/${menuIndex}`);
+	let menuRef = ref(database, `/restaurants/${restaurantID}/menus/${menuID}`);
 	let menu = await get(menuRef);
 	menu = menu.val();
 
@@ -92,7 +89,7 @@ async function deleteMenu(menuIndex) {
 	location.reload();
 };
 
-function editMenu(menuIndex) {
+function editMenu(menuID) {
 	// Open menu page
-	document.location.href = `/restaurant/admin/menu/${menuIndex}`
+	document.location.href = `/restaurant/admin/menu/${menuID}`
 }

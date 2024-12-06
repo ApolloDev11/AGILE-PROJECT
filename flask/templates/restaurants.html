@@ -12,13 +12,18 @@
 		<main>
 			<h2>Restaurants</h2>
 			<hr>
+
+			<div class="search-bar">
+				<input type="text" id="search-input" placeholder="Search by address...">
+			</div>
+
 			<div id="restaurant-list">
 				{% if not restaurants %}
 					<p>No restaurants exist</p>
 				{% endif %}
 				{% for restaurant_id, restaurant in restaurants.items() %}
-					<a href="/restaurant/{{ restaurant_id }}">
-						<img src="{{ ('restaurants/'+restaurant_id+'/image') | firebase_storage_url }}">
+					<a href="/restaurant/{{ restaurant_id }}" class="restaurant-item" data-address="{{ restaurant.address }}">
+						<img src="{{ ('restaurants/'+restaurant_id+'/image') | firebase_storage_url }}" alt="{{ restaurant.name }}">
 						<div>
 							<h3>{{ restaurant.name }}</h3>
 							<p>
@@ -31,5 +36,24 @@
 				{% endfor %}
 			</div>
 		</main>
+
+		<!-- JavaScript for Search Functionality -->
+		<script>
+			document.getElementById('search-input').addEventListener('input', function () {
+				const query = this.value.toLowerCase();
+				const restaurants = document.querySelectorAll('.restaurant-item');
+			
+				restaurants.forEach((restaurant) => {
+					const address = restaurant.getAttribute('data-address').toLowerCase();
+
+					if (address.includes(query)) {
+						restaurant.style.display = 'flex';
+					} else {
+						restaurant.style.display = 'none';
+					}
+				});
+			});
+			
+		</script>
 	</body>
 </html>

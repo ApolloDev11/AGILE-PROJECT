@@ -33,14 +33,14 @@
 				{% if not restaurant.menus %}
 				<p>This restaurant has no menus</p>
 				{% endif %}
-				{% for menu in restaurant.menus: %}
-					<div class="menu" data-menu-index="{{ loop.index0 }}">
-						<img class="menu-image" src="{{ ('restaurants/'~user['uid']~'/menus/'~loop.index0~'/image') | firebase_storage_url }}">
+				{% for menu_id, menu in restaurant.menus.items(): %}
+					<div class="menu" data-menu-id="{{ menu_id }}">
+						<img class="menu-image" src="{{ ('restaurants/'~user['uid']~'/menus/'~menu_id~'/image') | firebase_storage_url }}">
 						<div>
 							<h3 class="menu-title">{{ menu.name }}</h3>
 							<p>{{ menu.dishes | length }} {{ "dish" | plural(menu.dishes) }}</p>
-							<button onclick="editMenu('{{loop.index0 }}')">Edit menu</button>
-							<button onclick="deleteMenu('{{loop.index0 }}')">Delete menu</button>
+							<button onclick="editMenu('{{menu_id }}')">Edit menu</button>
+							<button onclick="deleteMenu('{{menu_id }}')">Delete menu</button>
 						</div>
 					</div>
 				{% endfor %}

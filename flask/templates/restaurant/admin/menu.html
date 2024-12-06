@@ -16,7 +16,7 @@
 			<hr>
 			<section id="dish-add-section">
 				<h3>Add dish</h3>
-				<input id="menu-index" type="hidden" value="{{ menu_index }}">
+				<input id="menu-id" type="hidden" value="{{ menu_id }}">
 				<label for="dish-title-input">Item name</label>
 				<input id="dish-title-input" type="text" placeholder="Name">
 				<label for="dish-price-input">Item price</label>
@@ -30,13 +30,13 @@
 				{% if not menu.dishes %}
 					<p>This menu has no dishes</p>
 				{% endif %}
-				{% for dish in menu.dishes: %}
-					<div class="dish" data-dish-index="{{ loop.index0 }}">
-						<img class="dish-image" src="{{ ('restaurants/'~user['uid']~'/menus/'~menu_index~'/'~loop.index0~'/image') | firebase_storage_url }}">
+				{% for dish_id, dish in menu.dishes.items(): %}
+					<div class="dish" data-dish-id="{{ dish_id }}">
+						<img class="dish-image" src="{{ ('restaurants/'~user['uid']~'/menus/'~menu_id~'/'~dish_id~'/image') | firebase_storage_url }}">
 						<div>
 							<h3 class="dish-title">{{ dish.name }}</h3>
 							<p>{{ "€%.2f" % dish.price }}</p>
-							<button onclick="deleteDish('{{ menu_index }}', '{{ loop.index0 }}')">Delete dish</button>
+							<button onclick="deleteDish('{{ menu_id }}', '{{ dish_id }}')">Delete dish</button>
 						</div>
 					</div>
 				{% endfor %}

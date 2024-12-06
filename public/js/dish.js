@@ -39,11 +39,13 @@ function displayDish(menu, dish) {
 
 function loopThroughDishes(restaurant, callback) {
     for (const [id, data] of Object.entries(restaurant)) {
-        data.menus.forEach(menu => {
-            menu.dishes.forEach(dish => {
-                callback(menu, dish);
-            });
-        });
+        if ("menus" in data)
+            for (const [id2, menu] of Object.entries(data.menus)) {
+                if ("dishes" in menu)
+                    for (const [id2, dish] of Object.entries(menu.dishes)) {
+                        callback(menu, dish);
+                    }
+            }
     }
 }
 
@@ -89,17 +91,16 @@ function filterDishesByRestaurant() {
     // Clear previous results
     dishList.innerHTML = '';
 
-    // Loop through restaurant data and filter by restaurant
-    for (const [id, restaurant] of Object.entries(restaurantData)) {
-        if (restaurant.name.toLowerCase() === selectedRestaurant) {
-            // Display all dishes in the selected restaurant's menus
-            restaurant.menus.forEach(menu => {
-                menu.dishes.forEach(dish => {
-                    displayDish(menu, dish);
-                });
-            });
-        }
-    };
+	// Loop through restaurant data and filter by restaurant
+	for (const [id, data] of Object.entries(restaurantData)) {
+        if (data.name.toLowerCase() === selectedRestaurant && "menus" in data)
+            for (const [id2, menu] of Object.entries(data.menus)) {
+                if ("dishes" in menu)
+                    for (const [id2, dish] of Object.entries(menu.dishes)) {
+						displayDish(menu, dish);
+                    }
+            }
+    }
 
     if (dishList.innerHTML == '') {
         alert("No dishes found...");

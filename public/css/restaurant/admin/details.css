@@ -7,3 +7,44 @@ h3 {
 h3 + label {
 	margin-top: 0;
 }
+
+h4 {
+	margin-bottom: 0;
+}
+
+.opening-hours-day:first-of-type h4 {
+	margin-top: 0.5em;
+}
+
+.opening-hours-day label, .opening-hours-day input[type=checkbox] {
+	display: inline;
+	vertical-align: middle;
+}
+
+input[type=checkbox]:not(:checked) + .day-hours {
+	height: 0;
+	pointer-events: none;
+	opacity: 0;
+	scale: 1 0;
+}
+
+.day-hours {
+	display: flex;
+	align-items: center;
+	margin-top: 0.5em;
+	transition: 250ms height, 250ms opacity, 250ms scale;
+	height: 1.5em;
+	transform-origin: top;
+}
+
+.day-hours input {
+	padding: 0.25em 0.5em
+}
+
+.day-hours label {
+	margin: 0 0.5em;
+}
+
+button {
+	margin-bottom: 1em;
+}

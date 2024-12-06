@@ -8,10 +8,8 @@
 	margin-bottom: 1em;
 }
 
-#restaurant-admin-button {
-	float: right;
-	position: relative;
-	top: -6em;
+h3 + ul, h3 + p {
+	margin-top: -1em;
 }
 
 #menu-list .menu {

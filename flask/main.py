@@ -58,7 +58,9 @@ def order():
 	current_user["uid"] = User.verify(request)
 	current_user["name"] = User.get_name(current_user["uid"])
 
-	return render_template("order.html", user=current_user)
+	cart = User.get_cart(current_user["uid"])
+	
+	return render_template("order.html", user=current_user, cart=cart)
 
 
 @app.get("/register")
@@ -274,9 +276,9 @@ def delivery():
 	ref = db.reference("/drivers")
 	drivers = ref.get()
 
-	orders = User.get_orders(current_user["uid"])
+	orders = User.get_all_orders_for_restaurant(current_user["uid"])
 
-	return render_template("delivery.html", user=current_user, drivers=drivers, orders=orders)
+	return render_template("restaurant/admin/delivery.html", user=current_user, drivers=drivers, orders=orders)
 	
 @app.post("/assign_driver")
 def assign_driver():
@@ -310,7 +312,6 @@ def api_complete_order():
 	current_user["name"] = User.get_name(current_user["uid"])
 
 	User.make_order_from_cart(current_user["uid"])
-	User.reset_cart(current_user["uid"])
 
 	return redirect("/pastOrders")
 

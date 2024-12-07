@@ -163,11 +163,12 @@ ul {
 }
 
 form {
-	display: flex;
-	gap: 1em;
-	align-items: center;
-	justify-content: center;
-	margin-bottom: 2em;
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2em;
+    flex-direction: column;
 }
 
 input, select, button {

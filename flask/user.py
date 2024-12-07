@@ -72,3 +72,53 @@ def get_all_orders(uid):
 
 	ref = db.reference(f"/users/{uid}/orders")
 	return ref.get()
+
+
+def get_all_orders_for_restaurant(id):
+	""" Get all the orders for a restaurant """
+
+	users = db.reference("/users").get()
+
+	order_list = []
+
+	for user_id, user in users.items():
+		orders = db.reference(f"/users/{user_id}/orders").get()
+
+		if orders == None:
+			continue
+
+		for order_id, order in orders.items():
+			contents = db.reference(f"/users/{user_id}/orders/{order_id}/contents").get()
+
+	
+			if contents == None:
+				continue
+			
+
+			for_restaurant = False 
+
+			# Do dishes
+			for item_id, item in contents.items():
+				if item["type"] == "dish" and item["restaurant"] == id:
+					for_restaurant = True
+
+					dish = db.reference(f"/restaurants/{item['restaurant']}/menus/{item['menu']}/dishes/{item['dish']}").get()
+
+					item["name"] = dish["name"]
+					item["price"] = dish["price"]
+
+					order_list.append(item)
+
+
+			# Do ingredients
+			# If there is a single dish for this restaurant, but maybe the
+			#   order has more dishes, then only show the dishes for the 
+			#   particular restuarant, but STILL list out ALL the ingredients
+			#   in the order. The ingredients are global and are not tied to
+			#   a specific restaurant. This sucks
+			if for_restaurant:
+				for item_id, item in contents.items():
+					if item["type"] == "ingredient":
+						order_list.append(item)
+
+	return order_list

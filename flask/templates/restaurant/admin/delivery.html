@@ -13,19 +13,20 @@
 
     <h1>Assign Delivery Driver</h1>
 
-    <div id="driver-list">
-        {% for driver_index, driver in drivers.items() %}
-        <div class="driver">
-            <p><strong>Name:</strong> {{ driver.name }}</p>
-            <p><strong>Phone:</strong> {{ driver.phone }}</p>
+    {% for order in orders %}
+        {% if order.type == "dish" %}
+            <h1>{{ order.name }} x {{ order.amount }}</h1>
             <form action="/assign_driver" method="POST">
-                <input type="hidden" name="driver_index" value="{{ driver_index }}">
-                <button type="submit">Assign</button>
+                <select id="drivers-select" name="drivers">
+                {% for driver in drivers %}
+                    <option value="{{ driver.name }}">{{ driver.name }}</option>
+                {% endfor %}
+            </select>
+            <form action="/update_status" method="POST">
+                <input type="text" name="status" value="{{ order.status }}" />
+                <button type="submit">Update Status</button>
             </form>
-        </div>
-        <hr>
-        {% endfor %}
-    </div>
-
+        {% endif %}
+    {% endfor %}
 </body>
 </html>

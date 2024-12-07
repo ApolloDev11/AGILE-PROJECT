@@ -31,7 +31,9 @@
 				{% endfor %}
 			</div>
 			<button onclick="redirectToPastOrders()">Past Orders</button>
-			<button onclick="finaliseOrder()" hidden>Finalise order</button>
+			{% if cart.items() | length > 0 %}
+			<button onclick="finaliseOrder()">Finalise order</button>
+			{% endif %}
 		</main>
 	</body>
 </html>

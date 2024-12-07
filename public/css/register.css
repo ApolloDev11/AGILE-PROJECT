@@ -1,45 +1,108 @@
-@import url("/css/main.css");
 
 body {
-	background-image: url("/images/background.png");
-	background-size: cover; 
-	background-position: center; 
-	background-repeat: no-repeat; 
-	background-attachment: fixed;
-	font-family: Poppins, sans-serif;
-	padding: 0;
-	margin: 0;
+    background-image: url("/images/background.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
 form {
-	background-color: white;
-	
-	border: 2px solid #1B1B1B;
-	box-shadow: 6px 6px 6px #1B1B1B;
-	border-radius: 16px;
-
-	margin: auto;
-	margin-top: 10em;
-	max-width: 30em;
-	padding: 2em;
-	padding-top: 1em;
+    background-color: #fff;
+    border: 2px solid #1B1B1B;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+    padding: 2rem;
+    text-align: center;
 }
 
-input {
-	padding-bottom: 1em;
+form h1 {
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    color: #333;
+}
+
+form label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    color: #555;
+    text-align: left;
+}
+
+form input {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease-in-out;
+}
+
+form input:focus {
+    outline: none;
+    border-color: #e052a0;
+    box-shadow: 0 0 8px rgba(224, 82, 160, 0.4);
 }
 
 #login-button {
-	width: 10em;
-	background-image: linear-gradient(to right, #e052a0, #f15c41);
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background-image: linear-gradient(to right, #e052a0, #f15c41);
+    border: none;
+    border-radius: 8px;
+	cursor: pointer;
 }
 
+
 #help-text {
-	margin-top: 6em;
-	color: white;
-	text-align: center;
+    margin-top: 2rem;
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+    line-height: 2;
 }
 
 #help-text a {
-	color: white;
+    color: #f15c41;
+    font-weight: bold;
+    text-decoration: none;
+
 }
+
+
+#help-text a:hover {
+    color: #e052a0;
+}
+
+.gender-option,
+.disabilities-option {
+    margin-bottom: 1rem; 
+    display: flex;
+    align-items: center; 
+}
+
+
+.gender-option label,
+.disabilities-option label {
+    color: #555;
+    font-size: 1rem;
+    margin-right: 2rem; 
+}
+

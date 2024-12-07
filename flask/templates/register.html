@@ -34,6 +34,20 @@
 				<input type="checkbox" id="is-owner" name="is-owner" onclick="toggleOwnerFields()" />
 			</div>
 
+			<div class="gender-option">
+				<label>Gender</label><br>
+				<input type="radio" id="gender-male" name="gender" value="male" required />
+				<label for="gender-male">Male</label>
+				<input type="radio" id="gender-female" name="gender" value="female" required />
+				<label for="gender-female">Female</label>
+			</div>
+
+
+			<div class="disabilities-option">
+				<label for="has-disabilities">Do you have any disabilities?</label>
+				<input type="checkbox" id="has-disabilities" name="has-disabilities" />
+			</div>
+
 			<div id="owner-fields" style="display: none;">
 				<label for="address">Restaurant Address</label>
 				<input type="text" id="address" name="address" placeholder="123 Main St" />

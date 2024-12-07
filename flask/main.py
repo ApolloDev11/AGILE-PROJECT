@@ -77,9 +77,11 @@ def account():
 	current_user["uid"] = User.verify(request)
 	current_user["name"] = User.get_name(current_user["uid"])
 
-	# Get extra details needed for account page
 	current_user["email"] = User.get_email(current_user["uid"])
 	current_user["manages_restaurant"] = Restaurant.get(current_user["uid"]) != {}
+	# below gives error 500 idk why
+	 # current_user["gender"] = User.get_email(current_user["uid"]).get("gender")
+
 
 	return render_template("account.html", user=current_user)
 

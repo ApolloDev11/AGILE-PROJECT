@@ -6,6 +6,8 @@ async function register() {
 	const password = document.getElementById("password").value;
 	const email = document.getElementById("email").value;
 	const isOwner = document.getElementById("is-owner").checked;
+	const gender = document.querySelector('input[name="gender"]:checked')?.value; 
+	const hasDisabilities = document.getElementById("has-disabilities").checked; 
 
 	
 
@@ -26,7 +28,7 @@ async function register() {
 		console.log(user);  // Log the user object to verify UID
 		
 		const database_ref = ref(database, `users/${user.uid}`);
-		const user_data = {name, email, isOwner};
+		const user_data = {name, email, isOwner,gender,hasDisabilities};
 
 		if(isOwner){
 			user_data.address = address;

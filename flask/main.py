@@ -265,14 +265,16 @@ def api_verify():
 
 @app.get("/delivery")
 def delivery():
-    current_user = {}
-    current_user["uid"] = User.verify(request)
-    current_user["name"] = User.get_name(current_user["uid"])
-    
-    ref = db.reference("/drivers")
-    drivers = ref.get()  
+	current_user = {}
+	current_user["uid"] = User.verify(request)
+	current_user["name"] = User.get_name(current_user["uid"])
 
-    return render_template("delivery.html", user=current_user, drivers=drivers)
+	ref = db.reference("/drivers")
+	drivers = ref.get()
+
+	orders = User.get_orders(current_user["uid"])
+
+	return render_template("delivery.html", user=current_user, drivers=drivers, orders=orders)
 	
 @app.post("/assign_driver")
 def assign_driver():

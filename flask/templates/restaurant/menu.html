@@ -29,6 +29,21 @@
 					</div>
 				{% endfor %}
 			</div>
+			<h2>Additional ingredients</h2>
+			{% if not restaurant.ingredients %}
+				<p>This restaurant has no additional ingredients</p>
+			{% else %}
+			{% for ingredient_id, ingredient in restaurant.ingredients.items(): %}
+			<div class="menu dish ingredient" data-restaurant="{{ restaurant_id }}" data-ingredient="{{ ingredient_id }}">
+				<img class="dish-image" src="{{ ('restaurants/'~user['uid']~'/ingredients/'~ingredient_id~'/image') | firebase_storage_url }}">
+				<div>
+					<h3 class="dish-title">{{ ingredient.name }}</h3>
+					<p>{{ "€%.2f" % ingredient.price }}</p>
+					<button onclick="addToCart(this)">Add to cart</button>
+				</div>
+			</div>
+			{% endfor %}
+			{% endif %}
 		</main>
 	</body>
 </html>

@@ -52,11 +52,18 @@ def get_cart(uid):
 	cart = ref.get() or {}
 
 	for item_id, item in cart.items():
-		item_ref = db.reference(f"/restaurants/{item['restaurant']}/menus/{item['menu']}/dishes/{item['dish']}")
-		item_data = item_ref.get()
+		if item["type"] == "dish":
+			item_ref = db.reference(f"/restaurants/{item['restaurant']}/menus/{item['menu']}/dishes/{item['dish']}")
+			item_data = item_ref.get()
 
-		# Add the item data to the cart
-		cart[item_id]["name"] = item_data["name"]
+			# Add the item data to the cart
+			cart[item_id]["name"] = item_data["name"]
+		else:
+			# Must be an ingredient
+			item_ref = db.reference(f"/restaurants/{item['restaurant']}/ingredients/{item['ingredient']}")
+			item_data = item_ref.get()
+
+			cart[item_id]["name"] = item_data["name"]
 
 	return cart
 

@@ -16,7 +16,7 @@ firebaseReady.then(async () => {
 	showAllDishes();
 });
 
-function displayDish(menu, dish) {
+function displayDish(restaurantId, menu, menuId, dish, dishId) {
 	const dishList = document.getElementById('dish-list');
 	const template = document.querySelector("#dish-template");
 
@@ -24,6 +24,10 @@ function displayDish(menu, dish) {
 							
 	c.querySelector(".dish-name").textContent = dish.name;
 	c.querySelector(".dish-image").src = dish.icon;
+
+	c.querySelector(".dish").setAttribute("data-restaurant", restaurantId)
+	c.querySelector(".dish").setAttribute("data-dish", dishId)
+	c.querySelector(".dish").setAttribute("data-menu", menuId)
 
 	if (menu != null) {
 		c.querySelector(".menu-name").textContent = menu.name;
@@ -47,15 +51,15 @@ function loopThroughDishes(restaurant, callback) {
             for (const [id2, menu] of Object.entries(data.menus)) {
                 if ("dishes" in menu)
                     for (const [id2, dish] of Object.entries(menu.dishes)) {
-                        callback(menu, dish);
+                        callback(id, menu, dish);
                     }
             }
     }
 }
 
 function showAllDishes() {
-	loopThroughDishes(restaurantData, (menu, dish) => {
-		displayDish(menu, dish);
+	loopThroughDishes(restaurantData, (id, menu, dish) => {
+		displayDish(restaurantData, menu, dish);
 	});
 }
 
@@ -79,7 +83,7 @@ function filterDishesByIngredient() {
 		);
 
 		if (hasIngredient)
-			displayDish(menu, dish);
+			displayDish(restaurantData, menu, dish);
 	});
 
 	if (dishList.innerHTML == '') {
@@ -101,7 +105,7 @@ function filterDishesByRestaurant() {
             for (const [id2, menu] of Object.entries(data.menus)) {
                 if ("dishes" in menu)
                     for (const [id2, dish] of Object.entries(menu.dishes)) {
-						displayDish(menu, dish);
+						displayDish(data, menu, dish);
                     }
             }
     }
@@ -111,43 +115,43 @@ function filterDishesByRestaurant() {
 	}
 }
 
-async function addToCart(dish) {
-	var cart = (await get(ref(database, `users/${auth.currentUser.uid}/cart`))).val();
+// async function addToCart(dish) {
+// 	var cart = (await get(ref(database, `users/${auth.currentUser.uid}/cart`))).val();
 
-	if (cart == null) {
-		cart = [];
-	}
+// 	if (cart == null) {
+// 		cart = [];
+// 	}
 
-	if (cart.length == 10) {
-		alert("You cannot add more than 10 items to your cart!");
-		return;
-	}
+// 	if (cart.length == 10) {
+// 		alert("You cannot add more than 10 items to your cart!");
+// 		return;
+// 	}
 
-	var name = dish.parentElement.querySelector(".dish-name").textContent;
-	var price = dish.parentElement.querySelector(".dish-price").textContent;
-	var image = dish.parentElement.querySelector(".dish-image").src;
+// 	var name = dish.parentElement.querySelector(".dish-name").textContent;
+// 	var price = dish.parentElement.querySelector(".dish-price").textContent;
+// 	var image = dish.parentElement.querySelector(".dish-image").src;
 
 
-	let existingItem = cart.find(e => e.name == name);
-	if(existingItem) existingItem.amount++;
-	else {
-		cart.push({
-			type: "dish",
-			name,
-			price,
-			image,
-			amount: 1
-		});
-	}
-	set(ref(database, `users/${auth.currentUser.uid}/cart`), cart);
+// 	let existingItem = cart.find(e => e.name == name);
+// 	if(existingItem) existingItem.amount++;
+// 	else {
+// 		cart.push({
+// 			type: "dish",
+// 			name,
+// 			price,
+// 			image,
+// 			amount: 1
+// 		});
+// 	}
+// 	set(ref(database, `users/${auth.currentUser.uid}/cart`), cart);
 
-	if(existingItem) alert(`You now have ${existingItem.amount} ${name}s in your cart!`);
-	else alert(`Added ${name} to your cart!`);
+// 	if(existingItem) alert(`You now have ${existingItem.amount} ${name}s in your cart!`);
+// 	else alert(`Added ${name} to your cart!`);
 	
-	const addToCartButton = dish.parentElement.querySelector("button");
-	addToCartButton.textContent = "Added";
-	location.reload();
-}
+// 	const addToCartButton = dish.parentElement.querySelector("button");
+// 	addToCartButton.textContent = "Added";
+// 	location.reload();
+// }
 
 document.getElementById('ingredient-form')?.addEventListener('submit', function(event) {
 	event.preventDefault(); 

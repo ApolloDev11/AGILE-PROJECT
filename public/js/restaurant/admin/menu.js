@@ -29,13 +29,14 @@ async function addDish() {
 		// Save dish data to Firebase
 		let dishesRef = ref(database, `/restaurants/${restaurantID}/menus/${menuID}/dishes`)
 		let newDishRef = push(dishesRef);
-		set(newDishRef, {name: title, price});
 
 		let dishID = newDishRef.key;
 
 		// Upload image to Firebase
 		let imageRef = storageRef(storage, `/restaurants/${restaurantID}/menus/${menuID}/${dishID}/image`);
 		await uploadBytes(imageRef, file);
+		
+		await set(newDishRef, {name: title, price});
 
 		// Reload page
 		document.location.reload()

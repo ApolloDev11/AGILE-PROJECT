@@ -51,6 +51,8 @@
 				<h3>Add ingredient</h3>
 				<label for="ingredient-title-input">Ingredient title</label>
 				<input id="ingredient-title-input" type="text" placeholder="Ingredient title">
+				<label for="ingredient-price-input">Item price</label>
+				<input id="ingredient-price-input" type="number" placeholder="€0.00" min="0" step="0.10">
 				<label for="ingredient-image-input">Ingredient image</label>
 				<input id="ingredient-image-input" type="file">
 				<button onclick="addIngredient()" id="add-ingredient-button">Add ingredient</button>
@@ -58,16 +60,18 @@
 			<div id="ingredient-list">
 				{% if not restaurant.ingredients %}
 				<p>This restaurant has no ingredients</p>
-				{% endif %}
-				{% for ingredient in restaurant.ingredients: %}
-					<div class="ingredient" data-ingredient-index="{{ loop.index0 }}">
-						<img class="ingredient-image" src="{{ ('restaurants/'~user['uid']~'/ingredients/'~loop.index0~'/image') | firebase_storage_url }}">
+				{% else %}
+				{% for ingredient_id, ingredient in restaurant.ingredients.items(): %}
+					<div class="menu ingredient" data-ingredient-id="{{ ingredient_id }}">
+						<img class="ingredient-image" src="{{ ('restaurants/'~user['uid']~'/ingredients/'~ingredient_id~'/image') | firebase_storage_url }}">
 						<div>
 							<h3 class="ingredient-title">{{ ingredient.name }}</h3>
-							<button onclick="deleteIngredient('{{loop.index0}}')">Delete ingredient</button>
+							<p>{{ "€%.2f" % ingredient.price }}</p>
+							<button onclick="deleteIngredient('{{ingredient_id}}')">Delete ingredient</button>
 						</div>
 					</div>
 				{% endfor %}
+				{% endif %}
 			</div>
 		</main>
 	</body>

@@ -8,7 +8,7 @@
 	margin-top: 1em;
 }
 
-#menu-list .menu {
+.menu {
 	display: flex;
 	text-decoration: none;
 	border: 1px solid #999;
@@ -18,7 +18,7 @@
 	transition: border 250ms;
 }
 
-#menu-list .menu img {
+.menu img {
 	border-radius: 0.5em;
 	width: 8em;
 	height: 8em;
@@ -26,11 +26,11 @@
 	margin-right: 2em;
 }
 
-#menu-list .menu h3 {
+.menu h3 {
 	font-size: 1.5em;
 	margin: 0;
 }
 
-#menu-list .menu p {
+.menu p {
 	margin-top: 0;
 }

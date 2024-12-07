@@ -1,18 +1,20 @@
-const ingredientName = document.getElementById("ingredient-title-input");
-
 async function addIngredient() {
+    const ingredientName = document.getElementById("ingredient-title-input");
+
     // Use uid as restaurant ID
 	const restaurantID = auth.currentUser.uid;
 
     let ingredient = {name: ingredientName.value};
     let ingredientRef = ref(database, `/restaurants/${restaurantID}/ingredients`);
 
+    let newIngredients = push(ingredientRef);
+
     try{
         let ingredientsSnap = await get(ingredientRef);
-        let ingredientsArray = ingredientsSnap.exists() ? ingredientsSnap.val() :[];
 
-        // Add the new ingredient to the array
-        ingredientsArray.push(ingredient); 
+        const price = Number(document.getElementById("ingredient-price-input").value);
+		if(isNaN(price) || price < 0) throw "No ingredient price provided";
+
 
         // Get image for new ingredient
 		if(document.getElementById("ingredient-image-input").files == 0) throw "No image selected!";
@@ -24,10 +26,10 @@ async function addIngredient() {
 		await validateImage(file);
 
 		// Upload image to Firebase
-		let imageRef = storageRef(storage, `/restaurants/${restaurantID}/ingredients/${ingredientsArray.length - 1}/image`);
+		let imageRef = storageRef(storage, `/restaurants/${restaurantID}/ingredients/${newIngredients.key}/image`);
 		await uploadBytes(imageRef, file);
-
-        await set(ingredientRef, ingredientsArray);
+        
+        await set(newIngredients, {name: ingredientName.value, price});
         console.log("Ingredient added:", ingredient);
         document.location.reload();
 
@@ -37,11 +39,11 @@ async function addIngredient() {
     }
 }
 
-async function deleteIngredient(deleteIndex) {
+async function deleteIngredient(ingredientId) {
 
     const restaurantID = auth.currentUser.uid;
     
-    let ingredientRef = ref(database, `/restaurants/${restaurantID}/ingredients/${deleteIndex}`);
+    let ingredientRef = ref(database, `/restaurants/${restaurantID}/ingredients/${ingredientId}`);
     
 
     try {

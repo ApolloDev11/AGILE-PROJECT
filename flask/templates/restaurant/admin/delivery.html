@@ -17,13 +17,24 @@
         {% if order.type == "dish" %}
             <h1>{{ order.name }} x {{ order.amount }}</h1>
             <form action="/assign_driver" method="POST">
-                <select id="drivers-select" name="drivers">
+                <input type="hidden" name="user_id" value="{{ order.user_id }}" />
+                <input type="hidden" name="order_id" value="{{ order.order_id }}" />
+                <input type="hidden" name="item_id" value="{{ order.item_id }}" />
+                <select id="drivers-select" name="driver">
                 {% for driver in drivers %}
-                    <option value="{{ driver.name }}">{{ driver.name }}</option>
+                    {% set selected = "selected" if driver.name == order.driver else "" %}
+
+                    <option value="{{ driver.name }}" {{ selected }}>{{ driver.name }}</option>
                 {% endfor %}
             </select>
+            
+            <button type="submit">Assign driver</button>
+            </form>
             <form action="/update_status" method="POST">
-                <input type="text" name="status" value="{{ order.status }}" />
+                <input type="hidden" name="user_id" value="{{ order.user_id }}" />
+                <input type="hidden" name="order_id" value="{{ order.order_id }}" />
+                <input type="hidden" name="item_id" value="{{ order.item_id }}" />
+                <input type="text" name="status" value="{{ order.status }}" value="{{ order.status }}" />
                 <button type="submit">Update Status</button>
             </form>
         {% endif %}

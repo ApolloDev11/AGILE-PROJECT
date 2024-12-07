@@ -282,28 +282,38 @@ def delivery():
 	
 @app.post("/assign_driver")
 def assign_driver():
-    driver_index = request.form.get("driver_index")
-    current_user_uid = User.verify(request)
+	driver_name = request.form.get("driver")
+	current_user_uid = User.verify(request)
+
+	order_id = request.form.get("order_id")
+	item_id = request.form.get("item_id")
+	user_id = request.form.get("user_id")
+
+	# Assign the driver to the order
+	order_driver_ref = db.reference(f"/users/{user_id}/orders/{order_id}/")
+	order_driver_ref.update({
+		"delivery-driver": driver_name
+	})
+
+	return delivery()
     
-    # Fetch the driver details using the index
-    driver_ref = db.reference(f"/drivers/{driver_index}")
-    driver_data = driver_ref.get()
-    
-    if not driver_data:
-        return "Driver not found!"
-    
-    # Fetch the most recent order for the current user
-    order_ref = db.reference(f"/users/{current_user_uid}/orders")
-    snapshot = order_ref.limit_to_last(1).get() 
-    last_order_key = list(snapshot.keys())[0]  
-    
-    # Assign the driver to the order
-    order_driver_ref = db.reference(f"/users/{current_user_uid}/orders/{last_order_key}")
-    order_driver_ref.update({
-        "delivery-driver": driver_data['name'],
-        "driver-phone": driver_data['phone']
-    })
-    
+@app.post("/update_status")
+def update_status():
+	statustext = request.form.get("status")
+	current_user_uid = User.verify(request)
+
+	order_id = request.form.get("order_id")
+	item_id = request.form.get("item_id")
+	user_id = request.form.get("user_id")
+
+	# Assign the driver to the order
+	order_driver_ref = db.reference(f"/users/{user_id}/orders/{order_id}/")
+	order_driver_ref.update({
+		"status": statustext
+	})
+	
+	return delivery()
+
 
 @app.get("/api/complete_order")
 def api_complete_order():

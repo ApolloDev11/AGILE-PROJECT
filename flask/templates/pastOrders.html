@@ -8,24 +8,22 @@
 </head>
 <body>
     {% include "header.html" %}
-    <h2>Your Orders</h2>
+    <h2>Your Past Orders</h2>
     <div id="orders-container">
-        {% for key, order in orders.items() %}
+        {% for order in orders %}
         <div class="order">
             <p>Order Date: {{ order.date }}</p>
             <p>Order Status: {{ order.status }}</p>
-            <p>Delivery driver: {{ order["delivery-driver"] }}</p>
-            {% for dish in order.contents %}
+            <p>Delivery driver: {{ order.driver }}</p>
             <div class="dish">
-                <img class="dish-image" src="#" style="width: 50px;">
-                <p>Restaurant ID: {{ dish.restaurant }}</p>
-                <p>Menu ID: {{ dish.menu }}</p>
-                <p>Dish ID: {{ dish.dish }}</p>
+                <img class="dish-image" src="{{ ('restaurants/'~order['restaurant']~'/menus/'~order['menu']~'/'~order['dish']~'/image') | firebase_storage_url }}" style="width: 50px;">
+                <p>Dish Name: {{ order.name }}</p>
+                <p>Amount: {{ order.amount }}</p>
+                <p>Total: {{ order.price * order.amount }}</p>
                 <hr>
             </div>
-            {% endfor %}
         </div>
-
+        <hr>
         {% endfor %}
     </div>
 </body>

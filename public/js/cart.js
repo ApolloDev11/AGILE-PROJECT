@@ -1,7 +1,7 @@
 async function removeFromCart(itemID) {
 	let itemRef = ref(database, `users/${auth.currentUser.uid}/cart/${itemID}`);
 	
-	remove(itemRef);
+	await remove(itemRef);
 	document.location.reload();
 }
 
@@ -28,4 +28,8 @@ async function decrementDish(itemID) {
 
 function finaliseOrder() {
 	document.location.href = "/order"
+}
+
+function redirectToPastOrders() {
+	document.location.href = "/pastOrders";
 }

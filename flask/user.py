@@ -70,8 +70,44 @@ def get_cart(uid):
 def get_all_orders(uid):
 	""" Get all order information for a given user """
 
-	ref = db.reference(f"/users/{uid}/orders")
-	return ref.get()
+	orders = db.reference(f"/users/{uid}/orders/").get()
+
+	order_list = []
+
+	if orders == None:
+		return order_list
+
+	for order_id, order in orders.items():
+		contents = db.reference(f"/users/{uid}/orders/{order_id}/contents").get()
+
+		if contents == None:
+			continue
+		
+		# Do dishes
+		for item_id, item in contents.items():
+			if item["type"] == "dish":
+				dish = db.reference(f"/restaurants/{item['restaurant']}/menus/{item['menu']}/dishes/{item['dish']}").get()
+
+				item["name"] = dish["name"]
+				item["price"] = dish["price"]
+				item["user_id"] = uid
+				item["order_id"] = order_id
+				item["item_id"] = item_id
+				item["status"] = order["status"]
+				item["driver"] = order["delivery-driver"]
+				
+				order_list.append(item)
+
+		for item_id, item in contents.items():
+			if item["type"] == "ingredient":
+				ingredient = db.reference(f"/restaurants/{item['restaurant']}/ingredients/{item['ingredient']}").get()
+
+				item["name"] = ingredient["name"]
+				item["price"] = ingredient["price"]
+
+				order_list.append(item)
+
+	return order_list
 
 
 def get_all_orders_for_restaurant(id):
@@ -95,7 +131,7 @@ def get_all_orders_for_restaurant(id):
 				continue
 			
 
-			for_restaurant = False 
+			for_restaurant = False
 
 			# Do dishes
 			for item_id, item in contents.items():
@@ -106,7 +142,12 @@ def get_all_orders_for_restaurant(id):
 
 					item["name"] = dish["name"]
 					item["price"] = dish["price"]
-
+					item["user_id"] = user_id
+					item["order_id"] = order_id
+					item["item_id"] = item_id
+					item["status"] = order["status"]
+					item["driver"] = order["delivery-driver"]
+					
 					order_list.append(item)
 
 
@@ -119,6 +160,11 @@ def get_all_orders_for_restaurant(id):
 			if for_restaurant:
 				for item_id, item in contents.items():
 					if item["type"] == "ingredient":
+						ingredient = db.reference(f"/restaurants/{item['restaurant']}/ingredients/{item['ingredient']}").get()
+
+						item["name"] = ingredient["name"]
+						item["price"] = ingredient["price"]
+
 						order_list.append(item)
 
 	return order_list

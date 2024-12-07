@@ -46,20 +46,20 @@ function displayDish(restaurantId, menu, menuId, dish, dishId) {
 }
 
 function loopThroughDishes(restaurant, callback) {
-    for (const [id, data] of Object.entries(restaurant)) {
+    for (const [restId, data] of Object.entries(restaurant)) {
         if ("menus" in data)
             for (const [id2, menu] of Object.entries(data.menus)) {
                 if ("dishes" in menu)
-                    for (const [id2, dish] of Object.entries(menu.dishes)) {
-                        callback(id, menu, dish);
+                    for (const [id3, dish] of Object.entries(menu.dishes)) {
+                        callback(restId, data, menu, id2, dish, id3);
                     }
             }
     }
 }
 
 function showAllDishes() {
-	loopThroughDishes(restaurantData, (id, menu, dish) => {
-		displayDish(restaurantData, menu, dish);
+	loopThroughDishes(restaurantData, (restId, rest, menu, menuId, dish, dishId) => {
+		displayDish(restId, menu, menuId, dish, dishId);
 	});
 }
 
@@ -77,13 +77,14 @@ function filterDishesByIngredient() {
 
 	// Loop through restaurant data and filter by ingredient
 
-	loopThroughDishes(restaurantData, (menu, dish) => {
-		const hasIngredient = dish.ingredients.some(ingredient => 
-			ingredient.toLowerCase() === ingredientInput
+	loopThroughDishes(restaurantData, (restId, rest, menu, menuId, dish, dishId) => {
+		console.log(rest);
+		const hasIngredient = Object.values(rest.ingredients).some(ingredient => 
+			ingredient.name.toLowerCase().includes(ingredientInput)
 		);
 
 		if (hasIngredient)
-			displayDish(restaurantData, menu, dish);
+			displayDish(restId, menu, menuId, dish, dishId);
 	});
 
 	if (dishList.innerHTML == '') {
@@ -104,8 +105,8 @@ function filterDishesByRestaurant() {
         if (data.name.toLowerCase() === selectedRestaurant && "menus" in data)
             for (const [id2, menu] of Object.entries(data.menus)) {
                 if ("dishes" in menu)
-                    for (const [id2, dish] of Object.entries(menu.dishes)) {
-						displayDish(data, menu, dish);
+                    for (const [id3, dish] of Object.entries(menu.dishes)) {
+						displayDish(id, menu, id2, dish, id3);
                     }
             }
     }
@@ -155,6 +156,7 @@ function filterDishesByRestaurant() {
 
 document.getElementById('ingredient-form')?.addEventListener('submit', function(event) {
 	event.preventDefault(); 
+	filterDishesByIngredient();
 });
 
 

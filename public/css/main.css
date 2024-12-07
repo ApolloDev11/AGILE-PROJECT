@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=block');
 
 body {
-	font-family: Poppins;
-	color: #232424;
-	margin: 0;
+    font-family: 'Poppins', sans-serif;
+    color: #232424;
+    margin: 0;
+    padding: 0;
 }
 
 button {
@@ -33,6 +34,7 @@ input, textarea {
 	background-color: white;
 	border: 1px solid lightgray;
 	border-radius: 10px;
+	accent-color: black;
 	transition: border-color 500ms;
 }
 
@@ -86,9 +88,26 @@ nav a {
 }
 
 main {
-	max-width: 60em;
-	margin: 0 auto;
-	padding: 0 1em;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2em;
+    margin: 2em auto;
+    max-width: 800px;
+    text-align: center;
+}
+
+section {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1em;
+}
+
+button {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+    transform: scale(0.95);
 }
 
 section {
@@ -105,7 +124,228 @@ section :first-child {
 .container {
 	display: flex;
 	align-items: center;
+	box-shadow:#232424
+	
   }
   .options {
 	margin-left: 20px;
   }
+
+  h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 1em;
+}
+p {
+    font-size: 1em;
+    margin: 1em 0;
+    line-height: 1.5;
+}
+
+a {
+    color: #0056b3;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+a:hover {
+    color: #003f6d;
+}
+
+ul li a {
+    text-decoration: none;
+    color: #0056b3;
+    font-weight: bold;
+}
+
+ul li a:hover {
+    color: #002855;
+    text-decoration: underline;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 1em 0;
+}
+
+ul li {
+    margin: 0.5em 0;
+    font-size: 1.1em;
+}
+
+form {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2em;
+}
+
+input, select, button {
+    font-family: 'Poppins', sans-serif;
+    padding: 0.75em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    outline: none;
+}
+input:focus, select:focus {
+    border-color: #333;
+}
+
+.filter-ingredient-section, .filter-restaurant-section {
+    margin-bottom: 2em;
+    text-align: center;
+}
+
+.filter-ingredient-section h2, .filter-restaurant-section h2 {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+}
+.dishes-list-section {
+    text-align: center;
+}
+
+.dishes-list-section h2 {
+    margin-bottom: 1em;
+}
+
+.dish {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 1em;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.dish img {
+    border-radius: 5px;
+    margin-right: 1em;
+}
+
+.dish p {
+    margin: 0.5em 0;
+    font-size: 1em;
+}
+
+.dish .dish-name {
+    font-weight: bold;
+}
+
+.dish button {
+    background-color: #28a745;
+    color: white;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dish button:hover {
+    background-color: #1e7e34;
+}
+
+.dish button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+button[onclick="resetFilters();"] {
+    display: block;
+    margin: 1em auto;
+    background-color: #ff5252;
+}
+
+button[onclick="resetFilters();"]:hover {
+    background-color: #e02a2a;
+}
+
+#account-options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 1em 0;
+  }
+
+  #account-options button {
+    background: #0056b3;
+    color: white;
+    border: none;
+    padding: 0.75em 1.5em;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  #account-options button:hover {
+    background: #003f6d;
+  }
+
+  #account-options button:active {
+    transform: scale(0.95);
+  }
+
+  #edit-account-form {
+    margin-top: 2em;
+    background: #f7f7f7;
+    padding: 1.5em;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  #edit-account-form h3 {
+    text-align: center;
+    margin-bottom: 1em;
+    color: #333;
+  }
+
+  #edit-account-form label {
+    display: block;
+    margin: 1em 0 0.5em;
+    font-weight: bold;
+    color: #555;
+  }
+
+  #edit-account-form input {
+    width: 100%;
+    padding: 0.75em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    background: white;
+    box-sizing: border-box;
+    margin-bottom: 1em;
+  }
+
+  #edit-account-form button {
+    display: inline-block;
+    margin: 0.5em 5px;
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 0.75em 1.5em;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  #edit-account-form button:hover {
+    background: #1e7e34;
+  }
+
+  #edit-account-form button#cancel-edit-btn {
+    background: #ff5252;
+  }
+
+  #edit-account-form button#cancel-edit-btn:hover {
+    background: #e02a2a;
+  }
+

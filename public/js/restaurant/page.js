@@ -1,8 +1,3 @@
-// Open restaurant admin page
-function openRestaurantAdmin() {
-	document.location.href = "/restaurant/admin"
-}
-
 // Add dish to cart
 async function addToCart(button) {
 	let item = button.closest(".dish");

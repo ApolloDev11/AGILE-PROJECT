@@ -13,8 +13,22 @@
 			<img src="{{ ('restaurants/'+restaurant_id+'/image') | firebase_storage_url }}" id="restaurant-image">
 			<h2>{{ restaurant.name }}</h2>
 			<p>{{ restaurant.address }}</p>
+			<h3>Opening hours</h3>
+			{% set days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] %}
+			<ul>
+				{% for day in days %}
+					{% set times = restaurant.hours.get(day.lower()) %}
+					<li><b>{{ day }}</b>: {% if times %}{{ times[0] }} to {{ times[1] }}{% else %}Closed{% endif %}</li>
+				{% endfor %}
+			</ul>
+			<h3>Contact</h3>
+			<ul>
+				<li><a href="mailto:{{ restaurant.email }}">{{ restaurant.email }}</a></li>
+				<li><a href="tel:{{ restaurant.phone }}">{{ restaurant.phone }}</a></li>
+			</ul>
 			{% if user.uid == restaurant_id %}
-				<button onclick="openRestaurantAdmin()" id="restaurant-admin-button">Open admin page</button>
+				<h3>Admin</h3>
+				<p>You are a manger for this restaurant. <a href="/restaurant/admin">Open admin page</a></p>
 			{% endif %}
 			<hr>
 			<h2>Menus</h2>
@@ -32,12 +46,6 @@
 					</a>
 				{% endfor %}
 			</div>
-			<hr>
-			<h2>Contact</h2>
-			<ul>
-				<li><a href="mailto:{{ restaurant.email }}">{{ restaurant.email }}</a></li>
-				<li><a href="tel:{{ restaurant.phone }}">{{ restaurant.phone }}</a></li>
-			</ul>
 		</main>
 	</body>
 </html>

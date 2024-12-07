@@ -10,7 +10,16 @@ async function saveRestaurantDetails(imageRequired=false) {
 			name: document.getElementById("restaurant-name").value,
 			phone: document.getElementById("restaurant-phone").value,
 			address: document.getElementById("restaurant-address").value,
-			email: document.getElementById("restaurant-email").value
+			email: document.getElementById("restaurant-email").value,
+			hours: {}
+		}
+
+		let dayElements = document.querySelectorAll(".opening-hours-day");
+		for(let element of dayElements) {
+			if(!element.querySelector(".day-checkbox").checked) continue;
+			let day = element.dataset.day;
+			let hourElements = [...element.querySelectorAll(".day-hours input")];
+			restaurantData.hours[day] = hourElements.map(input => input.value);
 		}
 
 		// Save restaurant data to database

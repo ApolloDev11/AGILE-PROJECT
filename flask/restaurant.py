@@ -20,5 +20,8 @@ def get(restaurant_id):
 	for menu in restaurant["menus"]:
 		if "dishes" not in restaurant["menus"][menu]:
 			restaurant["menus"][menu]["dishes"] = {}
+
+	if "hours" not in restaurant:
+		restaurant["hours"] = {}
 		
 	return restaurant or None

@@ -27,11 +27,13 @@
 	{% include "header.html" %}
 	<main>
 		<h2>Account</h2>
-		<hr>
+		<hr>	
 
 		<p><b>Name:</b> {{ user.name }}</p>
 		<p><b>Email:</b> {{ user.email }}</p>
 		<p><b>Type:</b> {{ "Restaurant manager" if user.manages_restaurant else "Customer"}}</p>
+		<p><b>Gender:</b> {{ user.gender}}</p>
+
 		<div class="container">
 			<p><b>Notifications</b></p>
 			<div class="options">

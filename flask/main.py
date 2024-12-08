@@ -81,8 +81,7 @@ def account():
 
 	current_user["email"] = User.get_email(current_user["uid"])
 	current_user["manages_restaurant"] = Restaurant.get(current_user["uid"]) != {}
-	# below gives error 500 idk why
-	 # current_user["gender"] = User.get_email(current_user["uid"]).get("gender")
+	current_user["gender"] = User.get_gender(current_user["uid"])
 
 
 	return render_template("account.html", user=current_user)

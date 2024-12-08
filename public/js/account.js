@@ -5,7 +5,8 @@ async function register() {
 	const name = document.getElementById("name").value;
 	const password = document.getElementById("password").value;
 	const email = document.getElementById("email").value;
-	const isOwner = document.getElementById("is-owner").checked;
+	// const isOwner = document.getElementById("is-owner").checked;
+	const isOwner = false;
 	const gender = document.querySelector('input[name="gender"]:checked')?.value; 
 	const hasDisabilities = document.getElementById("has-disabilities").checked; 
 
@@ -175,6 +176,7 @@ async function saveChanges() {
     try {
     
         const database_ref = ref(database, `users/${user.uid}`);
+		const database_data = database_ref.get();
         const user_data = { name: updatedName, email: updatedEmail };
 
         if (user.manages_restaurant) {

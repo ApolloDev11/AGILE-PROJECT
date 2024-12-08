@@ -35,7 +35,7 @@
 			{% else %}
 			{% for ingredient_id, ingredient in restaurant.ingredients.items(): %}
 			<div class="menu dish ingredient" data-restaurant="{{ restaurant_id }}" data-ingredient="{{ ingredient_id }}">
-				<img class="dish-image" src="{{ ('restaurants/'~user['uid']~'/ingredients/'~ingredient_id~'/image') | firebase_storage_url }}">
+				<img class="dish-image" src="{{ ('restaurants/'~restaurant_id~'/ingredients/'~ingredient_id~'/image') | firebase_storage_url }}">
 				<div>
 					<h3 class="dish-title">{{ ingredient.name }}</h3>
 					<p>{{ "€%.2f" % ingredient.price }}</p>

@@ -12,11 +12,13 @@
     <div id="orders-container">
         {% for order in orders %}
         <div class="order">
+            {% if order.type == "dish" %}
             <p>Order Date: {{ order.date }}</p>
             <p>Order Status: {{ order.status }}</p>
             <p>Delivery driver: {{ order.driver }}</p>
+            {% endif %}
             <div class="dish">
-                <img class="dish-image" src="{{ ('restaurants/'~order['restaurant']~'/menus/'~order['menu']~'/'~order['dish']~'/image') | firebase_storage_url }}" style="width: 50px;">
+                <img class="dish-image" src="{{ order['image'] | firebase_storage_url }}" style="width: 50px;">
                 <p>Dish Name: {{ order.name }}</p>
                 <p>Amount: {{ order.amount }}</p>
                 <p>Total: {{ order.price * order.amount }}</p>

@@ -22,16 +22,28 @@ function displayDish(restaurantId, menu, menuId, dish, dishId) {
 
 	const c = document.importNode(template.content, true);
 							
+	var imageurl = `restaurants/${restaurantId}/menus/${menuId}/${dishId}/image`
+	imageurl = encodeURIComponent(imageurl);
+
 	c.querySelector(".dish-name").textContent = dish.name;
-	c.querySelector(".dish-image").src = dish.icon;
+	c.querySelector(".dish-image").src = `https://firebasestorage.googleapis.com/v0/b/mtu-group-project-agile.appspot.com/o/${imageurl}?alt=media`;
+
+	imageurl = `restaurants/${restaurantId}/menus/${menuId}/image`
+	imageurl = encodeURIComponent(imageurl);
+	
+	c.querySelector(".menu-image").src = `https://firebasestorage.googleapis.com/v0/b/mtu-group-project-agile.appspot.com/o/${imageurl}?alt=media`;
+
 
 	c.querySelector(".dish").setAttribute("data-restaurant", restaurantId)
 	c.querySelector(".dish").setAttribute("data-dish", dishId)
 	c.querySelector(".dish").setAttribute("data-menu", menuId)
 
+
+	c.querySelector(".menu-link").href = `/restaurant/${restaurantId}/menus/${menuId}`;
+
 	if (menu != null) {
 		c.querySelector(".menu-name").textContent = menu.name;
-		c.querySelector(".menu-image").src = menu.icon;
+		// c.querySelector(".menu-image").src = menu.icon;
 	}
 
 	if (dish.amount != null) {

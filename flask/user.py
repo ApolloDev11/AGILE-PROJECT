@@ -29,6 +29,11 @@ def get_email(uid):
 	ref = db.reference(f"/users/{uid}/email")
 	return ref.get()
 
+def get_gender(uid):
+	""" Gets the user gender from the databse """
+	ref = db.reference(f"/users/{uid}/gender")
+	return ref.get()
+
 
 def make_order_from_cart(uid):
 	""" Copy cart contents to make an order """
@@ -57,13 +62,19 @@ def get_cart(uid):
 			item_data = item_ref.get()
 
 			# Add the item data to the cart
+			cart[item_id]["type"] = "dish"
 			cart[item_id]["name"] = item_data["name"]
+			cart[item_id]["image"] = f"restaurants/{item['restaurant']}/menus/{item['menu']}/{item['dish']}/image"
+			cart[item_id]["price"] = item_data["price"]
 		else:
 			# Must be an ingredient
 			item_ref = db.reference(f"/restaurants/{item['restaurant']}/ingredients/{item['ingredient']}")
 			item_data = item_ref.get()
 
+			cart[item_id]["type"] = "ingredient"
 			cart[item_id]["name"] = item_data["name"]
+			cart[item_id]["image"] = f"restaurants/{item['restaurant']}/ingredients/{item['ingredient']}/image"
+			cart[item_id]["price"] = item_data["price"]
 
 	return cart
 
@@ -88,6 +99,7 @@ def get_all_orders(uid):
 			if item["type"] == "dish":
 				dish = db.reference(f"/restaurants/{item['restaurant']}/menus/{item['menu']}/dishes/{item['dish']}").get()
 
+				item["date"] = order["date"]
 				item["name"] = dish["name"]
 				item["price"] = dish["price"]
 				item["user_id"] = uid
@@ -95,6 +107,7 @@ def get_all_orders(uid):
 				item["item_id"] = item_id
 				item["status"] = order["status"]
 				item["driver"] = order["delivery-driver"]
+				item["image"] = f"restaurants/{item['restaurant']}/menus/{item['menu']}/{item['dish']}/image"
 				
 				order_list.append(item)
 
@@ -104,6 +117,7 @@ def get_all_orders(uid):
 
 				item["name"] = ingredient["name"]
 				item["price"] = ingredient["price"]
+				item["image"] = f"restaurants/{item['restaurant']}/ingredients/{item['ingredient']}/image"
 
 				order_list.append(item)
 

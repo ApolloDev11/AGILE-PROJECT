@@ -19,15 +19,16 @@
             {% endif %}
             {% for item_id, item in cart.items() %}
             <div class="dish" id="{{ item_id }}">
-                <img class="dish-image" src="{{ ('restaurants/'~item['restaurant']~'/menus/'~item['menu']~'/'~item['dish']~'/image') | firebase_storage_url }}">
-                <div>
+                <img class="dish-image" src="{{ item['image'] | firebase_storage_url }}">
+                <div>						
                     <h3 class="dish-name">{{ item.name }}</h3>
                     <p class="dish-amount">{{ item.amount }}</p>
-                    <button class="remove-button" onclick="removeFromCart('{{ item_id }}')">Remove</button>
-                    <button onclick="decrementDish('{{ item_id }}')"{% if item.amount == 1 %} disabled {% endif %}> - </button>
-                    <button onclick="incrementDish('{{ item_id }}')"> + </button>
+                    <p class="dish-amount">EUR {{ item.price }}</p>
+                    <!-- <button class="remove-button" onclick="removeFromCart('{{ item_id }}')">Remove</button> -->
+                    <!-- <button onclick="decrementDish('{{ item_id }}')"{% if item.amount == 1 %} disabled {% endif %}> - </button>
+                    <button onclick="incrementDish('{{ item_id }}')"> + </button> -->
                 </div>
-                <p class="dish-price">{{ item.price }}</p>
+                <p class="dish-amount">TOTAL EUR {{ item.price * item.amount }}</p>
             </div>
             {% endfor %}
             <a href="payment">Checkout</a>
